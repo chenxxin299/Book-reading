@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主题浏览 · 读书知识库</title>
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --paper: #fff;
+    --ink: #1f2328;
+    --ink-light: #5a6272;
+    --accent: #c26a18;
+    --accent-soft: #fff1e2;
+    --border: #e8e4df;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  .header {
+    background: var(--ink);
+    color: #fff;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: #aaa;
+    font-size: 0.95rem;
+  }
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.1);
+    transition: background .2s;
+  }
+  .nav a:hover { background: rgba(255,255,255,.2); }
+  .nav a.active { background: var(--accent); }
+
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .search-bar {
+    max-width: 600px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 14px 20px 14px 44px;
+    border-radius: 40px;
+    border: 1px solid var(--border);
+    font-size: 0.95rem;
+    outline: none;
+    background: var(--paper);
+  }
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #bbb;
+  }
+
+  .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+  }
+
+  .theme-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .theme-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,.14);
+    transform: translateY(-2px);
+  }
+
+  .theme-header {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .theme-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 12px;
+    font-weight: 600;
+  }
+
+  .theme-body {
+    padding: 20px;
+  }
+  .section {
+    margin-bottom: 16px;
+  }
+  .section:last-child {
+    margin-bottom: 0;
+  }
+  .section h4 {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .book-list {
+    list-style: none;
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+  .book-list li {
+    color: var(--ink);
+    padding-left: 12px;
+    position: relative;
+  }
+  .book-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .book-list li.more {
+    color: var(--ink-light);
+    font-size: 0.85rem;
+  }
+
+  .concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .concept-tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    background: #f0ece6;
+    color: var(--ink);
+    border-radius: 12px;
+  }
+  .concept-tag.more {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 12px;
+    color: #bbb;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) {
+    .themes-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📑 主题浏览</h1>
+  <p>跨书主题索引 · 57 个主题</p>
+  <div class="nav">
+    <a href="index.html">首页</a>
+    <a href="themes.html" class="active">主题</a>
+    <a href="concepts.html">概念</a>
+    <a href="graph.html">知识图谱</a>
+  </div>
+</div>
+
+<div class="main">
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="搜索主题..." autocomplete="off">
+  </div>
+
+  <div class="themes-grid" id="themes-grid">
+    
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #c26a18">
+                <h3>行为经济学</h3>
+                <span class="badge">3 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《思考，快与慢》</li><li>怪诞行为学（套装全5册）</li><li>灰犀牛：如何应对大概率危机</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">1. 可预测的非理性</span><span class="concept-tag">7. 机遇</span><span class="concept-tag">7. 预期效应与安慰机制</span><span class="concept-tag">1. 系统1</span><span class="concept-tag">2. 系统2</span><span class="concept-tag">3. 启发法</span><span class="concept-tag">5. 预测</span><span class="concept-tag">5. 自我控制与预先承诺</span><span class="concept-tag more">+15</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #c26a18">
+                <h3>2 它在更大的知识地图中处于什么位置？</h3>
+                <span class="badge">3 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>灰犀牛：如何应对大概率危机</li><li>第一性原理</li><li>《组织的活法》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 机遇</span><span class="concept-tag">概念七：心理距离与信任</span><span class="concept-tag">归纳法</span><span class="concept-tag">概念五：使命、愿景、价值观（上三路）</span><span class="concept-tag">5. 预测</span><span class="concept-tag">概念三：业务是生产力，组织是生产关系</span><span class="concept-tag">4. 群体思维</span><span class="concept-tag">概念六：团伙—团队—组织</span><span class="concept-tag more">+13</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #c26a18">
+                <h3>1 这本书涉及的议题还和哪些问题相关？</h3>
+                <span class="badge">3 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>灰犀牛：如何应对大概率危机</li><li>第一性原理</li><li>《组织的活法》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 机遇</span><span class="concept-tag">概念七：心理距离与信任</span><span class="concept-tag">归纳法</span><span class="concept-tag">概念五：使命、愿景、价值观（上三路）</span><span class="concept-tag">5. 预测</span><span class="concept-tag">概念三：业务是生产力，组织是生产关系</span><span class="concept-tag">4. 群体思维</span><span class="concept-tag">概念六：团伙—团队—组织</span><span class="concept-tag more">+13</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #2d6a8a">
+                <h3>不确定性</h3>
+                <span class="badge">2 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>反脆弱：从不确定性中获益</li><li>《黑天鹅效应》深度阅读分析报告</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">切身利害</span><span class="concept-tag">韧性</span><span class="concept-tag">不确定性</span><span class="concept-tag">非线性 / 凸性</span><span class="concept-tag">反脆弱</span><span class="concept-tag">黑天鹅</span><span class="concept-tag">预测幻觉</span><span class="concept-tag">复杂系统</span><span class="concept-tag more">+6</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #2d6a8a">
+                <h3>风险认知</h3>
+                <span class="badge">2 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>反脆弱：从不确定性中获益</li><li>《黑天鹅效应》深度阅读分析报告</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">切身利害</span><span class="concept-tag">韧性</span><span class="concept-tag">不确定性</span><span class="concept-tag">非线性 / 凸性</span><span class="concept-tag">反脆弱</span><span class="concept-tag">黑天鹅</span><span class="concept-tag">预测幻觉</span><span class="concept-tag">复杂系统</span><span class="concept-tag more">+6</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>自我成长</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《非暴力沟通（修订版）》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">1. 非暴力沟通（NVC）</span><span class="concept-tag">4. 感受</span><span class="concept-tag">8. 自我同理 / 自我宽恕</span><span class="concept-tag">2. 疏离生命的语言</span><span class="concept-tag">3. 观察</span><span class="concept-tag">5. 需要</span><span class="concept-tag">6. 请求</span><span class="concept-tag">7. 同理心</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>沟通</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《非暴力沟通（修订版）》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">1. 非暴力沟通（NVC）</span><span class="concept-tag">4. 感受</span><span class="concept-tag">8. 自我同理 / 自我宽恕</span><span class="concept-tag">2. 疏离生命的语言</span><span class="concept-tag">3. 观察</span><span class="concept-tag">5. 需要</span><span class="concept-tag">6. 请求</span><span class="concept-tag">7. 同理心</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>心理学</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《非暴力沟通（修订版）》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">1. 非暴力沟通（NVC）</span><span class="concept-tag">4. 感受</span><span class="concept-tag">8. 自我同理 / 自我宽恕</span><span class="concept-tag">2. 疏离生命的语言</span><span class="concept-tag">3. 观察</span><span class="concept-tag">5. 需要</span><span class="concept-tag">6. 请求</span><span class="concept-tag">7. 同理心</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>冲突调解</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《非暴力沟通（修订版）》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">1. 非暴力沟通（NVC）</span><span class="concept-tag">4. 感受</span><span class="concept-tag">8. 自我同理 / 自我宽恕</span><span class="concept-tag">2. 疏离生命的语言</span><span class="concept-tag">3. 观察</span><span class="concept-tag">5. 需要</span><span class="concept-tag">6. 请求</span><span class="concept-tag">7. 同理心</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>决策科学</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《思考，快与慢》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 损失厌恶</span><span class="concept-tag">1. 系统1</span><span class="concept-tag">2. 系统2</span><span class="concept-tag">3. 启发法</span><span class="concept-tag">4. 眼见即为事实（WYSIATI）</span><span class="concept-tag">5. 过度自信</span><span class="concept-tag">8. 经验自我与记忆自我</span><span class="concept-tag">6. 前景理论</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>这本书涉及的议题还和哪些问题相关？</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《思考，快与慢》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 损失厌恶</span><span class="concept-tag">1. 系统1</span><span class="concept-tag">2. 系统2</span><span class="concept-tag">3. 启发法</span><span class="concept-tag">4. 眼见即为事实（WYSIATI）</span><span class="concept-tag">5. 过度自信</span><span class="concept-tag">8. 经验自我与记忆自我</span><span class="concept-tag">6. 前景理论</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>系统1 / 系统2</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《思考，快与慢》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 损失厌恶</span><span class="concept-tag">1. 系统1</span><span class="concept-tag">2. 系统2</span><span class="concept-tag">3. 启发法</span><span class="concept-tag">4. 眼见即为事实（WYSIATI）</span><span class="concept-tag">5. 过度自信</span><span class="concept-tag">8. 经验自我与记忆自我</span><span class="concept-tag">6. 前景理论</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>认知心理学</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《思考，快与慢》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 损失厌恶</span><span class="concept-tag">1. 系统1</span><span class="concept-tag">2. 系统2</span><span class="concept-tag">3. 启发法</span><span class="concept-tag">4. 眼见即为事实（WYSIATI）</span><span class="concept-tag">5. 过度自信</span><span class="concept-tag">8. 经验自我与记忆自我</span><span class="concept-tag">6. 前景理论</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>它在更大的知识地图中处于什么位置？</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《思考，快与慢》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 损失厌恶</span><span class="concept-tag">1. 系统1</span><span class="concept-tag">2. 系统2</span><span class="concept-tag">3. 启发法</span><span class="concept-tag">4. 眼见即为事实（WYSIATI）</span><span class="concept-tag">5. 过度自信</span><span class="concept-tag">8. 经验自我与记忆自我</span><span class="concept-tag">6. 前景理论</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>公共判断</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《事实》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">趋势、分布与比例</span><span class="concept-tag">规模错觉</span><span class="concept-tag">十种本能偏差</span><span class="concept-tag">可能主义</span><span class="concept-tag">四级收入框架</span><span class="concept-tag">实事求是的世界观</span><span class="concept-tag">过分情绪化的世界观</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>全球发展</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《事实》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">趋势、分布与比例</span><span class="concept-tag">规模错觉</span><span class="concept-tag">十种本能偏差</span><span class="concept-tag">可能主义</span><span class="concept-tag">四级收入框架</span><span class="concept-tag">实事求是的世界观</span><span class="concept-tag">过分情绪化的世界观</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>认知偏差</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《事实》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">趋势、分布与比例</span><span class="concept-tag">规模错觉</span><span class="concept-tag">十种本能偏差</span><span class="concept-tag">可能主义</span><span class="concept-tag">四级收入框架</span><span class="concept-tag">实事求是的世界观</span><span class="concept-tag">过分情绪化的世界观</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>数据思维</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《事实》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">趋势、分布与比例</span><span class="concept-tag">规模错觉</span><span class="concept-tag">十种本能偏差</span><span class="concept-tag">可能主义</span><span class="concept-tag">四级收入框架</span><span class="concept-tag">实事求是的世界观</span><span class="concept-tag">过分情绪化的世界观</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>文化心理学</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类如何思考：社会心理学大师的人生回忆录</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">基本归因错误</span><span class="concept-tag">合作性知识生产</span><span class="concept-tag">分析性思维 / 辩证性思维</span><span class="concept-tag">智力可塑性</span><span class="concept-tag">荣誉文化</span><span class="concept-tag">人与情境</span><span class="concept-tag">归因</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>学术回忆录</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类如何思考：社会心理学大师的人生回忆录</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">基本归因错误</span><span class="concept-tag">合作性知识生产</span><span class="concept-tag">分析性思维 / 辩证性思维</span><span class="concept-tag">智力可塑性</span><span class="concept-tag">荣誉文化</span><span class="concept-tag">人与情境</span><span class="concept-tag">归因</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>归因理论</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类如何思考：社会心理学大师的人生回忆录</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">基本归因错误</span><span class="concept-tag">合作性知识生产</span><span class="concept-tag">分析性思维 / 辩证性思维</span><span class="concept-tag">智力可塑性</span><span class="concept-tag">荣誉文化</span><span class="concept-tag">人与情境</span><span class="concept-tag">归因</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>社会心理学</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类如何思考：社会心理学大师的人生回忆录</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">基本归因错误</span><span class="concept-tag">合作性知识生产</span><span class="concept-tag">分析性思维 / 辩证性思维</span><span class="concept-tag">智力可塑性</span><span class="concept-tag">荣誉文化</span><span class="concept-tag">人与情境</span><span class="concept-tag">归因</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>智力可塑性</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类如何思考：社会心理学大师的人生回忆录</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">基本归因错误</span><span class="concept-tag">合作性知识生产</span><span class="concept-tag">分析性思维 / 辩证性思维</span><span class="concept-tag">智力可塑性</span><span class="concept-tag">荣誉文化</span><span class="concept-tag">人与情境</span><span class="concept-tag">归因</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>认知革命</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类简史</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">虚构秩序</span><span class="concept-tag">认知革命</span><span class="concept-tag">金钱</span><span class="concept-tag">农业革命</span><span class="concept-tag">科学革命</span><span class="concept-tag">资本主义</span><span class="concept-tag">统一趋势</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>现代性反思</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类简史</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">虚构秩序</span><span class="concept-tag">认知革命</span><span class="concept-tag">金钱</span><span class="concept-tag">农业革命</span><span class="concept-tag">科学革命</span><span class="concept-tag">资本主义</span><span class="concept-tag">统一趋势</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>农业革命</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类简史</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">虚构秩序</span><span class="concept-tag">认知革命</span><span class="concept-tag">金钱</span><span class="concept-tag">农业革命</span><span class="concept-tag">科学革命</span><span class="concept-tag">资本主义</span><span class="concept-tag">统一趋势</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>大历史</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类简史</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">虚构秩序</span><span class="concept-tag">认知革命</span><span class="concept-tag">金钱</span><span class="concept-tag">农业革命</span><span class="concept-tag">科学革命</span><span class="concept-tag">资本主义</span><span class="concept-tag">统一趋势</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>文明批判</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>人类简史</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">虚构秩序</span><span class="concept-tag">认知革命</span><span class="concept-tag">金钱</span><span class="concept-tag">农业革命</span><span class="concept-tag">科学革命</span><span class="concept-tag">资本主义</span><span class="concept-tag">统一趋势</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>伦理</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>反脆弱：从不确定性中获益</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">切身利害</span><span class="concept-tag">非线性 / 凸性</span><span class="concept-tag">反脆弱</span><span class="concept-tag">否定法</span><span class="concept-tag">可选择性</span><span class="concept-tag">脆弱性</span><span class="concept-tag">杠铃策略</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>复杂系统</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>反脆弱：从不确定性中获益</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">切身利害</span><span class="concept-tag">非线性 / 凸性</span><span class="concept-tag">反脆弱</span><span class="concept-tag">否定法</span><span class="concept-tag">可选择性</span><span class="concept-tag">脆弱性</span><span class="concept-tag">杠铃策略</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>非线性</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>反脆弱：从不确定性中获益</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">切身利害</span><span class="concept-tag">非线性 / 凸性</span><span class="concept-tag">反脆弱</span><span class="concept-tag">否定法</span><span class="concept-tag">可选择性</span><span class="concept-tag">脆弱性</span><span class="concept-tag">杠铃策略</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>自我控制</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>怪诞行为学（套装全5册）</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 预期效应与安慰机制</span><span class="concept-tag">8. 付款之痛</span><span class="concept-tag">1. 可预测的非理性</span><span class="concept-tag">3. 免费的吸引力</span><span class="concept-tag">4. 社会规范与市场规范</span><span class="concept-tag">5. 自我控制与预先承诺</span><span class="concept-tag">2. 锚定与任意一致</span><span class="concept-tag">6. 所有权偏误</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>实验研究</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>怪诞行为学（套装全5册）</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 预期效应与安慰机制</span><span class="concept-tag">8. 付款之痛</span><span class="concept-tag">1. 可预测的非理性</span><span class="concept-tag">3. 免费的吸引力</span><span class="concept-tag">4. 社会规范与市场规范</span><span class="concept-tag">5. 自我控制与预先承诺</span><span class="concept-tag">2. 锚定与任意一致</span><span class="concept-tag">6. 所有权偏误</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>决策偏差</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>怪诞行为学（套装全5册）</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 预期效应与安慰机制</span><span class="concept-tag">8. 付款之痛</span><span class="concept-tag">1. 可预测的非理性</span><span class="concept-tag">3. 免费的吸引力</span><span class="concept-tag">4. 社会规范与市场规范</span><span class="concept-tag">5. 自我控制与预先承诺</span><span class="concept-tag">2. 锚定与任意一致</span><span class="concept-tag">6. 所有权偏误</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>诚实与金钱</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>怪诞行为学（套装全5册）</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">7. 预期效应与安慰机制</span><span class="concept-tag">8. 付款之痛</span><span class="concept-tag">1. 可预测的非理性</span><span class="concept-tag">3. 免费的吸引力</span><span class="concept-tag">4. 社会规范与市场规范</span><span class="concept-tag">5. 自我控制与预先承诺</span><span class="concept-tag">2. 锚定与任意一致</span><span class="concept-tag">6. 所有权偏误</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>经验与觉悟</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《悉达多》深度阅读分析报告</li></ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>存在主义</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《悉达多》深度阅读分析报告</li></ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>成长小说</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《悉达多》深度阅读分析报告</li></ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>精神修行</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《悉达多》深度阅读分析报告</li></ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>东方哲思</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《悉达多》深度阅读分析报告</li></ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>复杂性</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>模型思维</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">REDCAPE（模型的7大用途）</span><span class="concept-tag">复杂性</span><span class="concept-tag">所有模型都错</span><span class="concept-tag">一对多</span><span class="concept-tag">智慧层次结构</span><span class="concept-tag">多模型思维</span><span class="concept-tag">理性行为者 / 基于规则的行为者</span><span class="concept-tag">分类模型</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>社会科学</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>模型思维</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">REDCAPE（模型的7大用途）</span><span class="concept-tag">复杂性</span><span class="concept-tag">所有模型都错</span><span class="concept-tag">一对多</span><span class="concept-tag">智慧层次结构</span><span class="concept-tag">多模型思维</span><span class="concept-tag">理性行为者 / 基于规则的行为者</span><span class="concept-tag">分类模型</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>决策</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>模型思维</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">REDCAPE（模型的7大用途）</span><span class="concept-tag">复杂性</span><span class="concept-tag">所有模型都错</span><span class="concept-tag">一对多</span><span class="concept-tag">智慧层次结构</span><span class="concept-tag">多模型思维</span><span class="concept-tag">理性行为者 / 基于规则的行为者</span><span class="concept-tag">分类模型</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>认知工具箱</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>模型思维</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">REDCAPE（模型的7大用途）</span><span class="concept-tag">复杂性</span><span class="concept-tag">所有模型都错</span><span class="concept-tag">一对多</span><span class="concept-tag">智慧层次结构</span><span class="concept-tag">多模型思维</span><span class="concept-tag">理性行为者 / 基于规则的行为者</span><span class="concept-tag">分类模型</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>多模型</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>模型思维</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">REDCAPE（模型的7大用途）</span><span class="concept-tag">复杂性</span><span class="concept-tag">所有模型都错</span><span class="concept-tag">一对多</span><span class="concept-tag">智慧层次结构</span><span class="concept-tag">多模型思维</span><span class="concept-tag">理性行为者 / 基于规则的行为者</span><span class="concept-tag">分类模型</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>3 它可以和哪些现实议题形成对照？</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>灰犀牛：如何应对大概率危机</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">6. 五阶段</span><span class="concept-tag">5. 预测</span><span class="concept-tag">1. 灰犀牛</span><span class="concept-tag">7. 机遇</span><span class="concept-tag">2. 否认</span><span class="concept-tag">4. 群体思维</span><span class="concept-tag">3. 得过且过</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>组织决策</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>灰犀牛：如何应对大概率危机</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">6. 五阶段</span><span class="concept-tag">5. 预测</span><span class="concept-tag">1. 灰犀牛</span><span class="concept-tag">7. 机遇</span><span class="concept-tag">2. 否认</span><span class="concept-tag">4. 群体思维</span><span class="concept-tag">3. 得过且过</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>危机管理</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>灰犀牛：如何应对大概率危机</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">6. 五阶段</span><span class="concept-tag">5. 预测</span><span class="concept-tag">1. 灰犀牛</span><span class="concept-tag">7. 机遇</span><span class="concept-tag">2. 否认</span><span class="concept-tag">4. 群体思维</span><span class="concept-tag">3. 得过且过</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>公共治理</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>灰犀牛：如何应对大概率危机</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">6. 五阶段</span><span class="concept-tag">5. 预测</span><span class="concept-tag">1. 灰犀牛</span><span class="concept-tag">7. 机遇</span><span class="concept-tag">2. 否认</span><span class="concept-tag">4. 群体思维</span><span class="concept-tag">3. 得过且过</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>战略判断</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>灰犀牛：如何应对大概率危机</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">6. 五阶段</span><span class="concept-tag">5. 预测</span><span class="concept-tag">1. 灰犀牛</span><span class="concept-tag">7. 机遇</span><span class="concept-tag">2. 否认</span><span class="concept-tag">4. 群体思维</span><span class="concept-tag">3. 得过且过</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>3 与现实议题形成哪些对照？</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>第一性原理</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">第一创新</span><span class="concept-tag">第一性原理</span><span class="concept-tag">从众效应</span><span class="concept-tag">公理化思维</span><span class="concept-tag">归纳法</span><span class="concept-tag">批判性思维</span><span class="concept-tag">破界创新</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>彼得·德鲁克</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《组织的活法》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">概念五：使命、愿景、价值观（上三路）</span><span class="concept-tag">概念一：长期主义</span><span class="concept-tag">概念三：业务是生产力，组织是生产关系</span><span class="concept-tag">概念七：心理距离与信任</span><span class="concept-tag">概念二：组织是无机与有机的结合体</span><span class="concept-tag">概念六：团伙—团队—组织</span><span class="concept-tag">概念四：组织建设是一号位的战略性责任</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>亨利·明茨伯格</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《组织的活法》</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">概念五：使命、愿景、价值观（上三路）</span><span class="concept-tag">概念一：长期主义</span><span class="concept-tag">概念三：业务是生产力，组织是生产关系</span><span class="concept-tag">概念七：心理距离与信任</span><span class="concept-tag">概念二：组织是无机与有机的结合体</span><span class="concept-tag">概念六：团伙—团队—组织</span><span class="concept-tag">概念四：组织建设是一号位的战略性责任</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>1 与现实议题的连接意义</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《见识》深度分析报告</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">伪工作</span><span class="concept-tag">见识</span><span class="concept-tag">收益函数</span><span class="concept-tag">长期主义 / 复利</span><span class="concept-tag">商业本质</span><span class="concept-tag">命与运</span><span class="concept-tag">N+1创新</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>决策心理学</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《黑天鹅效应》深度阅读分析报告</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">韧性</span><span class="concept-tag">不确定性</span><span class="concept-tag">黑天鹅</span><span class="concept-tag">预测幻觉</span><span class="concept-tag">复杂系统</span><span class="concept-tag">认识论谦逊</span><span class="concept-tag">叙事偏差</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>现代社会治理</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《黑天鹅效应》深度阅读分析报告</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">韧性</span><span class="concept-tag">不确定性</span><span class="concept-tag">黑天鹅</span><span class="concept-tag">预测幻觉</span><span class="concept-tag">复杂系统</span><span class="concept-tag">认识论谦逊</span><span class="concept-tag">叙事偏差</span></div></div>
+            </div>
+        </div>
+        <div class="theme-card">
+            <div class="theme-header" style="border-left: 4px solid #5a7a3a">
+                <h3>预测偏差</h3>
+                <span class="badge">1 本书</span>
+            </div>
+            <div class="theme-body">
+                <div class="section">
+                    <h4>📚 相关书籍</h4>
+                    <ul class="book-list"><li>《黑天鹅效应》深度阅读分析报告</li></ul>
+                </div>
+                <div class="section"><h4>🔑 关联概念</h4><div class="concepts"><span class="concept-tag">韧性</span><span class="concept-tag">不确定性</span><span class="concept-tag">黑天鹅</span><span class="concept-tag">预测幻觉</span><span class="concept-tag">复杂系统</span><span class="concept-tag">认识论谦逊</span><span class="concept-tag">叙事偏差</span></div></div>
+            </div>
+        </div>
+  </div>
+</div>
+
+<div class="footer">
+  生成于 2026-04-20 16:12 · Book Intelligence System
+</div>
+
+<script>
+  const grid = document.getElementById('themes-grid');
+  const searchInput = document.getElementById('search');
+  const allCards = Array.from(grid.querySelectorAll('.theme-card'));
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    let visible = 0;
+
+    allCards.forEach(card => {
+      if (!q) {
+        card.style.display = '';
+        visible++;
+        return;
+      }
+
+      const text = card.textContent.toLowerCase();
+      const match = text.includes(q);
+
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+  });
+</script>
+</body>
+</html>

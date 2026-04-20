@@ -1,0 +1,30 @@
+# ============================================================
+# AI 读书工作流 - 全局配置
+# ============================================================
+
+model:
+  # 可选: claude-opus-4-5 / claude-sonnet-4-5 / claude-haiku-3-5
+  chunk_analysis: "claude-opus-4-5"   # 章节逐块分析（高质量）
+  book_synthesis: "claude-opus-4-5"   # 全书综合分析（高质量）
+  fast_mode: "claude-haiku-3-5"       # 快速/低成本模式
+
+chunker:
+  max_tokens_per_chunk: 6000          # 单块最大 token 数
+  overlap_tokens: 500                 # 滑动窗口重叠 token 数
+  min_tokens_per_chunk: 300           # 低于此值与相邻块合并
+
+output:
+  dir: "output"                       # 报告输出目录
+  language: "zh"                      # 输出语言（zh / en）
+
+cache:
+  dir: "cache"                        # 断点续跑缓存目录
+  enabled: true
+
+retry:
+  max_attempts: 3
+  wait_min_seconds: 1
+  wait_max_seconds: 30
+
+concurrency:
+  max_concurrent_chunks: 3            # 并发分析 chunk 数（避免触发限速）
