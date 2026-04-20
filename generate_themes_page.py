@@ -1,7 +1,7 @@
 """
 generate_themes_page.py
 ────────────────────────────────────────────────
-生成主题浏览页面 themes.html
+生成主题浏览页面 themes.html（左侧索引 + 右侧详情）
 从 themes_index.json 读取数据，生成交互式主题浏览界面
 """
 
@@ -28,43 +28,25 @@ def generate_themes_page(output_dir: str = 'output') -> Path:
     # 按频率排序
     sorted_themes = sorted(themes.items(), key=lambda x: x[1]['frequency'], reverse=True)
 
-    # 生成主题卡片
-    cards_html = []
-    for theme_name, data in sorted_themes:
-        books = data['books']
-        concepts = data['concepts']
+    # 生成侧边栏索引
+    sidebar_items = []
+    for i, (theme_name, data) in enumerate(sorted_themes):
         freq = data['frequency']
-
-        # 颜色根据频率
-        if freq >= 3:
-            color = '#c26a18'
-        elif freq == 2:
-            color = '#2d6a8a'
-        else:
-            color = '#5a7a3a'
-
-        books_html = ''.join([f'<li>{book}</li>' for book in books[:5]])
-        if len(books) > 5:
-            books_html += f'<li class="more">+ {len(books) - 5} 本</li>'
-
-        concepts_html = ''.join([f'<span class="concept-tag">{c}</span>' for c in concepts[:8]])
-        if len(concepts) > 8:
-            concepts_html += f'<span class="concept-tag more">+{len(concepts) - 8}</span>'
-
-        cards_html.append(f'''
-        <div class="theme-card">
-            <div class="theme-header" style="border-left: 4px solid {color}">
-                <h3>{theme_name}</h3>
-                <span class="badge">{freq} 本书</span>
-            </div>
-            <div class="theme-body">
-                <div class="section">
-                    <h4>📚 相关书籍</h4>
-                    <ul class="book-list">{books_html}</ul>
-                </div>
-                {f'<div class="section"><h4>🔑 关联概念</h4><div class="concepts">{concepts_html}</div></div>' if concepts else ''}
-            </div>
+        sidebar_items.append(f'''
+        <div class="sidebar-item" data-theme-id="theme-{i}">
+            <span class="theme-name">{theme_name}</span>
+            <span class="theme-count">{freq}</span>
         </div>''')
+
+    # 生成详情卡片（JSON数据，由JS渲染）
+    themes_data = {}
+    for i, (theme_name, data) in enumerate(sorted_themes):
+        themes_data[f'theme-{i}'] = {
+            'name': theme_name,
+            'books': data['books'],
+            'concepts': data['concepts'],
+            'frequency': data['frequency']
+        }
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
 
@@ -94,27 +76,29 @@ def generate_themes_page(output_dir: str = 'output') -> Path:
     background: var(--bg);
     color: var(--ink);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }}
 
   .header {{
     background: var(--ink);
     color: #fff;
-    padding: 40px 24px;
+    padding: 32px 24px;
     text-align: center;
   }}
   .header h1 {{
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 8px;
   }}
   .header p {{
     color: #aaa;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }}
   .nav {{
     display: flex;
     justify-content: center;
     gap: 16px;
-    margin-top: 20px;
+    margin-top: 16px;
   }}
   .nav a {{
     color: #fff;
@@ -123,141 +107,158 @@ def generate_themes_page(output_dir: str = 'output') -> Path:
     border-radius: 20px;
     background: rgba(255,255,255,.1);
     transition: background .2s;
+    font-size: 0.9rem;
   }}
   .nav a:hover {{ background: rgba(255,255,255,.2); }}
   .nav a.active {{ background: var(--accent); }}
 
-  .main {{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 24px 80px;
-  }}
-
-  .search-bar {{
-    max-width: 600px;
-    margin: 0 auto 32px;
-    position: relative;
-  }}
-  .search-bar input {{
+  .container {{
+    flex: 1;
+    display: flex;
+    max-width: 1400px;
     width: 100%;
-    padding: 14px 20px 14px 44px;
-    border-radius: 40px;
-    border: 1px solid var(--border);
-    font-size: 0.95rem;
-    outline: none;
-    background: var(--paper);
-  }}
-  .search-icon {{
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #bbb;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
   }}
 
-  .themes-grid {{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-  }}
-
-  .theme-card {{
+  /* 左侧索引栏 */
+  .sidebar {{
+    width: 280px;
     background: var(--paper);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    overflow: hidden;
-    transition: box-shadow .2s, transform .2s;
+    padding: 20px 0;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    position: sticky;
+    top: 24px;
   }}
-  .theme-card:hover {{
-    box-shadow: 0 6px 24px rgba(0,0,0,.14);
-    transform: translateY(-2px);
+  .sidebar-header {{
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
   }}
-
-  .theme-header {{
-    padding: 16px 20px;
+  .sidebar-header h3 {{
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }}
+  .sidebar-item {{
+    padding: 12px 20px;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border);
+    transition: background .2s;
   }}
-  .theme-header h3 {{
-    font-size: 1.1rem;
-    font-weight: 700;
-  }}
-  .badge {{
-    font-size: 12px;
-    padding: 4px 10px;
+  .sidebar-item:hover {{
     background: var(--accent-soft);
+  }}
+  .sidebar-item.active {{
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+  }}
+  .theme-name {{
+    font-size: 0.9rem;
+    color: var(--ink);
+  }}
+  .theme-count {{
+    font-size: 0.8rem;
     color: var(--accent);
-    border-radius: 12px;
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 10px;
     font-weight: 600;
   }}
 
-  .theme-body {{
-    padding: 20px;
+  /* 右侧详情区 */
+  .content {{
+    flex: 1;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    min-height: 400px;
   }}
-  .section {{
-    margin-bottom: 16px;
+  .content-empty {{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--ink-light);
+    font-size: 0.95rem;
   }}
-  .section:last-child {{
-    margin-bottom: 0;
+  .detail-header {{
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
   }}
-  .section h4 {{
+  .detail-title {{
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }}
+  .detail-meta {{
     font-size: 0.85rem;
     color: var(--ink-light);
-    margin-bottom: 10px;
-    font-weight: 600;
   }}
-
+  .detail-section {{
+    margin-bottom: 28px;
+  }}
+  .detail-section h4 {{
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }}
   .book-list {{
     list-style: none;
-    font-size: 0.9rem;
-    line-height: 1.8;
   }}
   .book-list li {{
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
     color: var(--ink);
-    padding-left: 12px;
-    position: relative;
   }}
-  .book-list li::before {{
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--accent);
+  .book-list li:last-child {{
+    border-bottom: none;
   }}
-  .book-list li.more {{
-    color: var(--ink-light);
-    font-size: 0.85rem;
-  }}
-
-  .concepts {{
+  .concepts-tags {{
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
   }}
   .concept-tag {{
-    font-size: 11px;
-    padding: 4px 10px;
+    font-size: 0.85rem;
+    padding: 6px 14px;
     background: #f0ece6;
     color: var(--ink);
-    border-radius: 12px;
+    border-radius: 16px;
+    transition: all .2s;
   }}
-  .concept-tag.more {{
+  .concept-tag:hover {{
     background: var(--accent-soft);
     color: var(--accent);
-    font-weight: 600;
   }}
 
   .footer {{
     text-align: center;
-    padding: 32px;
+    padding: 24px;
     font-size: 12px;
     color: #bbb;
-    border-top: 1px solid var(--border);
   }}
 
-  @media (max-width: 640px) {{
-    .themes-grid {{ grid-template-columns: 1fr; }}
+  @media (max-width: 768px) {{
+    .container {{
+      flex-direction: column;
+    }}
+    .sidebar {{
+      width: 100%;
+      position: static;
+      max-height: 300px;
+    }}
   }}
 </style>
 </head>
@@ -274,14 +275,16 @@ def generate_themes_page(output_dir: str = 'output') -> Path:
   </div>
 </div>
 
-<div class="main">
-  <div class="search-bar">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="search" placeholder="搜索主题..." autocomplete="off">
+<div class="container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>主题列表</h3>
+    </div>
+    {''.join(sidebar_items)}
   </div>
 
-  <div class="themes-grid" id="themes-grid">
-    {''.join(cards_html)}
+  <div class="content">
+    <div class="content-empty">← 点击左侧主题查看详情</div>
   </div>
 </div>
 
@@ -290,28 +293,48 @@ def generate_themes_page(output_dir: str = 'output') -> Path:
 </div>
 
 <script>
-  const grid = document.getElementById('themes-grid');
-  const searchInput = document.getElementById('search');
-  const allCards = Array.from(grid.querySelectorAll('.theme-card'));
+const themesData = {json.dumps(themes_data, ensure_ascii=False)};
 
-  searchInput.addEventListener('input', () => {{
-    const q = searchInput.value.trim().toLowerCase();
-    let visible = 0;
+const sidebar = document.querySelector('.sidebar');
+const content = document.querySelector('.content');
+const sidebarItems = document.querySelectorAll('.sidebar-item');
 
-    allCards.forEach(card => {{
-      if (!q) {{
-        card.style.display = '';
-        visible++;
-        return;
-      }}
+sidebarItems.forEach(item => {{
+  item.addEventListener('click', () => {{
+    const themeId = item.dataset.themeId;
+    const theme = themesData[themeId];
 
-      const text = card.textContent.toLowerCase();
-      const match = text.includes(q);
+    // 更新激活状态
+    sidebarItems.forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
 
-      card.style.display = match ? '' : 'none';
-      if (match) visible++;
-    }});
+    // 渲染详情
+    const booksHtml = theme.books.map(book => `<li>${{book}}</li>`).join('');
+    const conceptsHtml = theme.concepts.length > 0
+      ? theme.concepts.map(c => `<span class="concept-tag">${{c}}</span>`).join('')
+      : '<span style="color: #999; font-size: 0.9rem;">暂无关联概念</span>';
+
+    content.innerHTML = `
+      <div class="detail-header">
+        <div class="detail-title">${{theme.name}}</div>
+        <div class="detail-meta">出现于 ${{theme.frequency}} 本书</div>
+      </div>
+      <div class="detail-section">
+        <h4>📚 相关书籍</h4>
+        <ul class="book-list">${{booksHtml}}</ul>
+      </div>
+      <div class="detail-section">
+        <h4>🔑 关联概念</h4>
+        <div class="concepts-tags">${{conceptsHtml}}</div>
+      </div>
+    `;
   }});
+}});
+
+// 默认选中第一个
+if (sidebarItems.length > 0) {{
+  sidebarItems[0].click();
+}}
 </script>
 </body>
 </html>'''

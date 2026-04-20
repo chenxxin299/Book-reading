@@ -42,6 +42,9 @@ def extract_index_from_html(html_path: Path) -> dict:
         title_elem = box.find('div', class_='concept-title')
         if title_elem:
             concept_name = title_elem.text.strip()
+            # 去除编号（如 "1. 概念" → "概念"）
+            concept_name = re.sub(r'^\d+\.?\s*', '', concept_name)
+
             # 提取概念描述（ul/li 或 p）
             desc_parts = []
             for li in box.find_all('li'):
@@ -55,22 +58,18 @@ def extract_index_from_html(html_path: Path) -> dict:
                 'importance': 'high' if len(desc_parts) > 3 else 'medium'
             })
 
-    # 提取主题（从"认知拓展"板块 + 标签）
+    # 提取主题（仅从标签提取，过滤掉问题式标题）
     themes = set()
     # 从 tag 提取
     for tag in soup.find_all('span', class_='tag'):
-        themes.add(tag.text.strip())
-
-    # 从认知拓展板块提取（section 7）
-    sec7 = soup.find('section', id='sec7')
-    if sec7:
-        # 简单启发式：提取 h3/h4 标题作为主题
-        for heading in sec7.find_all(['h3', 'h4']):
-            text = heading.text.strip()
-            # 过滤掉数字编号
-            text = re.sub(r'^\d+\.?\s*', '', text)
-            if len(text) > 2 and len(text) < 20:
-                themes.add(text)
+        theme_text = tag.text.strip()
+        # 过滤掉问题式文本（包含"？"或以数字开头的长文本）
+        if '？' not in theme_text and '?' not in theme_text:
+            # 去除数字编号
+            theme_text = re.sub(r'^\d+\.?\s*', '', theme_text)
+            # 只保留简短的主题词（长度 2-15 字符）
+            if 2 <= len(theme_text) <= 15:
+                themes.add(theme_text)
 
     # 提取核心观点（从 card-accent）
     viewpoints = []

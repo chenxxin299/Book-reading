@@ -1,16 +1,28 @@
 {
   "nodes": [
     {
-      "id": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "name": "《非暴力沟通（修订版）》",
+      "id": "concepts",
+      "name": "🔑 概念索引",
       "type": "book",
-      "size": 12
+      "size": 0
+    },
+    {
+      "id": "graph",
+      "name": "🕸️ 知识图谱",
+      "type": "book",
+      "size": 0
     },
     {
       "id": "si_kao_，_kuai_yu_man",
       "name": "《思考，快与慢》",
       "type": "book",
-      "size": 14
+      "size": 12
+    },
+    {
+      "id": "themes",
+      "name": "📑 主题浏览",
+      "type": "book",
+      "size": 0
     },
     {
       "id": "事实",
@@ -100,7 +112,7 @@
       "id": "灰犀牛：如何应对大概率危机",
       "name": "灰犀牛：如何应对大概率危机",
       "type": "book",
-      "size": 15
+      "size": 12
     },
     {
       "id": "积极情绪的力量",
@@ -112,7 +124,7 @@
       "id": "第一性原理 - 李善友",
       "name": "第一性原理",
       "type": "book",
-      "size": 10
+      "size": 7
     },
     {
       "id": "系统之美：决策者的系统思考 = Thinking in Systems a Primer ([美] 唐內拉‧梅多斯 (D",
@@ -124,13 +136,13 @@
       "id": "组织的活法 (邓康明)",
       "name": "《组织的活法》",
       "type": "book",
-      "size": 11
+      "size": 9
     },
     {
       "id": "见识_吴军【公众号：LJ读书】",
       "name": "《见识》深度分析报告",
       "type": "book",
-      "size": 8
+      "size": 7
     },
     {
       "id": "超级智能",
@@ -157,38 +169,14 @@
       "size": 12
     },
     {
-      "id": "concept_2. 疏离生命的语言",
-      "name": "2. 疏离生命的语言",
+      "id": "concept_前景理论",
+      "name": "前景理论",
       "type": "concept",
       "size": 20
     },
     {
-      "id": "concept_3. 观察",
-      "name": "3. 观察",
-      "type": "concept",
-      "size": 20
-    },
-    {
-      "id": "concept_4. 感受",
-      "name": "4. 感受",
-      "type": "concept",
-      "size": 20
-    },
-    {
-      "id": "concept_5. 需要",
-      "name": "5. 需要",
-      "type": "concept",
-      "size": 20
-    },
-    {
-      "id": "concept_6. 请求",
-      "name": "6. 请求",
-      "type": "concept",
-      "size": 20
-    },
-    {
-      "id": "concept_7. 同理心",
-      "name": "7. 同理心",
+      "id": "concept_损失厌恶",
+      "name": "损失厌恶",
       "type": "concept",
       "size": 20
     },
@@ -197,56 +185,30 @@
       "name": "批判性思维",
       "type": "concept",
       "size": 20
+    },
+    {
+      "id": "concept_韧性",
+      "name": "韧性",
+      "type": "concept",
+      "size": 20
     }
   ],
   "links": [
     {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_2. 疏离生命的语言"
+      "source": "si_kao_，_kuai_yu_man",
+      "target": "concept_前景理论"
     },
     {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_2. 疏离生命的语言"
+      "source": "si_kao_，_kuai_yu_man",
+      "target": "concept_前景理论"
     },
     {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_3. 观察"
+      "source": "si_kao_，_kuai_yu_man",
+      "target": "concept_损失厌恶"
     },
     {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_3. 观察"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_4. 感受"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_4. 感受"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_5. 需要"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_5. 需要"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_6. 请求"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_6. 请求"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_7. 同理心"
-    },
-    {
-      "source": "fei_bao_li_gou_tong_(_xiu_ding_ban_)",
-      "target": "concept_7. 同理心"
+      "source": "si_kao_，_kuai_yu_man",
+      "target": "concept_损失厌恶"
     },
     {
       "source": "学会提问",
@@ -255,6 +217,14 @@
     {
       "source": "第一性原理 - 李善友",
       "target": "concept_批判性思维"
+    },
+    {
+      "source": "积极情绪的力量",
+      "target": "concept_韧性"
+    },
+    {
+      "source": "黑天鹅效应 丹.加德纳",
+      "target": "concept_韧性"
     }
   ]
 }
