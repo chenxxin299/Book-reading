@@ -36,9 +36,10 @@ def extract_index_from_html(html_path: Path) -> dict:
     book_title = soup.find('h1')
     book_title = book_title.text.strip() if book_title else html_path.stem
 
-    # 提取核心概念（从 concept-box）
+    # 提取核心概念（仅前3个最重要的）
     concepts = []
-    for box in soup.find_all('div', class_='concept-box'):
+    concept_boxes = soup.find_all('div', class_='concept-box')[:3]  # 只取前3个
+    for box in concept_boxes:
         title_elem = box.find('div', class_='concept-title')
         if title_elem:
             concept_name = title_elem.text.strip()
@@ -54,22 +55,51 @@ def extract_index_from_html(html_path: Path) -> dict:
 
             concepts.append({
                 'name': concept_name,
-                'description': ' '.join(desc_parts[:2]) if desc_parts else '',  # 取前两点
-                'importance': 'high' if len(desc_parts) > 3 else 'medium'
+                'description': ' '.join(desc_parts[:2]) if desc_parts else '',
+                'importance': 'high'
             })
 
-    # 提取主题（仅从标签提取，过滤掉问题式标题）
+    # 智能主题分类（基于书名和内容关键词）
     themes = set()
-    # 从 tag 提取
-    for tag in soup.find_all('span', class_='tag'):
-        theme_text = tag.text.strip()
-        # 过滤掉问题式文本（包含"？"或以数字开头的长文本）
-        if '？' not in theme_text and '?' not in theme_text:
-            # 去除数字编号
-            theme_text = re.sub(r'^\d+\.?\s*', '', theme_text)
-            # 只保留简短的主题词（长度 2-15 字符）
-            if 2 <= len(theme_text) <= 15:
-                themes.add(theme_text)
+    full_text = soup.get_text().lower()
+
+    # 主题关键词映射
+    theme_keywords = {
+        '认知科学': ['认知', '思维', '判断', '决策', '理性', '系统1', '系统2', '启发法', '偏差'],
+        '心理学': ['心理', '行为', '情绪', '感受', '动机', '人格', '社会心理'],
+        '沟通与人际': ['沟通', '对话', '倾听', '表达', '冲突', '关系', '同理心'],
+        '管理与战略': ['管理', '组织', '领导', '战略', '团队', '执行', '变革'],
+        '哲学与人生': ['哲学', '人生', '智慧', '修养', '自我', '意义', '价值观', '沉思'],
+        '科技与未来': ['人工智能', 'ai', '技术', '算法', '机器学习', '未来', '科技'],
+        '历史与社会': ['历史', '社会', '文明', '演化', '发展', '全球'],
+        '风险与不确定性': ['风险', '不确定', '黑天鹅', '灰犀牛', '反脆弱', '危机'],
+        '经济与商业': ['经济', '商业', '市场', '投资', '金融', '创业'],
+    }
+
+    # 根据关键词匹配主题
+    for theme, keywords in theme_keywords.items():
+        match_count = sum(1 for kw in keywords if kw in full_text)
+        # 如果匹配到3个以上关键词，认为属于该主题
+        if match_count >= 3:
+            themes.add(theme)
+
+    # 如果没有匹配到任何主题，尝试从书名推断
+    if not themes:
+        title_lower = book_title.lower()
+        if any(kw in title_lower for kw in ['思考', '认知', '判断']):
+            themes.add('认知科学')
+        elif any(kw in title_lower for kw in ['心理', '行为', '情绪']):
+            themes.add('心理学')
+        elif any(kw in title_lower for kw in ['沟通', '对话']):
+            themes.add('沟通与人际')
+        elif any(kw in title_lower for kw in ['管理', '组织', '领导']):
+            themes.add('管理与战略')
+        elif any(kw in title_lower for kw in ['哲学', '人生', '智慧']):
+            themes.add('哲学与人生')
+        elif any(kw in title_lower for kw in ['智能', 'ai', '技术']):
+            themes.add('科技与未来')
+        elif any(kw in title_lower for kw in ['历史', '社会']):
+            themes.add('历史与社会')
 
     # 提取核心观点（从 card-accent）
     viewpoints = []
@@ -77,14 +107,13 @@ def extract_index_from_html(html_path: Path) -> dict:
         h3 = card.find('h3')
         if h3:
             viewpoint_title = h3.text.strip()
-            # 提取观点内容
             points = []
             for li in card.find_all('li'):
                 points.append(li.text.strip())
 
             viewpoints.append({
                 'title': viewpoint_title,
-                'points': points[:3]  # 取前3点
+                'points': points[:3]
             })
 
     # 提取金句（从 quote）
