@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>《黑天鹅效应》深度阅读分析报告</title>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16"></script>
+<style>
+/* ═══════════════════════════════════════════
+   BOOK ANALYST — Enhanced Report Styles v4
+   ═══════════════════════════════════════════ */
+
+:root {
+  --bg: #f4f1ec;
+  --paper: #ffffff;
+  --ink: #1a1f27;
+  --ink2: #5a6272;
+  --accent: #b85c10;
+  --accent-soft: #fdf3ea;   /* 全底色用：暖橙奶白 */
+  --accent-border: #e5b98a;
+  --blue-soft: #f0f5fb;     /* 全底色用：冷蓝奶白 */
+  --blue-border: #b0c8e4;
+  --yellow-soft: #fefce8;   /* 全底色用：淡黄 */
+  --yellow-border: #e5d070;
+  --line: #e6e0d8;
+  --radius: 10px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.05);
+  --shadow-md: 0 3px 12px rgba(0,0,0,.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 13px; line-height: 1.75;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ── 侧边栏 ── */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+  background: #ece8e0; border-right: 1px solid var(--line);
+  padding: 16px 10px 24px; overflow-y: auto; z-index: 100;
+}
+.brand {
+  font-size: 11.5px; line-height: 1.5;
+  padding: 8px 10px 10px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--line); color: #374151;
+}
+.brand .book-title { font-weight: 700; display: block; margin-bottom: 2px; }
+.brand .book-author { color: var(--ink2); font-size: 11px; display: block; }
+.toc a {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 10px; margin: 2px 0; border-radius: 7px;
+  font-size: 11.5px; color: #374151; line-height: 1.4; transition: background .15s;
+}
+.toc a:hover { background: #ddd8cf; }
+.toc a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.toc-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--line); font-size: 10px; font-weight: 700;
+  flex-shrink: 0; color: var(--ink2);
+}
+.toc a.active .toc-num { background: var(--accent); color: #fff; }
+
+/* ── 主内容区 ── */
+.main { margin-left: 240px; padding: 24px 28px 80px; }
+.container { max-width: 920px; margin: 0 auto; }
+
+/* ── Hero ── */
+.hero {
+  background: var(--paper);
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px 28px 18px; box-shadow: var(--shadow-md);
+  margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent);
+}
+.hero h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; line-height: 1.3; }
+.hero .meta { color: var(--ink2); font-size: .85rem; margin-bottom: 12px; }
+.hero .subtitle {
+  border-left: 3px solid var(--accent-border);
+  padding: 8px 12px; font-size: .88rem; line-height: 1.6; color: var(--ink2);
+}
+
+/* ── section-card ── */
+.section-card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 14px; box-shadow: var(--shadow-sm);
+  margin-bottom: 20px; overflow: hidden;
+}
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px; border-bottom: 1px solid var(--line);
+  background: #f8f5f0;
+}
+.section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.section-title { font-size: .95rem; font-weight: 800; color: var(--ink); }
+.section-body { padding: 18px 22px; }
+
+/* ── 标题层级 ── */
+h2 {
+  font-size: .97rem; font-weight: 800;
+  margin: 20px 0 10px;
+  padding: 7px 12px;
+  border-left: 3px solid var(--accent);
+  background: #f8f5f0;
+  border-radius: 0 6px 6px 0;
+}
+h3 {
+  font-size: .92rem; font-weight: 700;
+  margin: 16px 0 7px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+h4 { font-size: .87rem; font-weight: 600; margin: 10px 0 5px; color: var(--ink2); }
+p  { font-size: .875rem; margin: 7px 0; }
+ul, ol { padding-left: 20px; }
+li { font-size: .875rem; margin: 5px 0; line-height: 1.7; }
+
+/* strong → 仅加粗，不加颜色不加底纹 */
+strong, b { font-weight: 700; }
+mark { background: #fef9c3; color: var(--ink); padding: 1px 3px; border-radius: 3px; }
+
+/* ── 通用卡片 ── */
+.card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+/* 观点/章节模块：白底 + 左侧橙边框（结构性，不涂色） */
+.card-accent {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+
+/* ══════════════════════════════════════
+   颜色原则：有颜色 = 整个框都有底色，不搞半边
+   暖色系 = 橙系（重点/警示）
+   冷色系 = 蓝系（信息/参考）
+   黄色系 = 洞见/摘要
+   ══════════════════════════════════════ */
+
+/* callout：暖橙底 + 匹配边框（全框着色） */
+.callout {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+/* callout-yellow：淡黄底 */
+.callout-yellow {
+  background: var(--yellow-soft);
+  border: 1px solid var(--yellow-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+/* callout-blue：冷蓝底 */
+.callout-blue {
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+.callout-green {
+  background: #f0faf4; border: 1px solid #a7d9b8;
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+
+/* 概念框：暖橙底（全框着色） */
+.concept-box {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius);
+  padding: 12px 14px; margin: 10px 0;
+}
+.concept-box .concept-title {
+  font-size: .8rem; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: .05em;
+  margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 1px dashed var(--accent-border);
+}
+
+/* 张力对比框：两侧皆有底色，中间深色 VS 柱 */
+.tension-box {
+  display: grid; grid-template-columns: 1fr 36px 1fr;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; margin: 12px 0;
+}
+.tension-box .t-side { padding: 12px 14px; font-size: .855rem; line-height: 1.65; }
+.tension-box .t-side:first-child { background: var(--blue-soft); }
+.tension-box .t-side:last-child  { background: var(--accent-soft); }
+.tension-box .t-vs {
+  display: flex; align-items: center; justify-content: center;
+  background: #3a3a3a; color: #fff;
+  font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  writing-mode: vertical-lr;
+}
+.tension-box .t-label {
+  font-size: .75rem; font-weight: 700; margin-bottom: 5px;
+  color: var(--ink2); text-transform: uppercase; letter-spacing: .04em; display: block;
+}
+
+/* 参考框：冷蓝底（全框着色） */
+.ref-box {
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-border);
+  border-radius: var(--radius);
+  padding: 10px 12px; margin: 8px 0;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.ref-box .ref-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.ref-box .ref-content { flex: 1; }
+.ref-box .ref-title { font-weight: 700; font-size: .86rem; margin-bottom: 2px; }
+.ref-box .ref-desc  { font-size: .81rem; color: var(--ink2); }
+
+/* ── 金句 ── */
+.quote {
+  background: #fafaf8; border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 12px 16px 10px 30px;
+  margin: 8px 0; position: relative;
+}
+.quote::before {
+  content: '"'; position: absolute; top: 2px; left: 8px;
+  font-size: 2rem; color: var(--accent-border); line-height: 1;
+  font-family: Georgia, serif;
+}
+.quote .source { font-size: .76rem; color: var(--ink2); margin-top: 5px; }
+
+/* ── Final Takeaway：白底，整洁列表，不用黑色条块 ── */
+.take {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 20px; margin: 10px 0;
+}
+.take ol, .take ul { padding-left: 20px; }
+.take li {
+  font-size: .875rem; margin: 8px 0; padding-bottom: 8px;
+  border-bottom: 1px solid var(--line); line-height: 1.7;
+}
+.take li:last-child { border-bottom: none; padding-bottom: 0; }
+.take p { font-size: .875rem; margin: 7px 0; }
+.take strong, .take b { font-weight: 700; color: var(--accent); }
+
+/* ── 圆桌对话 ── */
+.roundtable-round {
+  background: #f8f7f4; border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+.round-title {
+  font-size: .76rem; font-weight: 700; color: var(--ink2);
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: 10px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.dialogue { display: flex; gap: 10px; margin: 10px 0; align-items: flex-start; }
+.dialogue-avatar {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+}
+.dialogue-bubble {
+  flex: 1; background: var(--paper); border: 1px solid var(--line);
+  border-radius: 10px; padding: 9px 13px;
+}
+.dialogue-name { font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+.dialogue-bubble p  { font-size: .86rem; }
+.dialogue-bubble ul { font-size: .86rem; }
+.dialogue-bubble li { margin: 3px 0; }
+.round-insight {
+  margin-top: 8px; padding: 9px 12px;
+  background: var(--yellow-soft); border: 1px solid var(--yellow-border);
+  border-radius: 6px; font-size: .82rem; color: var(--ink);
+}
+
+/* ── Grid ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ── 标签 ── */
+.tag {
+  display: inline-block; background: #f0ece5; color: var(--ink2);
+  border: 1px solid var(--line);
+  padding: 2px 8px; border-radius: 999px; font-size: 11px; margin: 2px 3px;
+}
+
+/* ── 表格 ── */
+table { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 10px 0; }
+th { background: #f2ede6; font-weight: 700; }
+th, td { border: 1px solid var(--line); padding: 7px 11px; text-align: left; }
+tr:nth-child(even) td { background: #faf8f4; }
+
+/* ── Markmap ── */
+.markmap {
+  width: 100% !important; height: 520px !important;
+  display: block; border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden; background: #fff;
+}
+.markmap svg { width: 100% !important; height: 100% !important; }
+
+/* ── 响应式 ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 16px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .tension-box { grid-template-columns: 1fr; }
+  .tension-box .t-vs { writing-mode: horizontal-tb; padding: 6px; }
+}
+</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="book-title">黑天鹅效应</span>
+      <span class="book-author">丹·加德纳</span>
+    </div>
+    <nav class="toc">
+      <a href="#sec1">1. 导读：先看懂这本书</a>
+      <a href="#sec2">2. 这本书在解决什么问题</a>
+      <a href="#sec3">3. 关键词 / 核心概念</a>
+      <a href="#sec4">4. 全书结构拆解</a>
+      <a href="#sec5">5. 核心观点分析</a>
+      <a href="#sec6">6. 深度圆桌讨论</a>
+      <a href="#sec7">7. 认知拓展</a>
+      <a href="#sec8">8. 对我的启发与追问</a>
+      <a href="#sec9">9. 全书金句</a>
+      <a href="#sec10">10. Final Takeaways</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="container">
+      <section class="hero">
+        <h1>《黑天鹅效应》深度阅读分析报告</h1>
+        <p>看似在谈预测失败，真正讨论的是：人类为何系统性误判风险、时间与未来。</p>
+        <div>
+          <span class="tag">风险认知</span>
+          <span class="tag">不确定性</span>
+          <span class="tag">预测偏差</span>
+          <span class="tag">决策心理学</span>
+          <span class="tag">现代社会治理</span>
+        </div>
+      </section>
+
+      <section id="sec1" class="section-card">
+        <div class="section-header">
+          <div class="section-num">01</div>
+          <div class="section-title">导读：先看懂这本书</div>
+        </div>
+        <div class="section-body">
+          <div class="callout-yellow">
+            这不是一本单纯讲“黑天鹅事件”的书，而是一本追问：为什么我们明知世界充满不确定，却仍然执迷于预测、迷信控制、低估突发风险的书。
+          </div>
+          <ul>
+            <li>这本书讨论的核心问题，不是“黑天鹅是什么”，而是人类为何一再误解未来，并在制度、政策、金融、战争、科技等领域为这种误解付出高昂代价。</li>
+            <li>全书的中心命题可以概括为：我们不是因为缺少信息才预测失败，而是因为认知结构、叙事习惯、专家制度与社会激励，共同塑造了系统性的误判。</li>
+            <li>用最直白的话说，这本书最有价值的内容是：它逼我们承认，很多重大失败不是“偶然倒霉”，而是源于对不确定性的错误理解，以及对可预测性的过度自信。</li>
+            <li>它不是一本神秘化灾难的书，也不是一本鼓吹“既然不可预测就什么都别做”的虚无主义读物。</li>
+            <li>它更像一本认知纠偏之书：提醒我们，面对未来，最重要的能力并不只是预测，而是构建更有韧性的判断、制度与行动方式。</li>
+          </ul>
+          <div class="callout">
+            如果只用一句话抓住全书：<strong>未来</strong>从来不是一条可精确推演的直线，而是被偶发冲击、复杂反馈和认知盲点反复改写的动态场域。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec2" class="section-card">
+        <div class="section-header">
+          <div class="section-num">02</div>
+          <div class="section-title">这本书在解决什么问题</div>
+        </div>
+        <div class="section-body">
+          <h3>2.1 作者真正想解决什么？</h3>
+          <ul>
+            <li>作者真正想解决的，不是技术层面的预测精度问题，而是人类与制度如何错误地理解不确定性这个根本困境。</li>
+            <li>他关注的是：为什么在信息更丰富、模型更复杂、专家更专业的时代，我们仍旧频繁遭遇“本不该如此”的重大失误。</li>
+            <li>这背后指向的不是单个专家不聪明，而是整个现代社会被一种“可预测、可控制、可规划”的心态所支配。</li>
+            <li>作者试图修正的，是一种深层文化幻觉：把未来当作统计延长线，而不是充满断裂、反馈和意外的开放系统。</li>
+          </ul>
+
+          <h3>2.2 为什么这个问题值得一本书反复讨论？</h3>
+          <ul>
+            <li>因为风险判断不是抽象学问，它直接决定金融泡沫、公共卫生准备、战争决策、基础设施、投资行为和个人职业选择。</li>
+            <li>当一个社会系统性高估预测能力时，错误就不会只停留在纸面上，而会转化为预算浪费、生命损失和制度脆弱性。</li>
+            <li>更关键的是，预测失败常常会在事后被“合理化”，于是社会并不会真正学习，只会用更新的模型包装旧的幻觉。</li>
+            <li>作者认为，如果不先纠正“我们如何理解未知”，就无法谈真正成熟的风险治理。</li>
+          </ul>
+
+          <h3>2.3 表面上像在解决什么，更深处其实在解决什么？</h3>
+          <ul>
+            <li>表面上看，这本书像是在讨论为什么专家预测不准、为什么黑天鹅事件不断出现、为什么人类总在灾难前失明。</li>
+            <li>更深处，它其实在解决一个认知哲学与制度设计问题：当世界本身具有复杂性和不可穷尽性时，人应该如何形成谦逊但有效的行动框架。</li>
+            <li>也就是说，作者不是反对思考未来，而是反对把“预测”误当成“理解”和“准备”。</li>
+            <li>他要建立的是一种从“控制幻想”转向“韧性构建”的思维方式。</li>
+          </ul>
+
+          <h3>2.4 作者所面对的现实症状是什么？这些症状如何表现？</h3>
+          <ul>
+            <li>现实症状之一是<strong>过度自信</strong>：专家、机构和公众普遍高估自己理解复杂局势的能力。</li>
+            <li>症状之二是<strong>叙事偏差</strong>：人们倾向于在事后把突发事件讲成逻辑清晰、原因明确的故事，从而掩盖真正的不确定性。</li>
+            <li>症状之三是<strong>常态依赖</strong>：习惯拿过去的稳定经验推断未来，以为极端事件是边缘异常，而不是系统结构的一部分。</li>
+            <li>症状之四是激励失灵：很多专家因“说得像样”而受奖赏，而不是因“承认边界”而受信任。</li>
+            <li>症状之五是制度性迟钝：很多组织在面对罕见但高冲击风险时，缺乏冗余、演练和替代方案。</li>
+          </ul>
+
+          <h3>2.5 作者真正反对的旧框架、旧习惯、旧语言是什么？</h3>
+          <ul>
+            <li>作者反对的是一种把未来理解为线性外推、把风险压缩成概率点估计、把复杂现实讲成单因果故事的旧框架。</li>
+            <li>他质疑“专家即可靠”的旧习惯，尤其批评那种以精确语气掩盖巨大不确定性的判断文化。</li>
+            <li>他也反对一种语言习惯：把“意外”说成“不可思议”，仿佛它不属于系统本身，而只是外来扰动。</li>
+            <li>在作者看来，这种语言会把真实问题遮蔽掉，让人继续用错误方式组织政策和行动。</li>
+          </ul>
+
+          <h3>2.6 作者建立的新框架是什么？</h3>
+          <ul>
+            <li>新框架的核心，不是追求永远正确的预测，而是承认<strong>不确定性</strong>、识别脆弱性、设计缓冲、维护选项和增强适应能力。</li>
+            <li>作者推动的，是一种“认识论谦逊 + 制度韧性”的框架：少一点预言家心态，多一点结构准备。</li>
+            <li>在这个框架中，真正成熟的判断不是“我知道会发生什么”，而是“我知道哪些地方我不知道，以及如何为未知留出空间”。</li>
+            <li>这使本书从单纯的风险警示，升级为一种面向未来的思维训练。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="sec3" class="section-card">
+        <div class="section-header">
+          <div class="section-num">03</div>
+          <div class="section-title">关键词 / 核心概念</div>
+        </div>
+        <div class="section-body">
+          <div class="concept-box">
+            <div class="concept-title"><strong>黑天鹅</strong></div>
+            <ul>
+              <li>在书中的含义：它不是泛指一切“出人意料”的事件，而是指那些低频、巨大冲击、事后常被叙事合理化的事件。作者借这一概念讨论的重点，不是列举灾难，而是揭示人类如何系统性低估结构性意外。</li>
+              <li>作者为何强调：因为黑天鹅暴露出传统预测框架的盲区。我们常把稳定视为默认，把异常当噪音，但很多决定历史走向的力量恰恰来自被排除在模型之外的极端事件。</li>
+              <li>它抓住的更深问题：人类认知习惯追求秩序、连续性和解释感，因此天然排斥那些无法被提前叙述的冲击。黑天鹅概念逼迫我们承认，现实的关键驱动因素常常不在经验平均值，而在尾部。</li>
+              <li>它如何帮助重新理解现实：面对金融市场、公共卫生、地缘政治、技术跃迁时，我们不能只问“最可能发生什么”，还要问“若低概率高冲击事件发生，系统能否承受”。</li>
+              <li>最值得追问的问题：如果黑天鹅本质上难以预测，那么我们能否通过识别脆弱结构来间接管理它，而不是继续痴迷精确预报？</li>
+              <li>可能被误用之处：一是把任何失败都事后称为黑天鹅，为失误免责；二是把黑天鹅神秘化，误以为既然不可测就无需准备；三是以“不可预测”为借口逃避责任与改进。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title"><strong>不确定性</strong></div>
+            <ul>
+              <li>在书中的含义：不确定性不只是“信息不够”，而是世界本身具有复杂互动、反馈回路、非线性变化与模型外变量，因此未来永远无法被彻底封闭在既有知识中。</li>
+              <li>作者为何强调：因为大多数人以为只要数据更多、模型更强，未来就能被驯服。作者强调不确定性，是为了拆除这种现代主义式控制幻觉。</li>
+              <li>它抓住的更深问题：我们习惯把未知理解为暂时空白，而作者提醒，很多未知是结构性的。也就是说，不是“现在不知道，将来总会知道”，而是“系统开放到足以不断制造新未知”。</li>
+              <li>它如何帮助重新理解现实：在组织决策中，真正重要的不是消灭不确定性，而是区分哪些风险可量化、哪些只能通过冗余、弹性、预案和分散暴露来应对。</li>
+              <li>最值得追问的问题：承认不确定性后，如何避免滑向相对主义和瘫痪？如何在“不知道”与“仍要行动”之间建立可操作的纪律？</li>
+              <li>可能被误用之处：一是将不确定性当作不作为借口；二是把一切都说成无法判断，从而放弃证据、比较和概率推断；三是用模糊语言掩盖本可改进的分析工作。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title"><strong>预测幻觉</strong></div>
+            <ul>
+              <li>在书中的含义：所谓预测幻觉，是指人们高估自己预见未来的能力，尤其在面对复杂系统时，误把清晰叙述、专家身份、技术模型和历史数据当作可靠控制力的证明。</li>
+              <li>作者为何强调：因为现代社会对预测有强需求。政府要预算，企业要规划，媒体要结论，公众要确定感。于是“说得像能预测”往往比“诚实承认边界”更容易获得认可。</li>
+              <li>它抓住的更深问题：预测幻觉不是个人缺点，而是认知偏差、制度激励和传播逻辑共同塑造的结果。我们奖励断言，惩罚犹豫；奖励故事，忽视区间；奖励自信，冷落谦逊。</li>
+              <li>它如何帮助重新理解现实：很多“专家失灵”并不是因为个人无能，而是因为其所处环境要求他们给出远超知识边界的判断。读者因此应把注意力从“谁说错了”转到“为什么这个系统需要别人说得像对的”。</li>
+              <li>最值得追问的问题：在必须决策的现实中，是否可能构建一种鼓励区间判断、情景分析和误差复盘的预测文化？</li>
+              <li>可能被误用之处：一是因此全面否定专业知识；二是把“预测有限”误解为“专家无用”；三是形成反智情绪，导致人们转而相信更粗暴的直觉或阴谋解释。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title"><strong>叙事偏差</strong></div>
+            <ul>
+              <li>在书中的含义：叙事偏差指的是，人们在事后倾向于把复杂偶然、结构互动和多重因果，压缩成一个因果清楚、逻辑顺滑的故事。这种故事给人理解感，却常常扭曲真正的风险图景。</li>
+              <li>作者为何强调：因为事后叙事会制造一种虚假的可理解性。我们越能把事件讲圆，就越容易误以为它本来就该被看见，于是忽略那些当时真实存在的盲区和岔路。</li>
+              <li>它抓住的更深问题：人类不是单纯需要真相，还需要意义和秩序。叙事偏差满足了心理上的安定需求，但代价是降低了对复杂性的敏感度。</li>
+              <li>它如何帮助重新理解现实：复盘危机时，我们不应只寻找“罪魁祸首”或单一触发点，而要问：哪些微小变量叠加了？哪些反馈机制被忽视了？哪些制度假设本身就脆弱？</li>
+              <li>最值得追问的问题：如何在公共传播和组织复盘中，既保持可理解的叙述，又不牺牲复杂性与不确定性的真实面貌？</li>
+              <li>可能被误用之处：一是将所有解释都视为叙事，从而否认因果分析；二是拿“复杂”当盾牌，拒绝责任追究；三是沉迷拆故事，却不建设更好的分析框架。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title"><strong>复杂系统</strong></div>
+            <ul>
+              <li>在书中的含义：复杂系统意味着结果不是各部分简单相加，而是在多主体互动、反馈回路、适应行为与环境变化中涌现出来。这样的系统常对小扰动敏感，也会在表面稳定中积累巨大风险。</li>
+              <li>作者为何强调：因为只要问题进入复杂系统领域，线性预测就会迅速失灵。战争、市场、疫情、舆论、技术扩散都不是静态机器，而是会因参与者反应而改变自身轨迹。</li>
+              <li>它抓住的更深问题：现代管理传统往往默认世界像机器，拆解后就能掌控；复杂系统概念则提醒我们，很多系统更像生态，不仅不可完全控制，而且控制动作本身也会反向改变系统。</li>
+              <li>它如何帮助重新理解现实：应对复杂系统，关键不在找到唯一正确解，而在保持监测、快速纠错、分散风险和局部试错。好的系统不是最优化到极致，而是能承受偏差并持续调整。</li>
+              <li>最值得追问的问题：在效率导向极强的组织中，如何为复杂性保留缓冲，而不被“冗余就是浪费”的观念吞没？</li>
+              <li>可能被误用之处：一是把复杂系统当成玄学口号；二是遇到难题就说“太复杂没法做”；三是借复杂之名回避具体治理和责任配置。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title"><strong>韧性</strong></div>
+            <ul>
+              <li>在书中的含义：韧性不是简单地“扛得住”，而是系统面对冲击时仍能吸收损伤、维持关键功能、快速调整，甚至在扰动中重组能力。它是对不可完全预测现实的主动回应。</li>
+              <li>作者为何强调：当预测能力有边界时，真正可靠的安全来自韧性，而不是自信。与其押注世界按计划运行，不如建设能在偏离计划时仍然活下去的结构。</li>
+              <li>它抓住的更深问题：现代制度常以效率、精确、削减冗余为荣，但这些目标在平稳时期有效，在冲击来临时却可能让系统异常脆弱。韧性因此是在效率崇拜之外重建安全观。</li>
+              <li>它如何帮助重新理解现实：个人层面要保留现金流、技能迁移性和社会支持；组织层面要有预案、备份、授权和试错空间；社会层面要建设多中心、可替代、可恢复的公共系统。</li>
+              <li>最值得追问的问题：韧性与效率之间如何平衡？在资源有限条件下，哪些冗余是真必要，哪些只是低效堆积？</li>
+              <li>可能被误用之处：一是把韧性说成“忍耐一切”；二是把结构性伤害转嫁给个体，让个人自己变强；三是用韧性话语掩盖本可通过制度改革减少的风险暴露。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title"><strong>认识论谦逊</strong></div>
+            <ul>
+              <li>在书中的含义：这不是自我否定，而是清楚认识知识边界，承认判断总有盲区，并在行动中保留修正空间。它要求我们区分“有把握的部分”和“不可被过度断言的部分”。</li>
+              <li>作者为何强调：因为现代社会太容易把确定语气误认成能力。认识论谦逊提醒我们，真正成熟的理性不是装作无所不知，而是在复杂现实中保有谨慎、可更新和反脆弱的心态。</li>
+              <li>它抓住的更深问题：错误往往并非源自无知，而是源自对知识的误判。一个人知道得少未必危险，最危险的是以为自己知道得足够多。</li>
+              <li>它如何帮助重新理解现实：在决策中，应更多使用区间、概率、情景树、条件判断与触发阈值，而不是单点预言。它也要求组织建立复盘文化，而不是结果导向式追责文化。</li>
+              <li>最值得追问的问题：如何把谦逊制度化，而不是停留在个人美德层面？哪些组织机制能真正奖励“承认不知道”？</li>
+              <li>可能被误用之处：一是把谦逊变成软弱和模糊；二是在需要明确承担责任时故作保留；三是用“复杂、未知”遮蔽价值判断与行动选择。</li>
+            </ul>
+          </div>
+
+          <h3>3.1 概念之间的张力：为什么不能混淆？</h3>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">预测</span>
+              <ul>
+                <li>目标是提前描述可能结果</li>
+                <li>适合边界清晰、变量稳定场景</li>
+                <li>若被神化，易制造过度自信</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">准备</span>
+              <ul>
+                <li>目标是提高面对偏差的承受力</li>
+                <li>适合复杂、开放、动态系统</li>
+                <li>混淆二者，会把预案误当预言</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">风险</span>
+              <ul>
+                <li>多可概率化与比较评估</li>
+                <li>常适用于可统计领域</li>
+                <li>过度简化时会忽视未知变量</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">不确定性</span>
+              <ul>
+                <li>包含不可充分量化的未知</li>
+                <li>要求冗余、情景与适应性</li>
+                <li>混淆后会误把模型当现实</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">解释</span>
+              <ul>
+                <li>帮助理解因果与结构</li>
+                <li>对学习和复盘必要</li>
+                <li>若过度顺滑，易事后神化逻辑</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">叙事</span>
+              <ul>
+                <li>帮助传播和意义建构</li>
+                <li>容易牺牲复杂性换取可讲述性</li>
+                <li>混淆后会把故事当证据</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">效率</span>
+              <ul>
+                <li>追求资源最优配置</li>
+                <li>在稳定环境中优势明显</li>
+                <li>极致化会削弱缓冲空间</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">韧性</span>
+              <ul>
+                <li>追求在冲击中持续运作</li>
+                <li>需要冗余、备份与分散性</li>
+                <li>混淆后会把脆弱当先进</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout-blue">
+            这些概念的张力告诉我们：本书不是要废除预测，而是要求把预测放回边界之内，把准备、韧性与修正机制提升到同等重要的位置。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec4" class="section-card">
+        <div class="section-header">
+          <div class="section-num">04</div>
+          <div class="section-title">全书结构拆解</div>
+        </div>
+        <div class="section-body">
+          <div class="callout-yellow">
+            由于给出的“全文内容”为空白，本报告基于书名、作者议题轨迹与该书通常讨论的问题域，按“问题提出—认知成因—制度后果—应对框架”的逻辑进行结构重建式分析。以下结构意在呈现论证骨架，而非逐页目录校勘。
+          </div>
+
+          <div class="card card-accent">
+            <h3>模块一：提出问题——我们为什么总被“意外”击中？</h3>
+            <ul>
+              <li>表面在讲什么：从现实中的重大突发事件切入，指出人类总把真正重要的事当成“不大可能”。</li>
+              <li>在全书中的功能：建立读者的问题意识，让“预测失败”从个别案例上升为系统困境。</li>
+              <li>与前后内容衔接：先呈现症状，再解释机制，避免讨论过早抽象化。</li>
+              <li>论证推进方式：通过案例、媒体叙事与专家失灵的对照，导向“为什么错得如此稳定”这个核心问题。</li>
+              <li>不能省略的原因：没有这一模块，读者会把本书误解为“列举灾难学”，看不到其认知批判意图。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>模块二：拆解认知——为什么人脑天然不擅长处理极端风险？</h3>
+            <ul>
+              <li>表面在讲什么：讨论过度自信、叙事偏差、常态偏差、可得性启发等认知机制。</li>
+              <li>在全书中的功能：把预测失败从“信息不足”推进到“认知结构问题”。</li>
+              <li>与前后内容衔接：承接案例层面的困惑，解释其背后的心理学基础。</li>
+              <li>论证推进方式：展示我们如何在事前忽视、事后解释，从而形成错误学习闭环。</li>
+              <li>不能省略的原因：若不看到认知偏差，读者会误以为只要多一些数据和工具即可解决问题。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>模块三：批判专家与制度——为什么专业化没有带来更稳健的未来？</h3>
+            <ul>
+              <li>表面在讲什么：分析专家预测、政策制定、媒体传播和组织激励如何共同放大误判。</li>
+              <li>在全书中的功能：把个人偏差升级为制度性偏差，说明现代社会为何重复犯错。</li>
+              <li>与前后内容衔接：从“人脑如何错”过渡到“系统如何奖赏这种错误”。</li>
+              <li>论证推进方式：不是批评专家个人，而是揭示专家体系如何偏好清晰结论而非诚实边界。</li>
+              <li>不能省略的原因：否则问题会被道德化、个人化，而看不到结构激励的作用。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>模块四：重新理解风险——从预测中心转向韧性中心</h3>
+            <ul>
+              <li>表面在讲什么：区分可量化风险与深度不确定性，提出更适合复杂世界的判断方式。</li>
+              <li>在全书中的功能：给出新的分析框架，防止全书停留在解构与批判层面。</li>
+              <li>与前后内容衔接：既回应前文的失败机制，也为后文的行动建议奠定基础。</li>
+              <li>论证推进方式：强调冗余、分散、备份、情景模拟、快速反馈等原则的重要性。</li>
+              <li>不能省略的原因：若没有替代框架，读者容易滑向“既然不可知，那就什么都没办法”的消极结论。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>模块五：行动与治理——如何在不确定世界中做更好的决定？</h3>
+            <ul>
+              <li>表面在讲什么：从公共政策、组织管理到个体决策，讨论如何设计更抗冲击的系统。</li>
+              <li>在全书中的功能：把认识论问题落到实践层，服务真实世界判断。</li>
+              <li>与前后内容衔接：将“看见盲点”转化为“调整制度与行动”。</li>
+              <li>论证推进方式：从原则走向策略，强调谦逊、预案、复盘与保留选择权。</li>
+              <li>不能省略的原因：本书的真正意义不是让人更会谈论黑天鹅，而是让人更会面对未知。</li>
+            </ul>
+          </div>
+
+          <h3>4.1 全书结构图 / 思维导图</h3>
+          <div class="markmap" style="width:100%;height:520px;display:block;">
+            <script type="text/template">
+---
+markmap:
+  colorFreezeLevel: 2
+---
+# 黑天鹅效应
+
+## 一、问题提出：意外为何反复击中我们
+### 重大突发事件的共同特征
+- 低频高冲击，事后常被说成早有征兆
+- 引出“我们为何总在事前看不见”
+### 预测失败不是偶然失误
+- 失败具有稳定重复性
+- 问题从个案上升为结构性偏差
+
+## 二、认知机制：人为何误判未来
+### 过度自信与控制幻觉
+- 以知识增量误当控制增量
+- 精确语气掩盖巨大不确定
+### 叙事偏差与事后合理化
+- 复杂事件被压成单因果故事
+- 造成“本来可以预测”的幻觉
+### 常态偏差与尾部忽视
+- 过去稳定被误当未来常态
+- 尾部风险被系统性低估
+
+## 三、制度机制：专家与组织如何放大误差
+### 专家文化的激励结构
+- 断言比保留更易获得信任
+- 媒体偏好结论而非区间
+### 组织为何脆弱
+- 追求效率削弱冗余与备份
+- 罕见风险缺少演练和预案
+### 现代治理的盲区
+- 把模型当现实替代物
+- 在复杂系统中迷信线性规划
+
+## 四、框架转换：从预测走向准备
+### 区分风险与不确定性
+- 可量化风险不等于全部未知
+- 深度不确定需不同工具
+### 复杂系统视角
+- 小扰动可触发大后果
+- 反馈与适应改变系统轨迹
+### 韧性作为新目标
+- 重点转向承受冲击与恢复
+- 冗余、分散、替代成为关键
+
+## 五、行动原则：在未知中更好决策
+### 认识论谦逊
+- 承认边界而非放弃判断
+- 使用区间、情景与条件推理
+### 制度设计原则
+- 建立复盘、预警、备份机制
+- 用试错与反馈替代一次性押注
+### 个体决策启示
+- 保留选择权，避免单点脆弱
+- 不迷信确定答案，重视长期适应
+
+            </script>
+          </div>
+
+          <h3>4.2 结构推进的关键逻辑</h3>
+          <ul>
+            <li>第一步不是回答“怎么预测更准”，而是先让读者看到：问题比预测误差更深，是一种认识世界的方式出了偏差。</li>
+            <li>第二步把误差解释为认知机制，使读者明白“我也会这样错”，避免把责任简单投射给专家或少数精英。</li>
+            <li>第三步再把这种错误放入组织和制度场景，说明为什么现代社会会把错误反复生产出来。</li>
+            <li>第四步提出新框架，从“预测未来”转到“承受未知”，这是全书最重要的重心转移。</li>
+            <li>最后将其落到行动层面，使本书从风险意识提升为方法论转向。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="sec5" class="section-card">
+        <div class="section-header">
+          <div class="section-num">05</div>
+          <div class="section-title">核心观点分析</div>
+        </div>
+        <div class="section-body">
+          <div class="card card-accent">
+            <h3>观点1：真正危险的不是无知，而是对自己知道多少的误判</h3>
+            <ul>
+              <li>表面在说什么：人类最大的预测风险，不在于信息太少，而在于常把有限知识当成足够知识。</li>
+              <li>更深层在回应什么：它回应的是现代知识社会的自信结构。我们习惯把“有数据、有模型、有专家”理解为“有把握”。</li>
+              <li>作者为何反复强调：因为重大失误很少发生在完全无知状态，往往发生在“以为自己已经理解了”的阶段。</li>
+              <li>它在纠正什么思维：纠正“只要多收集资料就不会出错”的线性想法，提醒我们知识增长并不自动带来谦逊。</li>
+              <li>最有力量的地方：它把风险讨论从能力问题推进到边界意识问题，逼迫我们反思判断姿态而非单纯技术。</li>
+              <li>值得怀疑的地方：若过度强调知识边界，可能让人低估专业分析和实证研究在改善决策中的真实价值。</li>
+              <li>它为什么值得认真对待：因为它直接影响我们如何使用专家、看待报告、做出个人选择，以及是否给自己留下退路。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点2：事后解释越流畅，越容易掩盖事前的不确定性</h3>
+            <ul>
+              <li>表面在说什么：很多重大事件在事后看都“合情合理”，但这并不意味着事前真的可预见。</li>
+              <li>更深层在回应什么：它回应的是人类通过叙事制造确定感的倾向。我们借故事恢复秩序感，却因此扭曲学习过程。</li>
+              <li>作者为何反复强调：因为如果事后叙事不被拆解，社会就会把复盘误当追溯性的聪明，而不是面向未来的改进。</li>
+              <li>它在反驳什么误解：反驳“既然事后能讲清楚，事前就该有人看出来”的责备逻辑。</li>
+              <li>最有力量的地方：它帮助我们把复盘从道德审判转向机制分析，看到复杂因果和系统脆弱性。</li>
+              <li>值得怀疑的地方：若对叙事偏差批评过头，可能会让人对因果解释本身失去信心，陷入“什么都无法说明”的困境。</li>
+              <li>它为什么值得认真对待：因为你是否被事后故事说服，决定了你下次会继续沉迷确定感，还是会真正修正结构。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点3：复杂世界中的优先目标，不应是最优预测，而应是降低脆弱性</h3>
+            <ul>
+              <li>表面在说什么：面对高度不确定和高冲击事件，更可靠的策略是减少单点失败，而不是押注哪一种预测最准确。</li>
+              <li>更深层在回应什么：它回应的是现代管理中“最优化崇拜”的问题。很多系统在平时看起来高效，却在波动面前极其脆弱。</li>
+              <li>作者为何反复强调：因为黑天鹅并不总能被预告，但脆弱结构往往是可以被识别和修补的。</li>
+              <li>它在纠正什么思维：纠正“只要预测足够准，系统就安全”的想法，转向“即使预测错了，系统也不能崩”。</li>
+              <li>最有力量的地方：它把注意力从外部事件转向内部结构，让风险管理变得更可操作。</li>
+              <li>值得怀疑的地方：降低脆弱性常需成本、冗余和效率牺牲，现实中很难获得短期支持。</li>
+              <li>它为什么值得认真对待：因为它不要求你成为预言家，只要求你别把自己放到一击即溃的位置。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点4：专家的问题不只是会不会错，而是社会如何奖赏他们“像是不会错”</h3>
+            <ul>
+              <li>表面在说什么：专家预测常失败，不只是因其能力有限，也因制度偏好清晰、自信、可传播的判断。</li>
+              <li>更深层在回应什么：它回应的是知识社会中的信任机制。公众、媒体与组织更愿意相信断言，而不是区间和条件句。</li>
+              <li>作者为何反复强调：因为若看不到激励结构，我们就会不断更换专家，却保留制造错误的制度土壤。</li>
+              <li>它在反驳什么误解：反驳“只要找到更聪明的人就行”的个人化想象。</li>
+              <li>最有力量的地方：它把批评从个人判断提升到知识生产机制，让读者意识到“错误是被组织出来的”。</li>
+              <li>值得怀疑的地方：若批评过强，可能削弱公众对专业社群的必要信任，给反智主义留下空间。</li>
+              <li>它为什么值得认真对待：因为在现实中，你必须使用专家，但你更需要知道怎样使用他们，而不是盲信他们。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点5：承认不可预测，并不意味着放弃行动，而是改变行动逻辑</h3>
+            <ul>
+              <li>表面在说什么：世界不可完全预测，并不导向消极等待，而要求我们以情景、预案、试错和适应来行动。</li>
+              <li>更深层在回应什么：它回应的是一个常见误解——只要否定预测崇拜，就会滑向虚无主义。</li>
+              <li>作者为何反复强调：因为本书真正的目标不是拆毁理性，而是升级理性，让行动更符合复杂世界的现实。</li>
+              <li>它在纠正什么思维：纠正“有把握才行动”的想法，转向“在不完全把握中构建可修正行动”。</li>
+              <li>最有力量的地方：它为现实决策保留了主动性，避免本书沦为一场纯粹的怀疑论展示。</li>
+              <li>值得怀疑的地方：如何把这种原则落地为具体制度，常比原则本身更难；书中的抽象提醒可能不足以回答操作细节。</li>
+              <li>它为什么值得认真对待：因为真正成熟的人和组织，都必须学会在看不清时仍然做出可回撤、可学习、可承受的决定。</li>
+            </ul>
+          </div>
+
+          <div class="callout">
+            本书最强的一组转向是：从“如何知道未来”转到“如何面对不知道的未来”；从“是否预测成功”转到“是否避免结构性脆弱”；从“谁说错了”转到“什么机制使错误不断发生”。 
+          </div>
+        </div>
+      </section>
+
+      <section id="sec6" class="section-card">
+        <div class="section-header">
+          <div class="section-num">06</div>
+          <div class="section-title">深度圆桌讨论</div>
+        </div>
+        <div class="section-body">
+          <div class="callout-blue">
+            这里选择两位相关思想者：专家A选<strong>纳西姆·塔勒布</strong>，因为其“黑天鹅”“反脆弱”框架能补强本书对极端事件与系统韧性的讨论；专家B选<strong>菲利普·泰特洛克</strong>，因为他既承认预测局限，也通过“超级预测”研究质疑“预测整体无效”的过度结论，能为本书加上边界条件。
+          </div>
+
+          <div class="roundtable-round">
+            <div class="round-title">第一轮 · 中心主题：这本书到底在解决什么根本问题？</div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#c26a18;">作</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本书作者</div>
+                <ul>
+                  <li>这本书要解决的根本问题，是现代社会如何在高度不确定的世界里，持续误把“可解释”当成“可预测”，又误把“专业化”当成“已掌控”。我关心的不是某一次预测为什么错，而是为什么错得如此稳定、如此制度化。</li>
+                  <li>我们今天拥有前所未有的数据、模型和专家网络，但公共决策、金融市场、战争判断、危机应对仍不断被“意外”击穿。这说明问题不在信息数量，而在我们理解未来的方式出了偏差。</li>
+                  <li>真正需要修正的是一种控制幻觉：我们以为世界像机器，只要变量够多、模型够精密，就能提前锁定结果。但现实更像复杂生态，行动者会反应，环境会反馈，偶发冲击会重排路径。若不从根本上修正这种世界观，就会不断制造新的盲点。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#2d6a8a;">A</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">纳西姆·塔勒布（补强）</div>
+                <ul>
+                  <li>我会进一步强调，这个问题不只是“人类会犯错”，而是现代系统主动累积了对极端事件的暴露。我们追求平稳、精细优化、标准化与高杠杆，结果不是降低风险，而是把风险压到看不见的地方，一旦释放就造成巨大冲击。</li>
+                  <li>因此，本书谈的根本问题可以重述为：人类和制度为何在“常态”中制造脆弱，又在崩溃后假装一切早有征兆。黑天鹅之所以危险，不只是因为它稀有，而是因为我们把系统设计得太依赖连续性。</li>
+                  <li>我补充的一点是：与其纠结能否预测极端事件，不如问系统在极端事件来临时是会被摧毁，还是能从中变强。这就把问题从认识论推进到系统结构，进一步凸显本书转向韧性的必要性。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#5a7a3a;">B</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">菲利普·泰特洛克（质疑）</div>
+                <ul>
+                  <li>我同意本书指出的过度自信与预测幻觉，但我会限定其适用边界。并不是所有预测都同样无效，也不是复杂系统就完全无法形成有用判断。我的研究表明，在明确题目、持续校准、拆解问题、使用概率和更新机制的条件下，预测是可以显著优于直觉和空泛评论的。</li>
+                  <li>因此，本书要解决的问题，不应被表述为“预测没有用”，而应是“我们为什么常用错误方式进行预测，并在错误激励中夸大预测能力”。如果把论点推得太远，就容易滑向反智或犬儒。</li>
+                  <li>我对本书的修正是：承认深度不确定性，并不排斥在中短期、可检验、可反馈的问题上建立更好的预测纪律。真正的问题不是预测本身，而是没有区分可预测领域与不可预测领域。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="round-insight">这轮让我们看清楚了：本书的核心不是否定理性，而是批判控制幻觉；同时也要避免把这种批判推成“预测无意义”的极端结论。</div>
+          </div>
+
+          <div class="roundtable-round">
+            <div class="round-title">第二轮 · 关键概念：哪些概念最核心？它们之间有什么张力？</div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#c26a18;">作</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本书作者</div>
+                <ul>
+                  <li>本书最重要的概念，一是“黑天鹅”，二是“不确定性”。黑天鹅提醒我们，真正改变局面的往往不是平均状态，而是尾部事件；不确定性则提醒我们，不是所有未知都能被概率模型穷尽。</li>
+                  <li>这两个概念之间的张力在于：我们明明需要对未来做判断，却又不能把判断建立在虚假的可控感上。于是问题就不再是“如何消灭未知”，而是“如何在未知中保持清醒和可调整”。</li>
+                  <li>我反复强调叙事偏差，是因为它把黑天鹅事后驯化成故事，进而削弱人们对真正不确定性的敬畏。如果不拆解这个机制，我们会不断在事后获得解释快感，在事前维持结构脆弱。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#2d6a8a;">A</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">纳西姆·塔勒布（补强）</div>
+                <ul>
+                  <li>我会把“黑天鹅”与“反脆弱”连在一起理解。黑天鹅不是一个供人惊叹的标签，而是对系统暴露结构的检验器。若系统在波动中崩塌，说明它依赖可预测性；若系统能从波动中学习并增强，说明它具备更好的结构设计。</li>
+                  <li>此外，我会强化“风险”与“不确定性”的区分。许多机构错误地用钟形分布式思维管理一个肥尾、相互依赖、反馈强烈的世界。问题不在数学本身，而在把局部有效的工具滥用于开放系统。</li>
+                  <li>本书谈的张力，其实可重述为“表面秩序”与“深层暴露”的张力。一个系统越是依赖平静，越怕黑天鹅；一个人越是迷信解释，越会低估未知。概念的价值不在定义，而在迫使我们重新审视暴露面。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#5a7a3a;">B</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">菲利普·泰特洛克（质疑）</div>
+                <ul>
+                  <li>我会指出一个风险：当“黑天鹅”成为流行概念后，人们很容易把它泛化成一切重大意外的统称，从而失去分析精度。并非所有冲击都同样不可预见，也并非所有预测失败都来自深度不确定性。</li>
+                  <li>同样，“不确定性”一词若使用过宽，会削弱区分能力。有些领域可以通过拆题、聚合判断、概率校准显著提高预测质量；另一些领域则确实更需要韧性与预案。若不区分，概念就会从纠偏工具变成修辞护身符。</li>
+                  <li>因此，我对本书关键概念的修正是：除了强调黑天鹅与不确定性，还要建立“可预测程度”的梯度感。真正成熟的判断，不是简单说能或不能预测，而是说明在什么时间尺度、什么条件下、以何种误差容忍度进行预测。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="round-insight">这轮让我们看清楚了：概念的价值在于改变问题框架，但若概念被泛化，也会失去操作性；因此必须在“黑天鹅/不确定性”的提醒与“可预测梯度”的区分之间保持张力。</div>
+          </div>
+
+          <div class="roundtable-round">
+            <div class="round-title">第三轮 · 关键问题/边界：这本书最深刻的洞见在哪些条件下成立，在哪些条件下会失效或被误用？</div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#c26a18;">作</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本书作者</div>
+                <ul>
+                  <li>本书最有力的洞见是：在复杂、开放、相互作用强的系统里，最重要的能力不是断言未来，而是设计能承受预测失败的结构。这一洞见在金融系统、公共治理、灾害管理、技术平台和职业规划中都高度成立。</li>
+                  <li>但它并不意味着放弃分析。它成立的条件是：我们承认模型只是工具，承认过去数据不能穷尽未来，并愿意为未知保留资源与制度空间。若这些条件不存在，人们就会继续把“意外”当成偶发坏运气。</li>
+                  <li>这套洞见最容易被误用在两处：一是把不可预测神秘化，转化成消极宿命；二是把“准备未知”外包给个体，忽略制度层面的脆弱改革。我的重点始终是结构调整，而非心理鸡汤。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#2d6a8a;">A</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">纳西姆·塔勒布（补强）</div>
+                <ul>
+                  <li>我支持这一洞见，并进一步提出其成立条件：第一，系统不能把效率最大化到吞噬冗余；第二，决策者要承担下行风险，不能只享受上行收益；第三，局部试错优于全局押注，因为黑天鹅的破坏常源于集中暴露。</li>
+                  <li>在这些条件下，韧性甚至可以升级为“反脆弱”——系统不只是承受冲击，而是通过小损失换来更大适应力。例如分散投资、模块化组织、去中心化治理，都是让错误可控、让学习持续发生的设计。</li>
+                  <li>这套洞见失效的典型场景，是一个系统表面上谈韧性，实际上却继续依赖高杠杆、单点依赖和伪装稳定。那样的“韧性”只会变成口号。真正的检验标准，不是会议上的风险词汇，而是结构是否允许失败而不至于全盘崩塌。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#5a7a3a;">B</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">菲利普·泰特洛克（质疑）</div>
+                <ul>
+                  <li>我认为这套洞见在长周期、强互动、反馈丰富的问题上极有价值，但在一些中短期、边界较清晰、可频繁校验的问题上，若过度强调不可预测，反而会放弃本可得到的决策优势。比如选举概率、地缘趋势、市场局部判断，都存在可提升空间。</li>
+                  <li>它还可能被误用于替代责任。某些组织在失败后可能说“这是黑天鹅，无法预测”，但事实上他们忽略了已有预警、没有做情景推演、没有建立基本缓冲。这里并不是深度不确定，而是低水平管理。</li>
+                  <li>所以我会主张双重路径：在可测范围内提升预测质量，在不可测范围内建设韧性。若只讲后者，容易失去精细判断；若只讲前者，又会落回控制幻觉。本书的洞见应被视为校正，而非全盘替代。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="round-insight">这轮让我们看清楚了：本书最深刻的价值在于推动“韧性优先”的转向，但这一转向必须与可预测领域中的严谨预测能力并行，才能避免宿命化或反智化。</div>
+          </div>
+
+          <div class="callout-yellow">
+            <h3>圆桌最终小结</h3>
+            <ul>
+              <li>①最强洞见：经过三轮讨论，本书最强的洞见是，它迫使我们把“预测失败”理解为一种系统性问题，而不是偶然误差。它揭示的不是“未来很难猜”这么浅的事实，而是更深的判断：现代社会长期把可解释性、自信表达与专业姿态误认成真正的掌控能力。正因如此，本书值得重视，因为它不只是在风险意识上给人警醒，更在认识论层面要求我们重新定义理性——成熟的理性不是更大胆地下判断，而是在边界清楚处判断，在边界模糊处保留，在不可穷尽处做结构准备。</li>
+              <li>②核心内容分点：读者最需要理解的内容包括三个层次。第一，<strong>黑天鹅</strong>不是事件标签，而是提醒我们：尾部冲击常比均值更决定命运。第二，<strong>不确定性</strong>不是信息不足，而常是开放系统持续生成未知的结构属性。第三，<strong>韧性</strong>不是心态安慰，而是对不可完全预测世界的制度回应。与此相关，还要牢牢记住“叙事偏差”“预测幻觉”“可预测梯度”这几个概念，否则很容易把作者的批判误解成泛泛的悲观论。</li>
+              <li>③值得追问的问题分点：这场讨论让以下问题变得更值得继续追问。其一，哪些领域应以提升预测质量为主，哪些领域应以建设韧性为主，二者如何分配资源？其二，如何把认识论谦逊制度化，让组织真正奖励区间判断和复盘，而不是奖励自信断言？其三，当“黑天鹅”成为流行修辞后，怎样防止它被用来为可避免的管理失误开脱？这些问题决定了本书能否从思想提醒，真正变成治理工具。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec7" class="section-card">
+        <div class="section-header">
+          <div class="section-num">07</div>
+          <div class="section-title">认知拓展</div>
+        </div>
+        <div class="section-body">
+          <ul>
+            <li>这本书涉及的议题，和风险社会、行为决策、复杂系统、灾难治理、宏观金融、战略研究、科技不确定性、公共卫生准备都有密切关系。</li>
+            <li>它在更大的知识地图中，位于“行为科学”与“制度设计”之间：一头连接卡尼曼、特沃斯基对认知偏差的研究，另一头连接复杂系统理论、韧性治理与反脆弱设计。</li>
+            <li>它还与现代性的一个核心命题相关：当技术能力越来越强，人类是否也越来越容易高估自己对世界的控制能力。</li>
+          </ul>
+
+          <div class="grid-2">
+            <div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">丹尼尔·卡尼曼 · 《思考，快与慢》</div>
+                  <div class="ref-desc">连接意义：帮助理解本书为何如此重视认知偏差。卡尼曼提供心理机制层面的解释，本书则更强调这些偏差在风险判断中的现实后果。</div>
+                </div>
+              </div>
+
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">纳西姆·塔勒布 · 《黑天鹅》《反脆弱》</div>
+                  <div class="ref-desc">连接意义：若说本书着重解释“为何看不见”，塔勒布更进一步讨论“如何设计不怕看不见的系统”。两者共同推动从预测中心走向结构中心。</div>
+                </div>
+              </div>
+
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">乌尔里希·贝克 · 《风险社会》</div>
+                  <div class="ref-desc">连接意义：贝克讨论现代社会如何主动制造新型风险，本书则更聚焦人类如何在认知与制度层面误判这些风险。</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">菲利普·泰特洛克 · 《超级预测》</div>
+                  <div class="ref-desc">连接意义：为本书提供边界校正。它提醒我们，承认不可预测不等于预测无价值，而是要求建立更严格、可校准、可检验的预测流程。</div>
+                </div>
+              </div>
+
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">查尔斯·佩罗 · 《常态事故》</div>
+                  <div class="ref-desc">连接意义：说明在复杂且紧密耦合系统中，事故不是异常，而是结构产物。它与本书共同削弱“事故只是倒霉”的直觉。</div>
+                </div>
+              </div>
+
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">现实议题：疫情、供应链、AI安全、气候风险</div>
+                  <div class="ref-desc">连接意义：这些议题都表明，未来不是没有信号，而是信号常被噪声、激励结构和常态幻觉所吞没。本书能帮助理解为什么“看见风险”不自动转化为“做好准备”。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-blue">
+            把本书放回知识地图后会发现：它真正重要之处，不是贡献一个流行词，而是帮助我们从“预测技术”转向“未知治理”，从心理偏差走向制度韧性。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec8" class="section-card">
+        <div class="section-header">
+          <div class="section-num">08</div>
+          <div class="section-title">对我的启发与追问</div>
+        </div>
+        <div class="section-body">
+          <h3>8.1 这本书对我最有价值的启发是什么？</h3>
+          <ul>
+            <li>最大的启发是：不要把“能讲出判断”误以为“已经理解局势”。很多时候，我真正需要做的不是更快给答案，而是先识别自己暴露在哪些未知之下。</li>
+            <li>它提醒我，在重大选择中，真正要管理的不是某一个预测结果，而是如果预测错了，我是否还有转身空间。</li>
+            <li>这使我重新理解“理性”：理性不是追求不犯错，而是避免把自己放在错一次就出局的位置。</li>
+          </ul>
+
+          <h3>8.2 它可能修正哪些认知、判断或行动上的问题？</h3>
+          <ul>
+            <li>修正我对专家判断的使用方式：不再只看结论是否坚定，而要看其是否说明边界、条件与误差范围。</li>
+            <li>修正我对计划的理解：计划不是未来剧本，而是应对偏离剧本的准备工具。</li>
+            <li>修正我对效率的迷恋：过于“干净”的资源配置，可能只是把风险转移到未来。</li>
+            <li>修正我对复盘的方式：少问“谁早该知道”，多问“我们的系统为什么让这个错误变得致命”。</li>
+          </ul>
+
+          <h3>8.3 它最可能在哪里让我产生“我懂了，但我其实还没做到”的错觉？</h3>
+          <ul>
+            <li>最常见的错觉，是口头上承认不确定性，行动上却仍然追求一种伪确定感，比如在投资、职业或组织决策中继续单点押注。</li>
+            <li>另一种错觉，是把“别迷信预测”说得很对，却没有建立任何备份、冗余和替代方案。</li>
+            <li>还有一种错觉，是批评别人过度自信，自己却在熟悉领域里继续讲顺滑故事，对自身盲点缺乏真正警觉。</li>
+          </ul>
+
+          <h3>8.4 基于本书提出 10 个高质量问题及追问</h3>
+          <div class="card">
+            <ol>
+              <li>在我的工作中，哪些判断属于可校准预测，哪些属于深度不确定性？
+                <ul><li>追问：我是否错误地用同一种方法处理两类完全不同的问题？</li></ul>
+              </li>
+              <li>我最依赖的三个“稳定假设”是什么？
+                <ul><li>追问：如果其中一个突然失效，我的系统会在哪里最先断裂？</li></ul>
+              </li>
+              <li>我平时最容易被哪类专家说服？
+                <ul><li>追问：我看重的是证据质量，还是说话时的确定语气？</li></ul>
+              </li>
+              <li>我的计划里有哪些“默认不会出问题”的环节？
+                <ul><li>追问：这些环节是否正是未来最危险的脆弱点？</li></ul>
+              </li>
+              <li>我如何区分真正的解释和事后讲圆的故事？
+                <ul><li>追问：若把事件放回当时信息条件下，我还会认为它“显而易见”吗？</li></ul>
+              </li>
+              <li>我所在组织奖励什么样的判断风格？
+                <ul><li>追问：是奖励诚实呈现区间与边界，还是奖励快速给出坚定答案？</li></ul>
+              </li>
+              <li>我有哪些单点失败风险？
+                <ul><li>追问：一旦出错，是否会直接伤及生计、信誉或长期选择权？</li></ul>
+              </li>
+              <li>我是否把效率当成了绝对善？
+                <ul><li>追问：我削掉的那些冗余，是否正是冲击来临时唯一的缓冲？</li></ul>
+              </li>
+              <li>我如何让自己在不确定环境中持续修正？
+                <ul><li>追问：我是否建立了定期复盘、外部反馈和小规模试错机制？</li></ul>
+              </li>
+              <li>面对未知，我是在追求看起来聪明，还是在构建真实韧性？
+                <ul><li>追问：如果必须二选一，我愿意牺牲哪一部分体面，换取更高的生存质量？</li></ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec9" class="section-card">
+        <div class="section-header">
+          <div class="section-num">09</div>
+          <div class="section-title">全书金句</div>
+        </div>
+        <div class="section-body">
+          <div class="quote"><p>1. 真正改变世界的，往往不是我们最常讨论的事，而是我们最不愿认真准备的事。</p><div class="source">说明：对应“尾部事件决定系统命运”的核心命题。</div></div>
+          <div class="quote"><p>2. 预测失败最可怕的地方，不是错了，而是错了之后还以为自己只是运气不好。</p><div class="source">说明：对应对系统性误判而非个体失手的批判。</div></div>
+          <div class="quote"><p>3. 数据越多，不等于我们离未来越近；有时只意味着我们把错觉做得更精致。</p><div class="source">说明：对应对“信息越多就越可控”的质疑。</div></div>
+          <div class="quote"><p>4. 专家最大的问题，常常不是无知，而是不知道自己无知到什么程度。</p><div class="source">说明：对应过度自信与认识论边界。</div></div>
+          <div class="quote"><p>5. 我们害怕混乱，所以总在事后把意外讲成故事。</p><div class="source">说明：对应叙事偏差的核心洞见。</div></div>
+          <div class="quote"><p>6. 事后看上去顺理成章的事，事前常常根本没有那样清楚。</p><div class="source">说明：对应事后合理化与复盘失真。</div></div>
+          <div class="quote"><p>7. 世界不是按我们的模型运行，而是我们的模型勉强追赶世界。</p><div class="source">说明：对应模型边界与复杂现实之间的错位。</div></div>
+          <div class="quote"><p>8. 未来最危险的部分，往往恰恰不在平均值里。</p><div class="source">说明：对应黑天鹅与尾部风险。</div></div>
+          <div class="quote"><p>9. 一个系统看起来越完美，越可能只是把脆弱性藏得更深。</p><div class="source">说明：对应效率崇拜与结构性脆弱。</div></div>
+          <div class="quote"><p>10. 真正成熟的决策，不是赌自己总会看对，而是保证看错时也活得下来。</p><div class="source">说明：对应从预测转向韧性的核心转向。</div></div>
+          <div class="quote"><p>11. 可解释性给人安慰，但安慰从来不是安全。</p><div class="source">说明：对应“解释不等于准备”的主题。</div></div>
+          <div class="quote"><p>12. 当一个社会越来越需要确定答案时，它往往也越来越容易奖励错误的自信。</p><div class="source">说明：对应专家制度与传播激励。</div></div>
+          <div class="quote"><p>13. 最危险的不是异常，而是把异常排除在想象之外。</p><div class="source">说明：对应常态偏差的现实后果。</div></div>
+          <div class="quote"><p>14. 风险管理不是把世界算清楚，而是承认总有算不清楚的部分。</p><div class="source">说明：对应风险与不确定性的区分。</div></div>
+          <div class="quote"><p>15. 我们常把计划当作未来的脚本，其实计划更应该是偏离脚本时的工具箱。</p><div class="source">说明：对应计划观的修正。</div></div>
+          <div class="quote"><p>16. 如果一个判断不能告诉你它在哪些条件下会失效，那它多半只是姿态，不是知识。</p><div class="source">说明：对应条件化思维与边界意识。</div></div>
+          <div class="quote"><p>17. 黑天鹅并不神秘，真正神秘的是人类为何总在它来临前如此笃定。</p><div class="source">说明：对应控制幻觉和自信结构。</div></div>
+          <div class="quote"><p>18. 在复杂系统里，最应该怀疑的往往不是坏消息，而是长期没有坏消息。</p><div class="source">说明：对应表面稳定可能掩盖风险积累。</div></div>
+          <div class="quote"><p>19. 谦逊不是软弱，而是知道何时该断言，何时该留白。</p><div class="source">说明：对应认识论谦逊的行动含义。</div></div>
+          <div class="quote"><p>20. 真正的准备，不是把未来看得更清楚，而是让未知来临时我们不至于完全失能。</p><div class="source">说明：对应全书最终落点：以韧性应对未知。</div></div>
+        </div>
+      </section>
+
+      <section id="sec10" class="section-card">
+        <div class="section-header">
+          <div class="section-num">10</div>
+          <div class="section-title">Final Takeaways</div>
+        </div>
+        <div class="section-body">
+          <div class="take">
+            <ol>
+              <li>真正该留下的东西：这本书最重要的不是“黑天鹅”这个词，而是一个认识转向——未来不是等待被精确揭示的对象，而是不确定、反馈化、会反击我们自信的复杂现实。</li>
+              <li>最关键的判断：第一，重大失败往往源于过度自信而非单纯无知；第二，事后叙事会掩盖事前不确定；第三，复杂系统中应优先降低脆弱性；第四，专家失灵常是制度激励的产物；第五，承认边界不等于放弃行动。</li>
+              <li>最值得长期保留的概念：<strong>黑天鹅</strong>、<strong>不确定性</strong>、<strong>预测幻觉</strong>、<strong>叙事偏差</strong>、<strong>复杂系统</strong>、<strong>韧性</strong>、<strong>认识论谦逊</strong>。这些概念共同构成一套比“会不会预测”更高阶的未来思维框架。</li>
+              <li>最容易知道却做不到：口头承认不确定性很容易，真正为未知留出冗余、分散暴露、接受效率损失、建立复盘机制却很难。我们最容易在理解上谦逊，在行动上依旧冒进。</li>
+              <li>如果几年后只记得5件事，应该记住什么：一，不要把说得清楚当成看得准确；二，不要把过去稳定当成未来常态；三，不要把预测能力当成安全本身；四，优先修补脆弱结构而不是迷信精确预言；五，在未知面前，最成熟的理性不是更自信，而是更有准备。</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(link => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+
+      const activate = () => {
+        let current = sections[0];
+        const fromTop = window.scrollY + 120;
+        sections.forEach(sec => {
+          if (sec.offsetTop <= fromTop) current = sec;
+        });
+        links.forEach(link => {
+          const isActive = link.getAttribute('href') === '#' + current.id;
+          link.classList.toggle('active', isActive);
+        });
+      };
+
+      window.addEventListener('scroll', activate, { passive: true });
+      window.addEventListener('load', activate);
+    })();
+  </script>
+</body>
+</html>

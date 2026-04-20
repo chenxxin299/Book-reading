@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>读书知识库 · Book Intelligence</title>
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --paper: #fff;
+    --ink: #1f2328;
+    --ink-light: #5a6272;
+    --accent: #c26a18;
+    --accent-soft: #fff1e2;
+    --border: #e8e4df;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,.08);
+    --shadow-hover: 0 6px 24px rgba(0,0,0,.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── 顶部 Hero ── */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 60px 40px 48px;
+    text-align: center;
+  }
+  .hero-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -.5px;
+  }
+  .hero p {
+    color: #aaa;
+    font-size: 1.05rem;
+    max-width: 540px;
+    margin: 0 auto 24px;
+    line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 8px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  /* ── 搜索栏 ── */
+  .search-bar {
+    max-width: 600px;
+    margin: -24px auto 0;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 16px 20px 16px 48px;
+    border-radius: 40px;
+    border: none;
+    box-shadow: var(--shadow-hover);
+    font-size: 1rem;
+    color: var(--ink);
+    outline: none;
+    background: var(--paper);
+  }
+  .search-bar input::placeholder { color: #bbb; }
+  .search-icon {
+    position: absolute;
+    left: 36px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #bbb;
+    font-size: 1.1rem;
+  }
+
+  /* ── 主内容区 ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .section-count {
+    font-size: 13px;
+    color: var(--ink-light);
+    background: var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* ── 书籍卡片网格 ── */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .book-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .2s, transform .2s;
+    overflow: hidden;
+    position: relative;
+  }
+  .book-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+  }
+  .card-accent {
+    height: 5px;
+    width: 100%;
+  }
+  .card-body {
+    padding: 20px 22px 16px;
+    flex: 1;
+  }
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .card-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-bottom: 12px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .card-arrow {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    font-size: 1.1rem;
+    color: #ccc;
+    transition: color .2s, transform .2s;
+  }
+  .book-card:hover .card-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  /* ── 空状态 ── */
+  .empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--ink-light);
+  }
+  .empty-icon { font-size: 3rem; margin-bottom: 16px; }
+  .empty p { font-size: 1.05rem; margin-bottom: 8px; }
+  .empty .sub { font-size: 14px; color: #bbb; }
+  .empty code {
+    background: #f0ece6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 13px;
+  }
+
+  /* ── 底部 ── */
+  .footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 12px;
+    color: #bbb;
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── 响应式 ── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.8rem; }
+    .hero-stats { gap: 24px; }
+    .main { padding: 32px 16px 60px; }
+    .books-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Book Intelligence</div>
+  <h1>读书知识库</h1>
+  <p>基于 GPT-5.4 深度分析的读书报告集合，涵盖导读、核心概念、结构拆解、跨学科讨论等十大板块。</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">24</div>
+      <div class="stat-label">本书已分析</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">10</div>
+      <div class="stat-label">深度板块</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">GPT‑5.4</div>
+      <div class="stat-label">驱动模型</div>
+    </div>
+  </div>
+</div>
+
+<div class="search-bar">
+  <span class="search-icon">🔍</span>
+  <input type="text" id="search" placeholder="搜索书名、作者、关键词…（Ctrl+K）" autocomplete="off">
+</div>
+
+<div class="main">
+  <div class="section-header">
+    <span class="section-title">全部读书报告</span>
+    <span class="section-count" id="count-label">24 本</span>
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 32px;">
+    <a href="themes.html" style="padding: 10px 20px; background: #fff; border: 1px solid #e8e4df; border-radius: 20px; text-decoration: none; color: #1f2328; font-size: 0.9rem; transition: all .2s;">📑 主题浏览</a>
+    <a href="concepts.html" style="padding: 10px 20px; background: #fff; border: 1px solid #e8e4df; border-radius: 20px; text-decoration: none; color: #1f2328; font-size: 0.9rem; transition: all .2s;">🔑 概念索引</a>
+    <a href="graph.html" style="padding: 10px 20px; background: #fff; border: 1px solid #e8e4df; border-radius: 20px; text-decoration: none; color: #1f2328; font-size: 0.9rem; transition: all .2s;">🕸️ 知识图谱</a>
+  </div>
+
+  <div class="books-grid" id="books-grid">
+    
+        <a class="book-card" href="黑天鹅效应 丹.加德纳.html" target="_blank">
+            <div class="card-accent" style="background:#5a7a3a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《黑天鹅效应》深度阅读分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:24</span>
+                    <span>📄 48k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="非暴力沟通(修订版).html" target="_blank">
+            <div class="card-accent" style="background:#c26a18"></div>
+            <div class="card-body">
+                <h3 class="card-title">《非暴力沟通（修订版）》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:21</span>
+                    <span>📄 48k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="超越感觉 批判性思考指南 原书第9版.html" target="_blank">
+            <div class="card-accent" style="background:#3a6a6a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《超越感觉：批判性思考指南（原书第9版）》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:20</span>
+                    <span>📄 47k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="超级智能.html" target="_blank">
+            <div class="card-accent" style="background:#5a7a3a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《超级智能》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:19</span>
+                    <span>📄 50k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="系统之美：决策者的系统思考 = Thinking in Systems a Primer ([美] 唐內拉‧梅多斯 (D.html" target="_blank">
+            <div class="card-accent" style="background:#8a5a2a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《系统之美：决策者的系统思考》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:19</span>
+                    <span>📄 49k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="见识_吴军【公众号：LJ读书】.html" target="_blank">
+            <div class="card-accent" style="background:#3a6a6a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《见识》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:18</span>
+                    <span>📄 48k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="第一性原理 - 李善友.html" target="_blank">
+            <div class="card-accent" style="background:#5a7a3a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《第一性原理》深度分析报告 - 李善友</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:15</span>
+                    <span>📄 50k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="灰犀牛：如何应对大概率危机.html" target="_blank">
+            <div class="card-accent" style="background:#2d6a8a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《灰犀牛：如何应对大概率危机》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:15</span>
+                    <span>📄 48k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="模型思维（24种让人终身受益的思维模型，精准解决学习工作生活的所有难题，像芒格一样智慧地思考）.html" target="_blank">
+            <div class="card-accent" style="background:#3a6a6a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《模型思维》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:13</span>
+                    <span>📄 48k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="沉思录.html" target="_blank">
+            <div class="card-accent" style="background:#c26a18"></div>
+            <div class="card-body">
+                <h3 class="card-title">《沉思录》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:12</span>
+                    <span>📄 45k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="格局 (吴军).html" target="_blank">
+            <div class="card-accent" style="background:#2d6a8a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《格局》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:12</span>
+                    <span>📄 48k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="智能简史.html" target="_blank">
+            <div class="card-accent" style="background:#3a6a6a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《智能简史》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:09</span>
+                    <span>📄 47k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="怪诞行为学（套装全5册）.html" target="_blank">
+            <div class="card-accent" style="background:#c26a18"></div>
+            <div class="card-body">
+                <h3 class="card-title">《怪诞行为学（套装全5册）》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:09</span>
+                    <span>📄 47k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="态度_吴军.html" target="_blank">
+            <div class="card-accent" style="background:#7a4a8a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《态度》吴军｜深度阅读分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:07</span>
+                    <span>📄 34k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="我看见的世界：李飞飞自传.html" target="_blank">
+            <div class="card-accent" style="background:#3a6a6a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《我看见的世界：李飞飞自传》深度阅读报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:07</span>
+                    <span>📄 48k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="思考，快与慢.html" target="_blank">
+            <div class="card-accent" style="background:#c26a18"></div>
+            <div class="card-body">
+                <h3 class="card-title">《思考，快与慢》深度阅读报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:06</span>
+                    <span>📄 47k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="悉达多.html" target="_blank">
+            <div class="card-accent" style="background:#3a6a6a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《悉达多》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:01</span>
+                    <span>📄 15k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="人类简史.html" target="_blank">
+            <div class="card-accent" style="background:#5a7a3a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《人类简史》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:00</span>
+                    <span>📄 49k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="反脆弱：从不确定性中获益.html" target="_blank">
+            <div class="card-accent" style="background:#c26a18"></div>
+            <div class="card-body">
+                <h3 class="card-title">《反脆弱：从不确定性中获益》深度阅读报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:00</span>
+                    <span>📄 49k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="学会提问.html" target="_blank">
+            <div class="card-accent" style="background:#7a4a8a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《学会提问》深度阅读报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:00</span>
+                    <span>📄 47k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="事实.html" target="_blank">
+            <div class="card-accent" style="background:#2d6a8a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《事实》深度阅读分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 11:00</span>
+                    <span>📄 47k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="人类如何思考：社会心理学大师的人生回忆录 (【美】理查德·E.尼斯贝特).html" target="_blank">
+            <div class="card-accent" style="background:#c26a18"></div>
+            <div class="card-body">
+                <h3 class="card-title">《人类如何思考：社会心理学大师的人生回忆录》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 10:59</span>
+                    <span>📄 46k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="积极情绪的力量.html" target="_blank">
+            <div class="card-accent" style="background:#c26a18"></div>
+            <div class="card-body">
+                <h3 class="card-title">《积极情绪的力量》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-17 10:06</span>
+                    <span>📄 50k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+
+        <a class="book-card" href="组织的活法 (邓康明).html" target="_blank">
+            <div class="card-accent" style="background:#3a6a6a"></div>
+            <div class="card-body">
+                <h3 class="card-title">《组织的活法》深度分析报告</h3>
+                <div class="card-meta">
+                    <span>📅 2026-04-16 21:13</span>
+                    <span>📄 53k 字</span>
+                </div>
+                <p class="card-desc">深度分析报告 · 十大板块</p>
+                <div class="card-tags">
+                    <span class="tag">导读</span>
+                    <span class="tag">核心概念</span>
+                    <span class="tag">圆桌讨论</span>
+                    <span class="tag">金句</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+  </div>
+</div>
+
+<div class="footer">
+  自动生成于 2026-04-20 16:57 &nbsp;·&nbsp;
+  由 <a href="https://github.com/openai/openai-python" target="_blank">GPT‑5.4</a> 驱动
+  &nbsp;·&nbsp; Book Intelligence System
+</div>
+
+<script>
+  const grid = document.getElementById('books-grid');
+  const countLabel = document.getElementById('count-label');
+  const searchInput = document.getElementById('search');
+  const allCards = Array.from(grid.querySelectorAll('.book-card'));
+
+  // 增强搜索：支持书名、作者、标签、描述的模糊匹配
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    let visible = 0;
+
+    allCards.forEach(card => {
+      if (!q) {
+        card.style.display = '';
+        visible++;
+        return;
+      }
+
+      // 提取卡片中的所有文本内容
+      const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+      const meta = card.querySelector('.card-meta')?.textContent.toLowerCase() || '';
+      const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+      const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.toLowerCase()).join(' ');
+
+      // 组合所有可搜索内容
+      const searchText = [title, meta, desc, tags].join(' ');
+
+      // 支持多关键词搜索（空格分隔）
+      const keywords = q.split(/\s+/).filter(k => k);
+      const match = keywords.every(keyword => searchText.includes(keyword));
+
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    countLabel.textContent = visible + ' 本';
+
+    // 无结果提示
+    if (visible === 0 && q) {
+      if (!document.getElementById('no-results')) {
+        const noResults = document.createElement('div');
+        noResults.id = 'no-results';
+        noResults.className = 'empty';
+        noResults.innerHTML = '<div class="empty-icon">🔍</div><p>未找到匹配的书籍</p><p class="sub">试试其他关键词</p>';
+        grid.appendChild(noResults);
+      }
+    } else {
+      document.getElementById('no-results')?.remove();
+    }
+  });
+
+  // 搜索框快捷键：Ctrl/Cmd + K 聚焦搜索框
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+</script>
+</body>
+</html>

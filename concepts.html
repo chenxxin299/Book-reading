@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念索引 · 读书知识库</title>
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --paper: #fff;
+    --ink: #1f2328;
+    --ink-light: #5a6272;
+    --accent: #c26a18;
+    --accent-soft: #fff1e2;
+    --border: #e8e4df;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    background: var(--ink);
+    color: #fff;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: #aaa;
+    font-size: 0.9rem;
+  }
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.1);
+    transition: background .2s;
+    font-size: 0.9rem;
+  }
+  .nav a:hover { background: rgba(255,255,255,.2); }
+  .nav a.active { background: var(--accent); }
+
+  .container {
+    flex: 1;
+    display: flex;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
+  }
+
+  /* 左侧索引栏 */
+  .sidebar {
+    width: 280px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 0;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    position: sticky;
+    top: 24px;
+  }
+  .sidebar-header {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .sidebar-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sidebar-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background .2s;
+  }
+  .sidebar-item:hover {
+    background: var(--accent-soft);
+  }
+  .sidebar-item.active {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+  }
+  .concept-name {
+    font-size: 0.9rem;
+    color: var(--ink);
+    flex: 1;
+  }
+  .concept-badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .concept-badge.high {
+    background: #fff1e2;
+    color: #c26a18;
+  }
+  .concept-badge.medium {
+    background: #e3f2fd;
+    color: #2d6a8a;
+  }
+  .concept-badge.low {
+    background: #f0f4f0;
+    color: #5a7a3a;
+  }
+
+  /* 右侧详情区 */
+  .content {
+    flex: 1;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    min-height: 400px;
+  }
+  .content-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--ink-light);
+    font-size: 0.95rem;
+  }
+  .detail-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .detail-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .detail-meta {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+  }
+  .detail-section {
+    margin-bottom: 28px;
+  }
+  .detail-section h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .definition-item {
+    margin-bottom: 16px;
+    padding: 16px;
+    background: #f9f8f6;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+  }
+  .definition-book {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .definition-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .no-definition {
+    color: var(--ink-light);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+  .book-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .book-tag {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    background: #f0ece6;
+    color: var(--ink);
+    border-radius: 16px;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: #bbb;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    .sidebar {
+      width: 100%;
+      position: static;
+      max-height: 300px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔑 概念索引</h1>
+  <p>跨书核心概念 · 69 个概念</p>
+  <div class="nav">
+    <a href="index.html">首页</a>
+    <a href="themes.html">主题</a>
+    <a href="concepts.html" class="active">概念</a>
+    <a href="graph.html">知识图谱</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>概念列表</h3>
+    </div>
+    
+        <div class="sidebar-item" data-concept-id="concept-0">
+            <span class="concept-name">实事求是的世界观</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-1">
+            <span class="concept-name">过分情绪化的世界观</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-2">
+            <span class="concept-name">四级收入框架</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-3">
+            <span class="concept-name">归因</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-4">
+            <span class="concept-name">基本归因错误</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-5">
+            <span class="concept-name">人与情境</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-6">
+            <span class="concept-name">认知革命</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-7">
+            <span class="concept-name">虚构秩序</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-8">
+            <span class="concept-name">农业革命</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-9">
+            <span class="concept-name">反脆弱</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-10">
+            <span class="concept-name">脆弱性</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-11">
+            <span class="concept-name">可选择性</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-12">
+            <span class="concept-name">批判性思维</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-13">
+            <span class="concept-name">海绵式思维 / 淘金式思维</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-14">
+            <span class="concept-name">弱势 / 强势批判性思维</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-15">
+            <span class="concept-name">态度</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-16">
+            <span class="concept-name">成功是成功之母</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-17">
+            <span class="concept-name">抵制诱惑</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-18">
+            <span class="concept-name">系统1 / 系统2</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-19">
+            <span class="concept-name">启发法与偏见</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-20">
+            <span class="concept-name">眼见即为事实</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-21">
+            <span class="concept-name">可预测的非理性</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-22">
+            <span class="concept-name">锚定与任意一致</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-23">
+            <span class="concept-name">免费的吸引力</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-24">
+            <span class="concept-name">以人为本</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-25">
+            <span class="concept-name">动机最重要</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-26">
+            <span class="concept-name">视觉 / 分类</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-27">
+            <span class="concept-name">效价</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-28">
+            <span class="concept-name">情感</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-29">
+            <span class="concept-name">强化学习</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-30">
+            <span class="concept-name">格局</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-31">
+            <span class="concept-name">位置</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-32">
+            <span class="concept-name">主动性</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-33">
+            <span class="concept-name">多模型思维</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-34">
+            <span class="concept-name">所有模型都错</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-35">
+            <span class="concept-name">智慧层次结构</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-36">
+            <span class="concept-name">理性</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-37">
+            <span class="concept-name">自然</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-38">
+            <span class="concept-name">德性</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-39">
+            <span class="concept-name">灰犀牛</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-40">
+            <span class="concept-name">否认</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-41">
+            <span class="concept-name">得过且过</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-42">
+            <span class="concept-name">扩展和建构理论</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-43">
+            <span class="concept-name">积极率</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-44">
+            <span class="concept-name">欣欣向荣</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-45">
+            <span class="concept-name">第一性原理</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-46">
+            <span class="concept-name">归纳法</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-47">
+            <span class="concept-name">公理化思维</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-48">
+            <span class="concept-name">系统</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-49">
+            <span class="concept-name">库存与流量</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-50">
+            <span class="concept-name">反馈回路</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-51">
+            <span class="concept-name">概念一：长期主义</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-52">
+            <span class="concept-name">概念二：组织是无机与有机的结合体</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-53">
+            <span class="concept-name">概念三：业务是生产力，组织是生产关系</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-54">
+            <span class="concept-name">见识</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-55">
+            <span class="concept-name">命与运</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-56">
+            <span class="concept-name">商业本质</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-57">
+            <span class="concept-name">超级智能</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-58">
+            <span class="concept-name">智能爆发</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-59">
+            <span class="concept-name">控制问题</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-60">
+            <span class="concept-name">批判性思考</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-61">
+            <span class="concept-name">感觉</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-62">
+            <span class="concept-name">判断</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-63">
+            <span class="concept-name">非暴力沟通</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-64">
+            <span class="concept-name">疏离生命的语言</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-65">
+            <span class="concept-name">观察</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-66">
+            <span class="concept-name">黑天鹅</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-67">
+            <span class="concept-name">不确定性</span>
+            <span class="concept-badge low">1</span>
+        </div>
+        <div class="sidebar-item" data-concept-id="concept-68">
+            <span class="concept-name">预测幻觉</span>
+            <span class="concept-badge low">1</span>
+        </div>
+  </div>
+
+  <div class="content">
+    <div class="content-empty">← 点击左侧概念查看详情</div>
+  </div>
+</div>
+
+<div class="footer">
+  生成于 2026-04-20 16:57 · Book Intelligence System
+</div>
+
+<script>
+const conceptsData = {"concept-0": {"name": "实事求是的世界观", "books": ["《事实》"], "definitions": {"《事实》": "在书中的含义：不是冷冰冰地崇拜数据，而是用可验证事实去校正直觉、媒体叙事和习惯性悲观。 作者为何强调：因为他发现无知不是“没知识”，而是“被错误世界图景支配”。没有世界观校正，知识更新很快失效。"}, "frequency": 1}, "concept-1": {"name": "过分情绪化的世界观", "books": ["《事实》"], "definitions": {"《事实》": "在书中的含义：指人们凭借恐惧、负面记忆、戏剧性新闻和对立叙事来理解世界，结果把现实想得比事实更糟。 作者为何强调：因为这不是媒体单独造成的，而是媒体叙事与人类本能相互勾连的结果。"}, "frequency": 1}, "concept-2": {"name": "四级收入框架", "books": ["《事实》"], "definitions": {"《事实》": "在书中的含义：用四个收入等级替代“富国/穷国”“发达/发展中”的二元分类，以更接近现实地呈现世界人口的真实分布。 作者为何强调：二分法是认知误差的源头，它掩盖了世界上大量处于中间状态、持续改善生活的人群。"}, "frequency": 1}, "concept-3": {"name": "归因", "books": ["人类如何思考：社会心理学大师的人生回忆录"], "definitions": {"人类如何思考：社会心理学大师的人生回忆录": "在书中的含义：不是“解释一下原因”这么简单，而是人如何把行为原因分配给人格、动机、情境、关系和环境的认知过程。 作者为何强调：因为归因是理解人类误判的总入口。你把原因归到哪里，就决定了你如何评价一个人、如何设计制度、如何做干预。"}, "frequency": 1}, "concept-4": {"name": "基本归因错误", "books": ["人类如何思考：社会心理学大师的人生回忆录"], "definitions": {"人类如何思考：社会心理学大师的人生回忆录": "在书中的含义：人们倾向于高估人格特质对行为的作用，低估情境与结构因素的影响。 作者为何强调：这是现代社会最普遍的认知盲点之一，也是社会判断中大量误会、不公和道德化攻击的源头。"}, "frequency": 1}, "concept-5": {"name": "人与情境", "books": ["人类如何思考：社会心理学大师的人生回忆录"], "definitions": {"人类如何思考：社会心理学大师的人生回忆录": "在书中的含义：行为并不是“人”或“环境”二选一的结果，而是二者互动的产物。人带着特征进入情境，情境又激活、抑制、重塑人的表现。 作者为何强调：这是对传统人格中心主义的修正。作者持续指出，我们太容易把行为稳定地归于性格，却忘了很多情境都能系统性改变行为。"}, "frequency": 1}, "concept-6": {"name": "认知革命", "books": ["人类简史"], "definitions": {"人类简史": "在书中的含义：不是一般意义上的“更聪明”，而是智人突然拥有了讲述复杂故事、传播抽象信息并组织陌生人大规模合作的能力。 作者为何强调：因为赫拉利认为，智人真正碾压其他人类物种的关键，不是单个个体更强，而是群体协调能力实现质变。"}, "frequency": 1}, "concept-7": {"name": "虚构秩序", "books": ["人类简史"], "definitions": {"人类简史": "在书中的含义：国家、法律、金钱、公司、人权等，并非像石头或河流那样客观存在，而是由主体间共同相信而获得效力的现实。 作者为何强调：这是全书解释社会复杂性的核心钥匙。没有虚构秩序，陌生人之间无法稳定合作，帝国和市场都无法运作。"}, "frequency": 1}, "concept-8": {"name": "农业革命", "books": ["人类简史"], "definitions": {"人类简史": "在书中的含义：不是单纯从野生采集到定居耕作的技术升级，而是一个把人类生活重构为高劳动、高人口、高依赖的结构性转折。 作者为何强调：赫拉利在这里发起最强烈的旧框架修正，把“农业=进步”的常识翻过来，称其为“史上最大骗局”。"}, "frequency": 1}, "concept-9": {"name": "反脆弱", "books": ["反脆弱：从不确定性中获益"], "definitions": {"反脆弱：从不确定性中获益": "在书中的含义：不是“抗打击”或“恢复原状”，而是在波动、压力、错误与随机冲击下变得更强。 作者为何强调：因为现代语言里缺少这个词，导致我们只能在“脆弱”与“坚固”之间思考，无法识别真正能从无序中获益的事物。"}, "frequency": 1}, "concept-10": {"name": "脆弱性", "books": ["反脆弱：从不确定性中获益"], "definitions": {"反脆弱：从不确定性中获益": "在书中的含义：脆弱性不是“会不会坏”的一般性说法，而是一个系统对波动、误差、时间、冲击的负向敏感度。 作者为何强调：因为比起计算事件概率，识别什么东西脆弱要容易得多，也更具行动意义。"}, "frequency": 1}, "concept-11": {"name": "可选择性", "books": ["反脆弱：从不确定性中获益"], "definitions": {"反脆弱：从不确定性中获益": "在书中的含义：在不必完全理解世界的情况下，保留“有利时参与、不利时退出”的权利结构。 作者为何强调：可选择性是反脆弱最实用的机制之一。你不必预测，只需让自己暴露于上行收益而限制下行损失。"}, "frequency": 1}, "concept-12": {"name": "批判性思维", "books": ["《学会提问》深度阅读报告"], "definitions": {"《学会提问》深度阅读报告": "在书中的含义：它不是单纯否定、挑错或聪明反驳，而是围绕一组批判性问题，对耳闻目见的内容进行系统评价。 作者为何强调：因为大量人把“独立思考”挂在嘴边，却没有任何稳定的评价程序，最终仍被情绪、权威和熟悉感带着走。"}, "frequency": 1}, "concept-13": {"name": "海绵式思维 / 淘金式思维", "books": ["《学会提问》深度阅读报告"], "definitions": {"《学会提问》深度阅读报告": "在书中的含义：海绵式思维强调吸收信息，淘金式思维强调主动筛选、不断提问、边吸收边判断。 作者为何强调：因为仅靠吸收无法区分真假优劣，最后读到什么、听到什么、最新接触什么，就信什么。"}, "frequency": 1}, "concept-14": {"name": "弱势 / 强势批判性思维", "books": ["《学会提问》深度阅读报告"], "definitions": {"《学会提问》深度阅读报告": "在书中的含义：弱势批判性思维是用提问和分析来捍卫既有信念；强势批判性思维则把同样的审查标准用于自己的信念。 作者为何强调：因为很多人表面喜欢“理性”，其实只是在寻找更高级的辩护术，用逻辑包装偏见。"}, "frequency": 1}, "concept-15": {"name": "态度", "books": ["《态度》"], "definitions": {"《态度》": "在书中的含义：不是表面的积极口号，而是一个人面对世界的默认设定，包括看待困难、关系、金钱、学习与责任的方式。 作者为何强调：因为他认为真正决定命运的，不是一次性选择，而是一个人反复做决定时所依赖的内在倾向。"}, "frequency": 1}, "concept-16": {"name": "成功是成功之母", "books": ["《态度》"], "definitions": {"《态度》": "在书中的含义：作者强调，真实的小成功会建立自我效能感，帮助人形成“我做得到”的经验结构。 作者为何反复讲：因为社会常浪漫化失败，仿佛失败天然能生出智慧；但现实中，反复失败更常带来退缩与自我怀疑。"}, "frequency": 1}, "concept-17": {"name": "抵制诱惑", "books": ["《态度》"], "definitions": {"《态度》": "在书中的含义：不是苦行主义，而是区分即时快感与长期回报，避免被高刺激、低回报的行为掏空注意力与意志。 作者为何强调：因为在他看来，很多人生失败不是能力不够，而是长期被低级奖励系统绑定，失去做高价值事情的耐心。"}, "frequency": 1}, "concept-18": {"name": "系统1 / 系统2", "books": ["《思考，快与慢》"], "definitions": {"《思考，快与慢》": "在书中的含义：系统1是快速、自动、联想式、低耗能的思维机制；系统2是缓慢、审慎、需要注意力的思维机制。它们不是解剖学器官，而是功能模型。 作者为何强调：这是全书总开关。卡尼曼不是要做一个简单的二元划分，而是要让读者识别判断中的“默认机制”和“纠偏机制”。"}, "frequency": 1}, "concept-19": {"name": "启发法与偏见", "books": ["《思考，快与慢》"], "definitions": {"《思考，快与慢》": "在书中的含义：启发法是系统1面对复杂问题时使用的认知捷径，如代表性、可得性、锚定；偏见则是这些捷径在特定场景中的系统性误差。 作者为何强调：作者要把“错误”从个别失误提升为可研究的模式。启发法不是坏习惯，而是高效思维的副产品。"}, "frequency": 1}, "concept-20": {"name": "眼见即为事实", "books": ["《思考，快与慢》"], "definitions": {"《思考，快与慢》": "在书中的含义：这是卡尼曼对系统1的一个核心刻画，英文为 WYSIATI。意思不是“眼见为实”那种常识，而是：系统1只基于当前可得信息构建最连贯的故事，几乎不会主动考虑缺失信息。 作者为何强调：因为很多判断错误并非来自信息错误，而是来自对“现有信息足够”的错觉。系统1更关注叙事完整，而非证据完备。"}, "frequency": 1}, "concept-21": {"name": "可预测的非理性", "books": ["怪诞行为学（套装全5册）"], "definitions": {"怪诞行为学（套装全5册）": "在书中的含义：不是说人时时失控，而是说人的偏差有稳定模式，能在相似情境中重复出现。 作者为何强调：这是整套书的地基。若非理性只是偶发，那就只值得嘲笑；若它可预测，就值得研究、设计与防范。"}, "frequency": 1}, "concept-22": {"name": "锚定与任意一致", "books": ["怪诞行为学（套装全5册）"], "definitions": {"怪诞行为学（套装全5册）": "在书中的含义：初始价格、初始判断、初始设定即便来自偶然，也会成为后续评价的参照点。 作者为何强调：因为它揭示了偏好并不如我们以为的那样独立生成，很多“我就喜欢这个价位”其实是被训练出来的。"}, "frequency": 1}, "concept-23": {"name": "免费的吸引力", "books": ["怪诞行为学（套装全5册）"], "definitions": {"怪诞行为学（套装全5册）": "在书中的含义：零价格不是普通价格的一种极端形式，而是一种会触发情绪性高估的特殊刺激。 作者为何强调：因为“免费”最能暴露人不是用线性成本收益函数在计算，而是在用损失规避与情绪近路做反应。"}, "frequency": 1}, "concept-24": {"name": "以人为本", "books": ["我看见的世界：李飞飞自传"], "definitions": {"我看见的世界：李飞飞自传": "在书中的含义：不是温和口号，而是技术目标设定原则，要求AI的发展以人的尊严、福祉、能力增强与公共利益为中心。 作者为何强调：因为她看见技术天然会被资本效率、国家治理、平台扩张等力量吸走，若不主动校准，人会退居为被计算、被管理、被优化的对象。"}, "frequency": 1}, "concept-25": {"name": "动机最重要", "books": ["我看见的世界：李飞飞自传"], "definitions": {"我看见的世界：李飞飞自传": "在书中的含义：技术的影响不由能力本身决定，而由推动它发展的制度动机、商业逻辑与政治目标决定。 作者为何强调：因为同一种技术，可以用于辅助医疗，也可以用于大规模监控；可以帮助弱者，也可以筛选、排斥和规训弱者。"}, "frequency": 1}, "concept-26": {"name": "视觉 / 分类", "books": ["我看见的世界：李飞飞自传"], "definitions": {"我看见的世界：李飞飞自传": "在书中的含义：视觉不是简单接收像素，而是把世界组织为可识别、可行动、可推理的类别结构。分类是视觉理解的核心机制。 作者为何强调：因为她的学术突破正来自一个关键洞见——机器要理解世界，首先得像人一样学会把世界识别为“物”。"}, "frequency": 1}, "concept-27": {"name": "效价", "books": ["《智能简史》深度分析报告"], "definitions": {"《智能简史》深度分析报告": "在书中的含义：不是道德意义上的善恶，而是大脑对刺激做出的“靠近 / 远离”评估。 作者为何强调：因为这是最早智能的入口。没有效价，动物就无法把世界分成“对我有利”与“对我有害”。"}, "frequency": 1}, "concept-28": {"name": "情感", "books": ["《智能简史》深度分析报告"], "definitions": {"《智能简史》深度分析报告": "在书中的含义：作者更接近把情感还原为效价与唤醒的组合，而非高阶文化情绪词汇。 作者为何强调：因为情感不是理性的对立面，而是最早用于“在不确定环境中持续导航”的控制机制。"}, "frequency": 1}, "concept-29": {"name": "强化学习", "books": ["《智能简史》深度分析报告"], "definitions": {"《智能简史》深度分析报告": "在书中的含义：不是 AI 里的一个技术分支而已，而是脊椎动物大脑把“试错”升级为一般行为学习机制的关键突破。 作者为何强调：因为这一步让智能不再只是在刺激到来时反应，而开始能够学习任意动作序列与结果之间的关系。"}, "frequency": 1}, "concept-30": {"name": "格局", "books": ["《格局》"], "definitions": {"《格局》": "在书中的含义：不是气场、胸怀或空泛的大局观，而是一个人理解自身位置、时代环境、长期目标和行动方式的整体框架。 作者为何强调：因为在吴军看来，人与人真正拉开差距的，不是某一项技能，而是用什么层级看问题。格局大的人不是更会喊口号，而是更少做南辕北辙的事。"}, "frequency": 1}, "concept-31": {"name": "位置", "books": ["《格局》"], "definitions": {"《格局》": "在书中的含义：指个体对自己所处时代、行业、组织、能力边界与现实条件的清醒判断。它既是外部坐标，也是自我认知。 作者为何强调：因为一切方向判断都建立在位置判断之上。你如果连自己身处的时代和约束条件都搞错，再努力也只是加速偏航。"}, "frequency": 1}, "concept-32": {"name": "主动性", "books": ["《格局》"], "definitions": {"《格局》": "在书中的含义：不是简单地勤快、加班、抢活，而是在环境不完备、规则不充分、资源不足时，主动创造条件、推动事情向前。 作者为何强调：吴军认为，尤其在创业和变化剧烈的时代，主动性比单项能力更重要。因为能力只能解决已知问题，主动性才能面对未知问题。"}, "frequency": 1}, "concept-33": {"name": "多模型思维", "books": ["模型思维"], "definitions": {"模型思维": "在书中的含义：不是多记几个术语，而是对同一现象并置多个逻辑一致、可经验检验的框架。 作者为何强调：因为复杂现象往往由多个因果机制叠加，单一模型注定会留下系统性盲点。"}, "frequency": 1}, "concept-34": {"name": "所有模型都错", "books": ["模型思维"], "definitions": {"模型思维": "在书中的含义：模型必然简化现实，因此不可能完整还原世界；错误不是缺陷，而是模型之所以可用的代价。 作者为何强调：因为很多人一旦学模型，就会误把模型当真理；而作者要先切断这种“形式主义崇拜”。"}, "frequency": 1}, "concept-35": {"name": "智慧层次结构", "books": ["模型思维"], "definitions": {"模型思维": "在书中的含义：从数据、信息、知识到智慧的递进结构，模型位于“知识”层，帮助把信息组织成可理解关系。 作者为何强调：因为现代人最容易停留在信息层，误把“知道很多事实”当成“理解世界”。"}, "frequency": 1}, "concept-36": {"name": "理性", "books": ["《沉思录》深度阅读报告"], "definitions": {"《沉思录》深度阅读报告": "在书中的含义：不是抽象推理能力，而是人内在那部分能判断、分辨、校正冲动、让行动合乎本性的主导力量。 作者为何强调：因为一旦理性失守，外部世界并不需要打败你，你已经先从内部瓦解了自己。"}, "frequency": 1}, "concept-37": {"name": "自然", "books": ["《沉思录》深度阅读报告"], "definitions": {"《沉思录》深度阅读报告": "在书中的含义：不是单指山川草木，而是宇宙整体的秩序、生成逻辑与每种存在应有的功能位置。 作者为何强调：因为奥勒留要把“命运”从纯粹的被动受难，转化为可理解的秩序接受。顺应自然，不是认命，而是承认有限。"}, "frequency": 1}, "concept-38": {"name": "德性", "books": ["《沉思录》深度阅读报告"], "definitions": {"《沉思录》深度阅读报告": "在书中的含义：德性不是道德标签，而是一种灵魂状态和行动品质，集中体现为正义、节制、勇气、真诚、审慎。 作者为何强调：因为只有把善安放在德性中，人才不必随外部得失起伏。德性是唯一不会被夺走的财富。"}, "frequency": 1}, "concept-39": {"name": "灰犀牛", "books": ["灰犀牛：如何应对大概率危机"], "definitions": {"灰犀牛：如何应对大概率危机": "在书中的含义：它指的是高概率、强冲击、可预见却常被忽视的风险。它不是神秘意外，而是逼近中的庞然大物。 作者为何强调：因为现代社会的注意力被“不可预测性”迷住，反而忽视了更该处理的已知风险。她试图把风险讨论从猎奇转回治理。"}, "frequency": 1}, "concept-40": {"name": "否认", "books": ["灰犀牛：如何应对大概率危机"], "definitions": {"灰犀牛：如何应对大概率危机": "在书中的含义：不是简单不知道，而是一种主动或被动的心理防御。人明知有迹象，却通过淡化、合理化、转移注意来避免不适。 作者为何强调：因为危机治理的第一道门槛不是信息获取，而是承认现实。很多组织不是没有报告，而是不愿把报告当回事。"}, "frequency": 1}, "concept-41": {"name": "得过且过", "books": ["灰犀牛：如何应对大概率危机"], "definitions": {"灰犀牛：如何应对大概率危机": "在书中的含义：已经承认问题存在，却选择拖延、微调、推迟决断，用时间换心理舒适，用小修小补代替结构性应对。 作者为何强调：因为多数危机并不是死在“完全否认”，而是死在“我们知道，但现在还不是时候”。真正丢失的是行动窗口。"}, "frequency": 1}, "concept-42": {"name": "扩展和建构理论", "books": ["《积极情绪的力量》"], "definitions": {"《积极情绪的力量》": "在书中的含义：积极情绪会先扩展注意力、联想范围与行动选项，再在时间中累积为认知、社会、心理和生理资源。 作者为何强调：这是她对“积极情绪有什么用”这一根本问题的核心回答，也是她试图替换旧情绪理论的主轴。"}, "frequency": 1}, "concept-43": {"name": "积极率", "books": ["《积极情绪的力量》"], "definitions": {"《积极情绪的力量》": "在书中的含义：一段时间内积极情绪与消极情绪的频率比值，作者用它来描述一个人或系统更接近衰败还是繁荣。 作者为何强调：她想把“感觉状态”从模糊描述推进到可测量指标，让积极心理学不仅有价值判断，还有动态判断。"}, "frequency": 1}, "concept-44": {"name": "欣欣向荣", "books": ["《积极情绪的力量》"], "definitions": {"《积极情绪的力量》": "在书中的含义：不是短时快乐，而是一种持续展开的最佳机能状态，既感觉良好，也做得更好，并能为周围世界创造价值。 作者为何强调：她要把心理学从“减少病痛”推进到“理解繁荣”；欣欣向荣是她替代“没病就好”的目标概念。"}, "frequency": 1}, "concept-45": {"name": "第一性原理", "books": ["第一性原理"], "definitions": {"第一性原理": "在书中的含义：它不是“最简单的道理”，而是一个系统赖以成立的元前提、基石假设、第一前提。 作者为何强调：因为只要前提没被碰，系统内的一切优化都只是修补，不能真正越界。"}, "frequency": 1}, "concept-46": {"name": "归纳法", "books": ["第一性原理"], "definitions": {"第一性原理": "在书中的含义：从经验、样本、已发生的事实中总结规律，并把它外推到更大范围与未来时空。 作者为何强调：因为它是人类默认思维，也是商业决策、管理习惯与日常常识的主要来源。"}, "frequency": 1}, "concept-47": {"name": "公理化思维", "books": ["第一性原理"], "definitions": {"第一性原理": "在书中的含义：从少量不可再证的公理或公设出发，通过严密逻辑推导建立系统。 作者为何强调：因为这代表一种高阶理性能力，不满足于记结论，而要求证明链条。"}, "frequency": 1}, "concept-48": {"name": "系统", "books": ["系统之美：决策者的系统思考"], "definitions": {"系统之美：决策者的系统思考": "在书中的含义：系统不是一堆事物的集合，而是由要素、相互连接关系与共同目标构成的整体。梅多斯强调，系统之所以呈现某种行为，不是因为部件本身，而是因为部件如何连接、朝什么目标运转。 作者为何强调：因为多数人看问题停留在“零件视角”，以为增加资源、替换负责人、修改某个环节就够了，却忽略整体行为来自结构。"}, "frequency": 1}, "concept-49": {"name": "库存与流量", "books": ["系统之美：决策者的系统思考"], "definitions": {"系统之美：决策者的系统思考": "在书中的含义：库存是某一时刻积累起来的状态量，流量是改变库存的进入与流出。库存让系统具有记忆，流量决定库存如何变化。 作者为何强调：因为人们容易只对“流量事件”有感知，比如订单、收入、流入人口、污染排放，却忽略真正决定后果的是积累状态，比如负债、声誉、人口结构、碳浓度、信任储备。"}, "frequency": 1}, "concept-50": {"name": "反馈回路", "books": ["系统之美：决策者的系统思考"], "definitions": {"系统之美：决策者的系统思考": "在书中的含义：反馈回路是系统行为得以自我生成、自我纠偏或自我放大的机制。主要分为强化回路与调节回路。强化回路让变化越来越快，调节回路让系统维持在某种范围。 作者为何强调：因为线性思维只看到单向作用，而反馈思维看到“结果会反过来成为原因”。这使我们能理解增长、崩溃、稳定、振荡等行为模式。"}, "frequency": 1}, "concept-51": {"name": "概念一：长期主义", "books": ["《组织的活法》"], "definitions": {"《组织的活法》": "在本书中，长期主义不是一句道德正确的话，而是组织建设的时间逻辑。邓康明反复强调它，是因为组织的结果滞后于组织的投入：你今天培养干部、塑造文化、建立制度，短期往往看不到结果，但未来的组织韧性恰恰来自这些“当下无用”的投入。这个概念在书里的作用，是用来对抗创始人的天然短视——身为CEO，你必须盯利润、盯增长、盯现金流；但身为创始人，你又必须超出年度经营周期，为未来三五年的组织形态埋下因。它抓住的更深问题，是组织为什么总在危机发生后才想起补课。现实里，大多数公司并不是不懂长期主义，而是被即时竞争、融资压力和经营焦虑不断推回短期主义。这个概念帮助我们重新理解现实：很多“今天的人才问题”，其实是三年前没有投入；很多“文化稀释”，其实是组织扩张时没有种下足够强的因。 它对行动的启发是：创始人必须把一部分注意力固定配置给“短期不出结果、长期决定生死”的事项，比如干部培养、第二曲线储备、组织价值观的清晰表达。它的边界在于，长期主义不能成为不看经营现实的借口，更不能变成“慢就是对”。书里其实隐含了一层重要限定：长期主义必须建立在“活下来”的前提上。它最容易被误用的地方，是把所有低效、拖延、没有反馈的动作都包装成长期主义。真正的长期主义不是拒绝短期，而是让短期服从长期方向。"}, "frequency": 1}, "concept-52": {"name": "概念二：组织是无机与有机的结合体", "books": ["《组织的活法》"], "definitions": {"《组织的活法》": "这是全书最重要的定义之一。所谓无机，指组织架构、流程、制度、职级、激励这些可以画出来、写出来、买得来的部分；所谓有机，指干部、价值观、行为习惯、信任关系、文化语境这些难以标准化复制的部分。这个概念的真正作用，是纠正中国企业对组织建设最普遍的误解：把组织当成结构设计题。作者反复强调它，是因为大量创业公司愿意花钱请咨询公司梳流程、搭体系，却不愿意花时间亲自看人、带干部、塑造决策边界。结果就是“无机越来越完整，有机越来越贫弱”，组织看起来像样，实际上没有生命力。 这个概念抓住的更深问题是：企业真正不可复制的竞争力，到底来自哪里？作者的答案是，不在流程模板，而在那些被价值观训练出来、彼此信任、形成共同语境的人和他们沉淀出来的行为模式。它帮助重新理解现实中的一个关键现象：为什么很多大公司方法论移植到创业公司失败？因为无机部分可以复制，有机部分无法照搬。它对现实判断的启发是，创始人可以购买流程，但不能外包文化；可以请人搭制度，但不能把干部标准和价值判断交出去。它的边界是：不能因此走向反制度、反流程，把一切都归到文化和感觉。它的误用则是一些人会借“有机”之名反对制度化，最后把组织做成全靠拍脑袋和关系运转的江湖。"}, "frequency": 1}, "concept-53": {"name": "概念三：业务是生产力，组织是生产关系", "books": ["《组织的活法》"], "definitions": {"《组织的活法》": "这是邓康明理解组织与业务关系的底层比喻。业务模式决定客户价值、营销方式和变现逻辑；组织模式则决定这些价值能否被高效生产、交付和放大。这个概念在书中的作用，是把组织问题从“人和HR的问题”重新拉回经营问题：组织效率直接影响利润率，组织不是后台支持功能，而是经营系统的一部分。作者之所以反复强调，是因为现实中很多创始人把组织和业务切开看：业务归业务团队，组织归HR。结果出现的问题常常是，看似人的能力不行，实则是组织设计和业务模式错配。 更深层地说，这个概念回应的是一个常被忽视的问题：为什么同样卖一个产品、同样服务一类客户，不同公司的利润率和战斗力差别巨大？作者借阿里B2B、腾讯早期QQ等案例说明，不同业务模式需要完全不同的组织形态。强销售服务型业务，需要高纪律、高执行的科层式体系；产品创新型业务，则更需要灵活、自组织、小团队创意。这一概念帮助我们重新理解很多现实争论：不是扁平组织就先进，也不是科层制就落后，关键在于业务适配。它最值得继续追问的是：当业务从单一走向多元时，组织是否还能保持单一逻辑？它的边界在于，不能把业务决定组织理解成机械因果。创始人的个性、行业周期、技术环境同样会修正组织形态。最容易被误用的地方，是把一切组织问题都归咎于业务，忽略领导力和文化失效。"}, "frequency": 1}, "concept-54": {"name": "见识", "books": ["《见识》深度分析报告"], "definitions": {"《见识》深度分析报告": "在书中的含义：不是知道很多名词，也不是读过很多书，而是能把环境、趋势、人性和自身位置放在一起判断。 作者为何强调：因为多数人的问题不是没努力，而是没看清什么值得努力、何时该进、何时该退。"}, "frequency": 1}, "concept-55": {"name": "命与运", "books": ["《见识》深度分析报告"], "definitions": {"《见识》深度分析报告": "在书中的含义：运是随机事件与短期好运，命则是环境边界加个人思维方式所形成的人生轨道。 作者为何强调：他要修正两种流行误解，一种是出身决定一切，一种是拼命努力就可改写一切。"}, "frequency": 1}, "concept-56": {"name": "商业本质", "books": ["《见识》深度分析报告"], "definitions": {"《见识》深度分析报告": "在书中的含义：商业的本质是让人愿意多花时间、多花钱，而不是只想着帮人省钱。 作者为何强调：因为很多创业者迷信效率叙事、概念叙事，却不理解消费升级、人性欲望和体验价值才是更大市场所在。"}, "frequency": 1}, "concept-57": {"name": "超级智能", "books": ["《超级智能》"], "definitions": {"《超级智能》": "在书中的含义：不是某个任务上比人强，而是在多数一般认知领域中远超最聪明人类的系统性能力。 作者为何强调：因为很多人误把“会下棋”“会识图”当成讨论对象，忽略了真正危险的是一般能力的全面跨越。"}, "frequency": 1}, "concept-58": {"name": "智能爆发", "books": ["《超级智能》"], "definitions": {"《超级智能》": "在书中的含义：当一个系统能改进自身智能，并且改进能力随智能提升而增强，就会出现加速式跃迁。 作者为何强调：因为风险大小不仅取决于“会不会出现”，还取决于“出现得多快”。"}, "frequency": 1}, "concept-59": {"name": "控制问题", "books": ["《超级智能》"], "definitions": {"《超级智能》": "在书中的含义：如何确保超级智能在强大能力下仍然按人类可接受的方式行动，并且不偏离目标。 作者为何强调：因为默认结局未必安全，若不专门设计控制机制，能力增长会先于价值对齐。"}, "frequency": 1}, "concept-60": {"name": "批判性思考", "books": ["《超越感觉：批判性思考指南（原书第9版）》"], "definitions": {"《超越感觉：批判性思考指南（原书第9版）》": "在书中的含义：它不是挑错或否定，而是一种有意识地检视观点、证据、前提、推理和结论的心智活动。作者强调其核心在于“控制思维质量”，而非表现聪明。 作者为何强调：因为在现实中，很多人把“反应快”“观点强”“表达尖锐”误作高质量思考。作者反复界定这个概念，是为了把思考从情绪驱动转回方法驱动。"}, "frequency": 1}, "concept-61": {"name": "感觉", "books": ["《超越感觉：批判性思考指南（原书第9版）》"], "definitions": {"《超越感觉：批判性思考指南（原书第9版）》": "在书中的含义：书名中的“感觉”并非被简单否定。作者并不说感觉无用，而是说感觉只是思考的起点，不应被误认为结论。它提示问题，却不能替代检验。 作者为何强调：因为现代人的许多判断都停留在“我觉得”“我反感”“我不舒服”“我直觉如此”这一层。作者要做的，是把感觉从统治性位置降回辅助性位置。"}, "frequency": 1}, "concept-62": {"name": "判断", "books": ["《超越感觉：批判性思考指南（原书第9版）》"], "definitions": {"《超越感觉：批判性思考指南（原书第9版）》": "在书中的含义：判断是从信息、经验、价值与推理中形成结论的过程。作者把它视为思考的产出，但更关心判断形成的路径是否可靠。 作者为何强调：因为现实中人们太重结论、太轻过程。一个判断即便最后碰巧正确，也可能是靠坏方法得出的；而坏方法会在下次情境中继续制造错误。"}, "frequency": 1}, "concept-63": {"name": "非暴力沟通", "books": ["《非暴力沟通（修订版）》"], "definitions": {"《非暴力沟通（修订版）》": "在书中的含义：它不是“说话温柔”，而是一种把注意力放回生命、需要与连结的实践。它既是方法，也是价值取向。 作者为何强调：因为大多数人把暴力只理解为身体攻击，忽略了语言中的羞辱、评判、否定、命令同样会切断人与人的关系。"}, "frequency": 1}, "concept-64": {"name": "疏离生命的语言", "books": ["《非暴力沟通（修订版）》"], "definitions": {"《非暴力沟通（修订版）》": "在书中的含义：凡是使人离开自身感受和需要、转而沉溺于评判、贴标签、比较、要求、推卸责任的语言，都是疏离生命的语言。 作者为何强调：因为他认为暴力并非偶发，而是长期被语言结构和社会制度默许、复制与训练的结果。"}, "frequency": 1}, "concept-65": {"name": "观察", "books": ["《非暴力沟通（修订版）》"], "definitions": {"《非暴力沟通（修订版）》": "在书中的含义：观察是对具体可见可闻事实的描述，不夹带“懒”“强势”“不尊重”“总是”这类评论性解释。 作者为何强调：因为一旦把观察和评论混在一起，对方听见的通常不是信息，而是批评，沟通在第一步就破裂。"}, "frequency": 1}, "concept-66": {"name": "黑天鹅", "books": ["《黑天鹅效应》深度阅读分析报告"], "definitions": {"《黑天鹅效应》深度阅读分析报告": "在书中的含义：它不是泛指一切“出人意料”的事件，而是指那些低频、巨大冲击、事后常被叙事合理化的事件。作者借这一概念讨论的重点，不是列举灾难，而是揭示人类如何系统性低估结构性意外。 作者为何强调：因为黑天鹅暴露出传统预测框架的盲区。我们常把稳定视为默认，把异常当噪音，但很多决定历史走向的力量恰恰来自被排除在模型之外的极端事件。"}, "frequency": 1}, "concept-67": {"name": "不确定性", "books": ["《黑天鹅效应》深度阅读分析报告"], "definitions": {"《黑天鹅效应》深度阅读分析报告": "在书中的含义：不确定性不只是“信息不够”，而是世界本身具有复杂互动、反馈回路、非线性变化与模型外变量，因此未来永远无法被彻底封闭在既有知识中。 作者为何强调：因为大多数人以为只要数据更多、模型更强，未来就能被驯服。作者强调不确定性，是为了拆除这种现代主义式控制幻觉。"}, "frequency": 1}, "concept-68": {"name": "预测幻觉", "books": ["《黑天鹅效应》深度阅读分析报告"], "definitions": {"《黑天鹅效应》深度阅读分析报告": "在书中的含义：所谓预测幻觉，是指人们高估自己预见未来的能力，尤其在面对复杂系统时，误把清晰叙述、专家身份、技术模型和历史数据当作可靠控制力的证明。 作者为何强调：因为现代社会对预测有强需求。政府要预算，企业要规划，媒体要结论，公众要确定感。于是“说得像能预测”往往比“诚实承认边界”更容易获得认可。"}, "frequency": 1}};
+
+const sidebar = document.querySelector('.sidebar');
+const content = document.querySelector('.content');
+const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+sidebarItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const conceptId = item.dataset.conceptId;
+    const concept = conceptsData[conceptId];
+
+    // 更新激活状态
+    sidebarItems.forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+
+    // 渲染定义
+    let definitionsHtml = '';
+    const defs = Object.entries(concept.definitions);
+    if (defs.length > 0 && defs.some(([_, def]) => def)) {
+      definitionsHtml = defs
+        .filter(([_, def]) => def)
+        .map(([book, def]) => `
+          <div class="definition-item">
+            <div class="definition-book">${book}</div>
+            <div class="definition-text">${def}</div>
+          </div>
+        `).join('');
+    } else {
+      definitionsHtml = '<div class="no-definition">暂无详细定义</div>';
+    }
+
+    // 渲染书籍标签
+    const booksHtml = concept.books.map(book => `<span class="book-tag">${book}</span>`).join('');
+
+    content.innerHTML = `
+      <div class="detail-header">
+        <div class="detail-title">${concept.name}</div>
+        <div class="detail-meta">出现于 ${concept.frequency} 本书</div>
+      </div>
+      <div class="detail-section">
+        <h4>📖 概念定义</h4>
+        ${definitionsHtml}
+      </div>
+      <div class="detail-section">
+        <h4>📚 出现于</h4>
+        <div class="book-tags">${booksHtml}</div>
+      </div>
+    `;
+  });
+});
+
+// 默认选中第一个
+if (sidebarItems.length > 0) {
+  sidebarItems[0].click();
+}
+</script>
+</body>
+</html>

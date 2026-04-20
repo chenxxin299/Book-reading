@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>《悉达多》深度分析报告</title>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16"></script>
+<style>
+/* ═══════════════════════════════════════════
+   BOOK ANALYST — Enhanced Report Styles v4
+   ═══════════════════════════════════════════ */
+
+:root {
+  --bg: #f4f1ec;
+  --paper: #ffffff;
+  --ink: #1a1f27;
+  --ink2: #5a6272;
+  --accent: #b85c10;
+  --accent-soft: #fdf3ea;   /* 全底色用：暖橙奶白 */
+  --accent-border: #e5b98a;
+  --blue-soft: #f0f5fb;     /* 全底色用：冷蓝奶白 */
+  --blue-border: #b0c8e4;
+  --yellow-soft: #fefce8;   /* 全底色用：淡黄 */
+  --yellow-border: #e5d070;
+  --line: #e6e0d8;
+  --radius: 10px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.05);
+  --shadow-md: 0 3px 12px rgba(0,0,0,.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 13px; line-height: 1.75;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ── 侧边栏 ── */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+  background: #ece8e0; border-right: 1px solid var(--line);
+  padding: 16px 10px 24px; overflow-y: auto; z-index: 100;
+}
+.brand {
+  font-size: 11.5px; line-height: 1.5;
+  padding: 8px 10px 10px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--line); color: #374151;
+}
+.brand .book-title { font-weight: 700; display: block; margin-bottom: 2px; }
+.brand .book-author { color: var(--ink2); font-size: 11px; display: block; }
+.toc a {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 10px; margin: 2px 0; border-radius: 7px;
+  font-size: 11.5px; color: #374151; line-height: 1.4; transition: background .15s;
+}
+.toc a:hover { background: #ddd8cf; }
+.toc a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.toc-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--line); font-size: 10px; font-weight: 700;
+  flex-shrink: 0; color: var(--ink2);
+}
+.toc a.active .toc-num { background: var(--accent); color: #fff; }
+
+/* ── 主内容区 ── */
+.main { margin-left: 240px; padding: 24px 28px 80px; }
+.container { max-width: 920px; margin: 0 auto; }
+
+/* ── Hero ── */
+.hero {
+  background: var(--paper);
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px 28px 18px; box-shadow: var(--shadow-md);
+  margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent);
+}
+.hero h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; line-height: 1.3; }
+.hero .meta { color: var(--ink2); font-size: .85rem; margin-bottom: 12px; }
+.hero .subtitle {
+  border-left: 3px solid var(--accent-border);
+  padding: 8px 12px; font-size: .88rem; line-height: 1.6; color: var(--ink2);
+}
+
+/* ── section-card ── */
+.section-card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 14px; box-shadow: var(--shadow-sm);
+  margin-bottom: 20px; overflow: hidden;
+}
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px; border-bottom: 1px solid var(--line);
+  background: #f8f5f0;
+}
+.section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.section-title { font-size: .95rem; font-weight: 800; color: var(--ink); }
+.section-body { padding: 18px 22px; }
+
+/* ── 标题层级 ── */
+h2 {
+  font-size: .97rem; font-weight: 800;
+  margin: 20px 0 10px;
+  padding: 7px 12px;
+  border-left: 3px solid var(--accent);
+  background: #f8f5f0;
+  border-radius: 0 6px 6px 0;
+}
+h3 {
+  font-size: .92rem; font-weight: 700;
+  margin: 16px 0 7px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+h4 { font-size: .87rem; font-weight: 600; margin: 10px 0 5px; color: var(--ink2); }
+p  { font-size: .875rem; margin: 7px 0; }
+ul, ol { padding-left: 20px; }
+li { font-size: .875rem; margin: 5px 0; line-height: 1.7; }
+
+/* strong → 仅加粗，不加颜色不加底纹 */
+strong, b { font-weight: 700; }
+mark { background: #fef9c3; color: var(--ink); padding: 1px 3px; border-radius: 3px; }
+
+/* ── 通用卡片 ── */
+.card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+/* 观点/章节模块：白底 + 左侧橙边框（结构性，不涂色） */
+.card-accent {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+
+/* ══════════════════════════════════════
+   颜色原则：有颜色 = 整个框都有底色，不搞半边
+   暖色系 = 橙系（重点/警示）
+   冷色系 = 蓝系（信息/参考）
+   黄色系 = 洞见/摘要
+   ══════════════════════════════════════ */
+
+/* callout：暖橙底 + 匹配边框（全框着色） */
+.callout {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+/* callout-yellow：淡黄底 */
+.callout-yellow {
+  background: var(--yellow-soft);
+  border: 1px solid var(--yellow-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+/* callout-blue：冷蓝底 */
+.callout-blue {
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+.callout-green {
+  background: #f0faf4; border: 1px solid #a7d9b8;
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+
+/* 概念框：暖橙底（全框着色） */
+.concept-box {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius);
+  padding: 12px 14px; margin: 10px 0;
+}
+.concept-box .concept-title {
+  font-size: .8rem; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: .05em;
+  margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 1px dashed var(--accent-border);
+}
+
+/* 张力对比框：两侧皆有底色，中间深色 VS 柱 */
+.tension-box {
+  display: grid; grid-template-columns: 1fr 36px 1fr;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; margin: 12px 0;
+}
+.tension-box .t-side { padding: 12px 14px; font-size: .855rem; line-height: 1.65; }
+.tension-box .t-side:first-child { background: var(--blue-soft); }
+.tension-box .t-side:last-child  { background: var(--accent-soft); }
+.tension-box .t-vs {
+  display: flex; align-items: center; justify-content: center;
+  background: #3a3a3a; color: #fff;
+  font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  writing-mode: vertical-lr;
+}
+.tension-box .t-label {
+  font-size: .75rem; font-weight: 700; margin-bottom: 5px;
+  color: var(--ink2); text-transform: uppercase; letter-spacing: .04em; display: block;
+}
+
+/* 参考框：冷蓝底（全框着色） */
+.ref-box {
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-border);
+  border-radius: var(--radius);
+  padding: 10px 12px; margin: 8px 0;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.ref-box .ref-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.ref-box .ref-content { flex: 1; }
+.ref-box .ref-title { font-weight: 700; font-size: .86rem; margin-bottom: 2px; }
+.ref-box .ref-desc  { font-size: .81rem; color: var(--ink2); }
+
+/* ── 金句 ── */
+.quote {
+  background: #fafaf8; border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 12px 16px 10px 30px;
+  margin: 8px 0; position: relative;
+}
+.quote::before {
+  content: '"'; position: absolute; top: 2px; left: 8px;
+  font-size: 2rem; color: var(--accent-border); line-height: 1;
+  font-family: Georgia, serif;
+}
+.quote .source { font-size: .76rem; color: var(--ink2); margin-top: 5px; }
+
+/* ── Final Takeaway：白底，整洁列表，不用黑色条块 ── */
+.take {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 20px; margin: 10px 0;
+}
+.take ol, .take ul { padding-left: 20px; }
+.take li {
+  font-size: .875rem; margin: 8px 0; padding-bottom: 8px;
+  border-bottom: 1px solid var(--line); line-height: 1.7;
+}
+.take li:last-child { border-bottom: none; padding-bottom: 0; }
+.take p { font-size: .875rem; margin: 7px 0; }
+.take strong, .take b { font-weight: 700; color: var(--accent); }
+
+/* ── 圆桌对话 ── */
+.roundtable-round {
+  background: #f8f7f4; border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+.round-title {
+  font-size: .76rem; font-weight: 700; color: var(--ink2);
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: 10px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.dialogue { display: flex; gap: 10px; margin: 10px 0; align-items: flex-start; }
+.dialogue-avatar {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+}
+.dialogue-bubble {
+  flex: 1; background: var(--paper); border: 1px solid var(--line);
+  border-radius: 10px; padding: 9px 13px;
+}
+.dialogue-name { font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+.dialogue-bubble p  { font-size: .86rem; }
+.dialogue-bubble ul { font-size: .86rem; }
+.dialogue-bubble li { margin: 3px 0; }
+.round-insight {
+  margin-top: 8px; padding: 9px 12px;
+  background: var(--yellow-soft); border: 1px solid var(--yellow-border);
+  border-radius: 6px; font-size: .82rem; color: var(--ink);
+}
+
+/* ── Grid ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ── 标签 ── */
+.tag {
+  display: inline-block; background: #f0ece5; color: var(--ink2);
+  border: 1px solid var(--line);
+  padding: 2px 8px; border-radius: 999px; font-size: 11px; margin: 2px 3px;
+}
+
+/* ── 表格 ── */
+table { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 10px 0; }
+th { background: #f2ede6; font-weight: 700; }
+th, td { border: 1px solid var(--line); padding: 7px 11px; text-align: left; }
+tr:nth-child(even) td { background: #faf8f4; }
+
+/* ── Markmap ── */
+.markmap {
+  width: 100% !important; height: 520px !important;
+  display: block; border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden; background: #fff;
+}
+.markmap svg { width: 100% !important; height: 100% !important; }
+
+/* ── 响应式 ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 16px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .tension-box { grid-template-columns: 1fr; }
+  .tension-box .t-vs { writing-mode: horizontal-tb; padding: 6px; }
+}
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="brand">
+      <span class="book-title">悉达多</span>
+      <span class="book-author">赫尔曼·黑塞</span>
+    </div>
+    <nav class="toc">
+      <a href="#section-1">1. 导读：先看懂这本书</a>
+      <a href="#section-2">2. 这本书在解决什么问题</a>
+      <a href="#section-3">3. 关键词 / 核心概念</a>
+      <a href="#section-4">4. 全书结构拆解</a>
+      <a href="#section-5">5. 核心观点分析</a>
+      <a href="#section-6">6. 深度圆桌讨论</a>
+      <a href="#section-7">7. 认知拓展</a>
+      <a href="#section-8">8. 对我的启发与追问</a>
+      <a href="#section-9">9. 全书金句</a>
+      <a href="#section-10">10. Final Takeaways</a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="container">
+      <div class="hero">
+        <h1>《悉达多》深度阅读分析报告</h1>
+        <p>赫尔曼·黑塞 · 一部关于求道、自我、经验与和解的精神小说</p>
+        <div>
+          <span class="tag">成长小说</span>
+          <span class="tag">精神修行</span>
+          <span class="tag">存在主义</span>
+          <span class="tag">东方哲思</span>
+          <span class="tag">经验与觉悟</span>
+        </div>
+      </div>
+
+      <section id="section-1" class="section-card">
+        <div class="section-header">
+          <div class="section-num">01</div>
+          <div class="section-title">导读：先看懂这本书</div>
+        </div>
+        <div class="section-body">
+          <div class="callout-yellow">
+            这不是一本讲“如何修行成功”的书，而是一本讲“为什么真正的觉悟无法被他人的真理替代”的书。
+          </div>
+          <ul>
+            <li>这本书真正讨论的核心问题是：一个人如何不靠借来的教义，而是通过自己完整地活过生命，抵达真正的自我与和解。</li>
+            <li>全书的中心命题是：<strong>真理</strong>可以被言说为知识，但<strong>智慧</strong>只能被活成经验；真正的觉悟不是接受答案，而是穿过全部生命矛盾后形成的内在统一。</li>
+            <li>用最直白的话说，本书最有价值之处在于：它拒绝“正确道路”的幻觉，强调一个人必须亲自经历欲望、迷失、痛苦、爱、失去与时间，才能真正理解生命。</li>
+            <li>它不是一本佛学教义入门书，不是《四圣谛》或《八正道》的通俗解说，也不是一本鼓励离世苦修的宗教劝诫书。</li>
+            <li>它也不是一本浪漫化“做自己”的鸡汤书。悉达多的“做自己”不是任性，而是穿过自我幻觉、知识傲慢和生命挫败后，才慢慢学会倾听存在本身。</li>
+          </ul>
+          <div class="callout">
+            读这本书，关键不是问“悉达多最后悟到了什么”，而是问：“为什么他必须先走错那么多路，才能真正开始看见？”
+          </div>
+        </div>
+      </section>
+
+      <section id="section-2" class="section-card">
+        <div class="section-header">
+          <div class="section-num">02</div>
+          <div class="section-title">这本书在解决什么问题</div>
+        </div>
+        <div class="section-body">
+          <h3>2.1 作者真正想解决什么？</h3>
+          <ul>
+            <li>作者真正想处理的，不是“有没有真理”，而是“为什么人即便听见真理，也仍然不能因此得救”。</li>
+            <li>悉达多面对的根本困境是：所有教义都可能正确，但别人的正确并不能替代自己的觉悟。</li>
+            <li>这使问题从宗教层面推进到存在层面：人到底能否通过学习、模仿和归属，直接获得生命的完成感？</li>
+            <li>黑塞的答案是否定的。经验不能外包，生命不能代修，真正的成熟必须由个人承担。</li>
+          </ul>
+
+          <h3>2.2 这个问题为什么值得一本书反复讨论？</h3>
+          <ul>
+            <li>因为它不是古代修行者的问题，而是所有高认知者都会反复遇到的问题：我懂了很多，为什么还是没有真正改变？</li>
+            <li>现代人的典型症状是知识过剩、经验稀薄、语言精致、内心空转。我们会分析一切，却无法进入生活本身。</li>
+            <li>《悉达多》之所以经久不衰，是因为它抓住了一个长期被忽视的困境：知道正确，与成为正确，根本不是一回事。</li>
+            <li>这也是很多知识工作者、咨询者、修行者、管理者的共同困局：越擅长理解，越可能逃避亲身活出。</li>
+          </ul>
+
+          <h3>2.3 它表面上像在解决什么，更深处其实在解决什么？</h3>
+          <ul>
+            <li>表面上看，悉达多是在寻找解脱之道、顿悟之法、生命真义。</li>
+            <li>更深层看，他在解决的是“自我与世界如何重新连结”的问题。</li>
+            <li>他前期的问题，不是不够虔诚，而是把生命当成必须被超越的对象，把世界当作必须被否定的幻象。</li>
+            <li>后期的关键转变，不是获得更高级的理论，而是学会承认：世界不是障碍，关系不是污染，时间与痛苦也不是纯粹敌人。</li>
+          </ul>
+
+          <h3>2.4 作者所面对的现实症状是什么？这些症状如何表现？</h3>
+          <ul>
+            <li>第一种症状是<strong>精神傲慢</strong>：以为洞察力高于生活，因此轻视普通人的爱、痛苦、欲望与挣扎。</li>
+            <li>第二种症状是<strong>修行麻醉</strong>：把禁欲、冥想、苦行当成暂时逃离自我的技术，却没有真正理解自我。</li>
+            <li>第三种症状是<strong>经验失联</strong>：对世界有判断，却不愿被世界触碰，因此无法建立真正的共情与慈悲。</li>
+            <li>第四种症状是<strong>知识替代存在</strong>：以语言、体系和概念构造出“我已懂得”的幻觉，实际上仍停留在外部。</li>
+            <li>第五种症状是<strong>轮回式消费</strong>：在感官、财富、权力与刺激中试图填补空虚，最终只获得更深的疲惫与厌恶。</li>
+          </ul>
+
+          <h3>2.5 作者真正反对的旧框架、旧习惯、旧语言是什么？</h3>
+          <ul>
+            <li>作者反对的是一种“真理可传递、觉悟可复制、道路可标准化”的旧框架。</li>
+            <li>他也反对把世界简单二分为神圣/污秽、修行/世俗、解脱/沉沦的习惯性语言。</li>
+            <li>悉达多最深的叛逆，并非背叛佛陀，而是拒绝任何把活生生经验冻结成答案的结构。</li>
+            <li>因此他离开婆罗门、离开沙门、离开佛陀、离开商人、离开情欲，最终也离开“我要成为某种人”的执念。</li>
+          </ul>
+
+          <h3>2.6 作者建立的新框架是什么？</h3>
+          <ul>
+            <li>新的框架不是一套新教义，而是一种新理解：真正的智慧来自对生命整体的接受，而非对部分经验的排斥。</li>
+            <li>这个新框架里，世界不是幻象背后的遮蔽，而是意义本身的显现；石头、河流、欲望、失去，都可以成为老师。</li>
+            <li>它

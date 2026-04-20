@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主题浏览 · 读书知识库</title>
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --paper: #fff;
+    --ink: #1f2328;
+    --ink-light: #5a6272;
+    --accent: #c26a18;
+    --accent-soft: #fff1e2;
+    --border: #e8e4df;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    background: var(--ink);
+    color: #fff;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: #aaa;
+    font-size: 0.9rem;
+  }
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.1);
+    transition: background .2s;
+    font-size: 0.9rem;
+  }
+  .nav a:hover { background: rgba(255,255,255,.2); }
+  .nav a.active { background: var(--accent); }
+
+  .container {
+    flex: 1;
+    display: flex;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px;
+    gap: 24px;
+  }
+
+  /* 左侧索引栏 */
+  .sidebar {
+    width: 280px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 0;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    position: sticky;
+    top: 24px;
+  }
+  .sidebar-header {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .sidebar-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sidebar-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background .2s;
+  }
+  .sidebar-item:hover {
+    background: var(--accent-soft);
+  }
+  .sidebar-item.active {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+  }
+  .theme-name {
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  .theme-count {
+    font-size: 0.8rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  /* 右侧详情区 */
+  .content {
+    flex: 1;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    min-height: 400px;
+  }
+  .content-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--ink-light);
+    font-size: 0.95rem;
+  }
+  .detail-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .detail-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .detail-meta {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+  }
+  .detail-section {
+    margin-bottom: 28px;
+  }
+  .detail-section h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .book-list {
+    list-style: none;
+  }
+  .book-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  .book-list li:last-child {
+    border-bottom: none;
+  }
+  .concepts-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .concept-tag {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    background: #f0ece6;
+    color: var(--ink);
+    border-radius: 16px;
+    transition: all .2s;
+  }
+  .concept-tag:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: #bbb;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    .sidebar {
+      width: 100%;
+      position: static;
+      max-height: 300px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📑 主题浏览</h1>
+  <p>跨书主题索引 · 9 个主题</p>
+  <div class="nav">
+    <a href="index.html">首页</a>
+    <a href="themes.html" class="active">主题</a>
+    <a href="concepts.html">概念</a>
+    <a href="graph.html">知识图谱</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>主题列表</h3>
+    </div>
+    
+        <div class="sidebar-item" data-theme-id="theme-0">
+            <span class="theme-name">认知科学</span>
+            <span class="theme-count">25</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-1">
+            <span class="theme-name">哲学与人生</span>
+            <span class="theme-count">25</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-2">
+            <span class="theme-name">心理学</span>
+            <span class="theme-count">24</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-3">
+            <span class="theme-name">管理与战略</span>
+            <span class="theme-count">23</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-4">
+            <span class="theme-name">沟通与人际</span>
+            <span class="theme-count">19</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-5">
+            <span class="theme-name">科技与未来</span>
+            <span class="theme-count">18</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-6">
+            <span class="theme-name">风险与不确定性</span>
+            <span class="theme-count">15</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-7">
+            <span class="theme-name">历史与社会</span>
+            <span class="theme-count">15</span>
+        </div>
+        <div class="sidebar-item" data-theme-id="theme-8">
+            <span class="theme-name">经济与商业</span>
+            <span class="theme-count">14</span>
+        </div>
+  </div>
+
+  <div class="content">
+    <div class="content-empty">← 点击左侧主题查看详情</div>
+  </div>
+</div>
+
+<div class="footer">
+  生成于 2026-04-20 16:57 · Book Intelligence System
+</div>
+
+<script>
+const themesData = {"theme-0": {"name": "认知科学", "books": ["🔑 概念索引", "📑 主题浏览", "《事实》", "人类如何思考：社会心理学大师的人生回忆录", "人类简史", "反脆弱：从不确定性中获益", "《学会提问》深度阅读报告", "《态度》", "《思考，快与慢》", "怪诞行为学（套装全5册）", "我看见的世界：李飞飞自传", "《智能简史》深度分析报告", "《格局》", "模型思维", "《沉思录》深度阅读报告", "灰犀牛：如何应对大概率危机", "《积极情绪的力量》", "第一性原理", "系统之美：决策者的系统思考", "《组织的活法》", "《见识》深度分析报告", "《超级智能》", "《超越感觉：批判性思考指南（原书第9版）》", "《非暴力沟通（修订版）》", "《黑天鹅效应》深度阅读分析报告"], "concepts": ["海绵式思维 / 淘金式思维", "认知革命", "多模型思维", "黑天鹅", "位置", "库存与流量", "智慧层次结构", "观察", "批判性思维", "见识", "系统", "超级智能", "态度", "强化学习", "以人为本", "德性", "灰犀牛", "批判性思考", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "基本归因错误", "反脆弱", "脆弱性", "实事求是的世界观", "控制问题", "免费的吸引力", "公理化思维", "启发法与偏见", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "积极率", "命与运", "主动性", "扩展和建构理论", "情感", "不确定性", "概念二：组织是无机与有机的结合体", "所有模型都错", "成功是成功之母", "自然", "判断", "锚定与任意一致", "系统1 / 系统2", "效价", "农业革命", "得过且过", "弱势 / 强势批判性思维", "归因", "欣欣向荣", "疏离生命的语言", "视觉 / 分类", "过分情绪化的世界观", "商业本质", "非暴力沟通", "理性", "反馈回路", "虚构秩序", "预测幻觉", "眼见即为事实", "智能爆发", "人与情境", "可选择性", "第一性原理", "感觉", "四级收入框架", "抵制诱惑"], "frequency": 25}, "theme-1": {"name": "哲学与人生", "books": ["🔑 概念索引", "《事实》", "人类如何思考：社会心理学大师的人生回忆录", "人类简史", "反脆弱：从不确定性中获益", "《学会提问》深度阅读报告", "《态度》", "《思考，快与慢》", "怪诞行为学（套装全5册）", "《悉达多》深度阅读分析报告", "我看见的世界：李飞飞自传", "《智能简史》深度分析报告", "《格局》", "模型思维", "《沉思录》深度阅读报告", "灰犀牛：如何应对大概率危机", "《积极情绪的力量》", "第一性原理", "系统之美：决策者的系统思考", "《组织的活法》", "《见识》深度分析报告", "《超级智能》", "《超越感觉：批判性思考指南（原书第9版）》", "《非暴力沟通（修订版）》", "《黑天鹅效应》深度阅读分析报告"], "concepts": ["海绵式思维 / 淘金式思维", "认知革命", "多模型思维", "黑天鹅", "位置", "库存与流量", "智慧层次结构", "观察", "批判性思维", "见识", "系统", "超级智能", "态度", "强化学习", "以人为本", "德性", "灰犀牛", "批判性思考", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "基本归因错误", "反脆弱", "脆弱性", "实事求是的世界观", "控制问题", "免费的吸引力", "公理化思维", "启发法与偏见", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "积极率", "命与运", "主动性", "扩展和建构理论", "情感", "不确定性", "概念二：组织是无机与有机的结合体", "所有模型都错", "成功是成功之母", "自然", "判断", "锚定与任意一致", "系统1 / 系统2", "效价", "农业革命", "得过且过", "弱势 / 强势批判性思维", "归因", "欣欣向荣", "疏离生命的语言", "视觉 / 分类", "过分情绪化的世界观", "商业本质", "非暴力沟通", "理性", "反馈回路", "虚构秩序", "预测幻觉", "眼见即为事实", "智能爆发", "人与情境", "可选择性", "第一性原理", "感觉", "四级收入框架", "抵制诱惑"], "frequency": 25}, "theme-2": {"name": "心理学", "books": ["🔑 概念索引", "📑 主题浏览", "《事实》", "人类如何思考：社会心理学大师的人生回忆录", "人类简史", "反脆弱：从不确定性中获益", "《学会提问》深度阅读报告", "《态度》", "《思考，快与慢》", "怪诞行为学（套装全5册）", "我看见的世界：李飞飞自传", "《智能简史》深度分析报告", "《格局》", "模型思维", "《沉思录》深度阅读报告", "灰犀牛：如何应对大概率危机", "《积极情绪的力量》", "第一性原理", "《组织的活法》", "《见识》深度分析报告", "《超级智能》", "《超越感觉：批判性思考指南（原书第9版）》", "《非暴力沟通（修订版）》", "《黑天鹅效应》深度阅读分析报告"], "concepts": ["海绵式思维 / 淘金式思维", "认知革命", "多模型思维", "黑天鹅", "位置", "观察", "智慧层次结构", "批判性思维", "见识", "超级智能", "态度", "强化学习", "以人为本", "德性", "灰犀牛", "批判性思考", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "基本归因错误", "反脆弱", "脆弱性", "实事求是的世界观", "控制问题", "免费的吸引力", "公理化思维", "启发法与偏见", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "积极率", "命与运", "主动性", "扩展和建构理论", "情感", "不确定性", "概念二：组织是无机与有机的结合体", "所有模型都错", "成功是成功之母", "自然", "判断", "锚定与任意一致", "系统1 / 系统2", "效价", "农业革命", "得过且过", "弱势 / 强势批判性思维", "归因", "欣欣向荣", "疏离生命的语言", "视觉 / 分类", "过分情绪化的世界观", "商业本质", "非暴力沟通", "理性", "预测幻觉", "虚构秩序", "眼见即为事实", "智能爆发", "人与情境", "可选择性", "第一性原理", "感觉", "四级收入框架", "抵制诱惑"], "frequency": 24}, "theme-3": {"name": "管理与战略", "books": ["🔑 概念索引", "📑 主题浏览", "人类如何思考：社会心理学大师的人生回忆录", "人类简史", "反脆弱：从不确定性中获益", "《学会提问》深度阅读报告", "《态度》", "《思考，快与慢》", "怪诞行为学（套装全5册）", "我看见的世界：李飞飞自传", "《格局》", "模型思维", "《沉思录》深度阅读报告", "灰犀牛：如何应对大概率危机", "《积极情绪的力量》", "第一性原理", "系统之美：决策者的系统思考", "《组织的活法》", "《见识》深度分析报告", "《超级智能》", "《超越感觉：批判性思考指南（原书第9版）》", "《非暴力沟通（修订版）》", "《黑天鹅效应》深度阅读分析报告"], "concepts": ["海绵式思维 / 淘金式思维", "认知革命", "多模型思维", "黑天鹅", "位置", "库存与流量", "智慧层次结构", "观察", "批判性思维", "见识", "系统", "超级智能", "态度", "德性", "以人为本", "灰犀牛", "批判性思考", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "基本归因错误", "反脆弱", "脆弱性", "控制问题", "免费的吸引力", "公理化思维", "启发法与偏见", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "积极率", "命与运", "主动性", "扩展和建构理论", "不确定性", "概念二：组织是无机与有机的结合体", "所有模型都错", "成功是成功之母", "自然", "判断", "锚定与任意一致", "系统1 / 系统2", "得过且过", "农业革命", "欣欣向荣", "弱势 / 强势批判性思维", "归因", "疏离生命的语言", "视觉 / 分类", "商业本质", "非暴力沟通", "理性", "反馈回路", "虚构秩序", "预测幻觉", "眼见即为事实", "智能爆发", "人与情境", "可选择性", "第一性原理", "感觉", "抵制诱惑"], "frequency": 23}, "theme-4": {"name": "沟通与人际", "books": ["🔑 概念索引", "《事实》", "人类如何思考：社会心理学大师的人生回忆录", "人类简史", "《学会提问》深度阅读报告", "《态度》", "《思考，快与慢》", "我看见的世界：李飞飞自传", "《智能简史》深度分析报告", "《格局》", "模型思维", "《沉思录》深度阅读报告", "灰犀牛：如何应对大概率危机", "《积极情绪的力量》", "系统之美：决策者的系统思考", "《组织的活法》", "《见识》深度分析报告", "《超越感觉：批判性思考指南（原书第9版）》", "《非暴力沟通（修订版）》"], "concepts": ["海绵式思维 / 淘金式思维", "认知革命", "多模型思维", "位置", "库存与流量", "智慧层次结构", "观察", "批判性思维", "见识", "系统", "态度", "强化学习", "以人为本", "德性", "灰犀牛", "批判性思考", "概念一：长期主义", "动机最重要", "格局", "基本归因错误", "实事求是的世界观", "启发法与偏见", "概念三：业务是生产力，组织是生产关系", "否认", "积极率", "命与运", "主动性", "扩展和建构理论", "情感", "概念二：组织是无机与有机的结合体", "所有模型都错", "成功是成功之母", "自然", "判断", "系统1 / 系统2", "效价", "农业革命", "得过且过", "弱势 / 强势批判性思维", "归因", "欣欣向荣", "疏离生命的语言", "视觉 / 分类", "过分情绪化的世界观", "商业本质", "非暴力沟通", "理性", "反馈回路", "虚构秩序", "眼见即为事实", "人与情境", "感觉", "四级收入框架", "抵制诱惑"], "frequency": 19}, "theme-5": {"name": "科技与未来", "books": ["《事实》", "人类简史", "反脆弱：从不确定性中获益", "《学会提问》深度阅读报告", "《思考，快与慢》", "怪诞行为学（套装全5册）", "我看见的世界：李飞飞自传", "《智能简史》深度分析报告", "《格局》", "模型思维", "灰犀牛：如何应对大概率危机", "第一性原理", "系统之美：决策者的系统思考", "《组织的活法》", "《见识》深度分析报告", "《超级智能》", "《超越感觉：批判性思考指南（原书第9版）》", "《黑天鹅效应》深度阅读分析报告"], "concepts": ["海绵式思维 / 淘金式思维", "认知革命", "多模型思维", "黑天鹅", "位置", "库存与流量", "智慧层次结构", "批判性思维", "见识", "系统", "超级智能", "强化学习", "以人为本", "灰犀牛", "批判性思考", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "反脆弱", "脆弱性", "实事求是的世界观", "控制问题", "免费的吸引力", "公理化思维", "启发法与偏见", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "命与运", "主动性", "情感", "不确定性", "概念二：组织是无机与有机的结合体", "所有模型都错", "判断", "锚定与任意一致", "系统1 / 系统2", "效价", "农业革命", "弱势 / 强势批判性思维", "视觉 / 分类", "过分情绪化的世界观", "商业本质", "反馈回路", "预测幻觉", "虚构秩序", "眼见即为事实", "智能爆发", "可选择性", "第一性原理", "感觉", "四级收入框架", "得过且过"], "frequency": 18}, "theme-6": {"name": "风险与不确定性", "books": ["🔑 概念索引", "📑 主题浏览", "《事实》", "反脆弱：从不确定性中获益", "《学会提问》深度阅读报告", "《思考，快与慢》", "怪诞行为学（套装全5册）", "我看见的世界：李飞飞自传", "《格局》", "模型思维", "灰犀牛：如何应对大概率危机", "第一性原理", "系统之美：决策者的系统思考", "《组织的活法》", "《黑天鹅效应》深度阅读分析报告"], "concepts": ["海绵式思维 / 淘金式思维", "黑天鹅", "多模型思维", "位置", "库存与流量", "智慧层次结构", "批判性思维", "系统", "以人为本", "灰犀牛", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "反脆弱", "脆弱性", "实事求是的世界观", "免费的吸引力", "公理化思维", "启发法与偏见", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "主动性", "不确定性", "概念二：组织是无机与有机的结合体", "所有模型都错", "锚定与任意一致", "系统1 / 系统2", "弱势 / 强势批判性思维", "视觉 / 分类", "过分情绪化的世界观", "反馈回路", "预测幻觉", "眼见即为事实", "可选择性", "第一性原理", "四级收入框架", "得过且过"], "frequency": 15}, "theme-7": {"name": "历史与社会", "books": ["📑 主题浏览", "《事实》", "人类如何思考：社会心理学大师的人生回忆录", "人类简史", "反脆弱：从不确定性中获益", "怪诞行为学（套装全5册）", "我看见的世界：李飞飞自传", "《智能简史》深度分析报告", "《格局》", "模型思维", "灰犀牛：如何应对大概率危机", "第一性原理", "《组织的活法》", "《见识》深度分析报告", "《超级智能》"], "concepts": ["认知革命", "多模型思维", "位置", "智慧层次结构", "见识", "超级智能", "强化学习", "以人为本", "灰犀牛", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "基本归因错误", "反脆弱", "脆弱性", "实事求是的世界观", "控制问题", "免费的吸引力", "公理化思维", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "命与运", "主动性", "情感", "概念二：组织是无机与有机的结合体", "所有模型都错", "锚定与任意一致", "效价", "农业革命", "归因", "视觉 / 分类", "过分情绪化的世界观", "商业本质", "虚构秩序", "智能爆发", "人与情境", "可选择性", "第一性原理", "四级收入框架", "得过且过"], "frequency": 15}, "theme-8": {"name": "经济与商业", "books": ["《事实》", "人类如何思考：社会心理学大师的人生回忆录", "人类简史", "反脆弱：从不确定性中获益", "《思考，快与慢》", "怪诞行为学（套装全5册）", "我看见的世界：李飞飞自传", "《格局》", "模型思维", "灰犀牛：如何应对大概率危机", "第一性原理", "《组织的活法》", "《见识》深度分析报告", "《黑天鹅效应》深度阅读分析报告"], "concepts": ["认知革命", "多模型思维", "黑天鹅", "位置", "智慧层次结构", "见识", "以人为本", "灰犀牛", "概念一：长期主义", "动机最重要", "可预测的非理性", "格局", "基本归因错误", "反脆弱", "脆弱性", "实事求是的世界观", "免费的吸引力", "公理化思维", "启发法与偏见", "归纳法", "概念三：业务是生产力，组织是生产关系", "否认", "命与运", "主动性", "不确定性", "概念二：组织是无机与有机的结合体", "所有模型都错", "锚定与任意一致", "系统1 / 系统2", "农业革命", "归因", "视觉 / 分类", "过分情绪化的世界观", "商业本质", "预测幻觉", "虚构秩序", "眼见即为事实", "人与情境", "可选择性", "第一性原理", "四级收入框架", "得过且过"], "frequency": 14}};
+
+const sidebar = document.querySelector('.sidebar');
+const content = document.querySelector('.content');
+const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+sidebarItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const themeId = item.dataset.themeId;
+    const theme = themesData[themeId];
+
+    // 更新激活状态
+    sidebarItems.forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+
+    // 渲染详情
+    const booksHtml = theme.books.map(book => `<li>${book}</li>`).join('');
+    const conceptsHtml = theme.concepts.length > 0
+      ? theme.concepts.map(c => `<span class="concept-tag">${c}</span>`).join('')
+      : '<span style="color: #999; font-size: 0.9rem;">暂无关联概念</span>';
+
+    content.innerHTML = `
+      <div class="detail-header">
+        <div class="detail-title">${theme.name}</div>
+        <div class="detail-meta">出现于 ${theme.frequency} 本书</div>
+      </div>
+      <div class="detail-section">
+        <h4>📚 相关书籍</h4>
+        <ul class="book-list">${booksHtml}</ul>
+      </div>
+      <div class="detail-section">
+        <h4>🔑 关联概念</h4>
+        <div class="concepts-tags">${conceptsHtml}</div>
+      </div>
+    `;
+  });
+});
+
+// 默认选中第一个
+if (sidebarItems.length > 0) {
+  sidebarItems[0].click();
+}
+</script>
+</body>
+</html>
