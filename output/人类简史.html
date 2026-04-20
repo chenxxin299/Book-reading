@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>《人类简史》深度分析报告</title>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16"></script>
+<style>
+/* ═══════════════════════════════════════════
+   BOOK ANALYST — Enhanced Report Styles v4
+   ═══════════════════════════════════════════ */
+
+:root {
+  --bg: #f4f1ec;
+  --paper: #ffffff;
+  --ink: #1a1f27;
+  --ink2: #5a6272;
+  --accent: #b85c10;
+  --accent-soft: #fdf3ea;   /* 全底色用：暖橙奶白 */
+  --accent-border: #e5b98a;
+  --blue-soft: #f0f5fb;     /* 全底色用：冷蓝奶白 */
+  --blue-border: #b0c8e4;
+  --yellow-soft: #fefce8;   /* 全底色用：淡黄 */
+  --yellow-border: #e5d070;
+  --line: #e6e0d8;
+  --radius: 10px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.05);
+  --shadow-md: 0 3px 12px rgba(0,0,0,.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 13px; line-height: 1.75;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ── 侧边栏 ── */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+  background: #ece8e0; border-right: 1px solid var(--line);
+  padding: 16px 10px 24px; overflow-y: auto; z-index: 100;
+}
+.brand {
+  font-size: 11.5px; line-height: 1.5;
+  padding: 8px 10px 10px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--line); color: #374151;
+}
+.brand .book-title { font-weight: 700; display: block; margin-bottom: 2px; }
+.brand .book-author { color: var(--ink2); font-size: 11px; display: block; }
+.toc a {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 10px; margin: 2px 0; border-radius: 7px;
+  font-size: 11.5px; color: #374151; line-height: 1.4; transition: background .15s;
+}
+.toc a:hover { background: #ddd8cf; }
+.toc a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.toc-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--line); font-size: 10px; font-weight: 700;
+  flex-shrink: 0; color: var(--ink2);
+}
+.toc a.active .toc-num { background: var(--accent); color: #fff; }
+
+/* ── 主内容区 ── */
+.main { margin-left: 240px; padding: 24px 28px 80px; }
+.container { max-width: 920px; margin: 0 auto; }
+
+/* ── Hero ── */
+.hero {
+  background: var(--paper);
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px 28px 18px; box-shadow: var(--shadow-md);
+  margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent);
+}
+.hero h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; line-height: 1.3; }
+.hero .meta { color: var(--ink2); font-size: .85rem; margin-bottom: 12px; }
+.hero .subtitle {
+  border-left: 3px solid var(--accent-border);
+  padding: 8px 12px; font-size: .88rem; line-height: 1.6; color: var(--ink2);
+}
+
+/* ── section-card ── */
+.section-card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 14px; box-shadow: var(--shadow-sm);
+  margin-bottom: 20px; overflow: hidden;
+}
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px; border-bottom: 1px solid var(--line);
+  background: #f8f5f0;
+}
+.section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.section-title { font-size: .95rem; font-weight: 800; color: var(--ink); }
+.section-body { padding: 18px 22px; }
+
+/* ── 标题层级 ── */
+h2 {
+  font-size: .97rem; font-weight: 800;
+  margin: 20px 0 10px;
+  padding: 7px 12px;
+  border-left: 3px solid var(--accent);
+  background: #f8f5f0;
+  border-radius: 0 6px 6px 0;
+}
+h3 {
+  font-size: .92rem; font-weight: 700;
+  margin: 16px 0 7px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+h4 { font-size: .87rem; font-weight: 600; margin: 10px 0 5px; color: var(--ink2); }
+p  { font-size: .875rem; margin: 7px 0; }
+ul, ol { padding-left: 20px; }
+li { font-size: .875rem; margin: 5px 0; line-height: 1.7; }
+
+/* strong → 仅加粗，不加颜色不加底纹 */
+strong, b { font-weight: 700; }
+mark { background: #fef9c3; color: var(--ink); padding: 1px 3px; border-radius: 3px; }
+
+/* ── 通用卡片 ── */
+.card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+/* 观点/章节模块：白底 + 左侧橙边框（结构性，不涂色） */
+.card-accent {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+
+/* ══════════════════════════════════════
+   颜色原则：有颜色 = 整个框都有底色，不搞半边
+   暖色系 = 橙系（重点/警示）
+   冷色系 = 蓝系（信息/参考）
+   黄色系 = 洞见/摘要
+   ══════════════════════════════════════ */
+
+/* callout：暖橙底 + 匹配边框（全框着色） */
+.callout {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+/* callout-yellow：淡黄底 */
+.callout-yellow {
+  background: var(--yellow-soft);
+  border: 1px solid var(--yellow-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+/* callout-blue：冷蓝底 */
+.callout-blue {
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-border);
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+.callout-green {
+  background: #f0faf4; border: 1px solid #a7d9b8;
+  padding: 11px 14px; border-radius: var(--radius); margin: 10px 0;
+  font-size: .875rem;
+}
+
+/* 概念框：暖橙底（全框着色） */
+.concept-box {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius);
+  padding: 12px 14px; margin: 10px 0;
+}
+.concept-box .concept-title {
+  font-size: .8rem; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: .05em;
+  margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 1px dashed var(--accent-border);
+}
+
+/* 张力对比框：两侧皆有底色，中间深色 VS 柱 */
+.tension-box {
+  display: grid; grid-template-columns: 1fr 36px 1fr;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; margin: 12px 0;
+}
+.tension-box .t-side { padding: 12px 14px; font-size: .855rem; line-height: 1.65; }
+.tension-box .t-side:first-child { background: var(--blue-soft); }
+.tension-box .t-side:last-child  { background: var(--accent-soft); }
+.tension-box .t-vs {
+  display: flex; align-items: center; justify-content: center;
+  background: #3a3a3a; color: #fff;
+  font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  writing-mode: vertical-lr;
+}
+.tension-box .t-label {
+  font-size: .75rem; font-weight: 700; margin-bottom: 5px;
+  color: var(--ink2); text-transform: uppercase; letter-spacing: .04em; display: block;
+}
+
+/* 参考框：冷蓝底（全框着色） */
+.ref-box {
+  background: var(--blue-soft);
+  border: 1px solid var(--blue-border);
+  border-radius: var(--radius);
+  padding: 10px 12px; margin: 8px 0;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.ref-box .ref-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.ref-box .ref-content { flex: 1; }
+.ref-box .ref-title { font-weight: 700; font-size: .86rem; margin-bottom: 2px; }
+.ref-box .ref-desc  { font-size: .81rem; color: var(--ink2); }
+
+/* ── 金句 ── */
+.quote {
+  background: #fafaf8; border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 12px 16px 10px 30px;
+  margin: 8px 0; position: relative;
+}
+.quote::before {
+  content: '"'; position: absolute; top: 2px; left: 8px;
+  font-size: 2rem; color: var(--accent-border); line-height: 1;
+  font-family: Georgia, serif;
+}
+.quote .source { font-size: .76rem; color: var(--ink2); margin-top: 5px; }
+
+/* ── Final Takeaway：白底，整洁列表，不用黑色条块 ── */
+.take {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 20px; margin: 10px 0;
+}
+.take ol, .take ul { padding-left: 20px; }
+.take li {
+  font-size: .875rem; margin: 8px 0; padding-bottom: 8px;
+  border-bottom: 1px solid var(--line); line-height: 1.7;
+}
+.take li:last-child { border-bottom: none; padding-bottom: 0; }
+.take p { font-size: .875rem; margin: 7px 0; }
+.take strong, .take b { font-weight: 700; color: var(--accent); }
+
+/* ── 圆桌对话 ── */
+.roundtable-round {
+  background: #f8f7f4; border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+.round-title {
+  font-size: .76rem; font-weight: 700; color: var(--ink2);
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: 10px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.dialogue { display: flex; gap: 10px; margin: 10px 0; align-items: flex-start; }
+.dialogue-avatar {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+}
+.dialogue-bubble {
+  flex: 1; background: var(--paper); border: 1px solid var(--line);
+  border-radius: 10px; padding: 9px 13px;
+}
+.dialogue-name { font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+.dialogue-bubble p  { font-size: .86rem; }
+.dialogue-bubble ul { font-size: .86rem; }
+.dialogue-bubble li { margin: 3px 0; }
+.round-insight {
+  margin-top: 8px; padding: 9px 12px;
+  background: var(--yellow-soft); border: 1px solid var(--yellow-border);
+  border-radius: 6px; font-size: .82rem; color: var(--ink);
+}
+
+/* ── Grid ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ── 标签 ── */
+.tag {
+  display: inline-block; background: #f0ece5; color: var(--ink2);
+  border: 1px solid var(--line);
+  padding: 2px 8px; border-radius: 999px; font-size: 11px; margin: 2px 3px;
+}
+
+/* ── 表格 ── */
+table { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 10px 0; }
+th { background: #f2ede6; font-weight: 700; }
+th, td { border: 1px solid var(--line); padding: 7px 11px; text-align: left; }
+tr:nth-child(even) td { background: #faf8f4; }
+
+/* ── Markmap ── */
+.markmap {
+  width: 100% !important; height: 520px !important;
+  display: block; border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden; background: #fff;
+}
+.markmap svg { width: 100% !important; height: 100% !important; }
+
+/* ── 响应式 ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 16px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .tension-box { grid-template-columns: 1fr; }
+  .tension-box .t-vs { writing-mode: horizontal-tb; padding: 6px; }
+}
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="brand">
+      <span class="book-title">人类简史</span>
+      <span class="book-author">尤瓦尔·赫拉利</span>
+    </div>
+    <nav class="toc">
+      <a href="#sec1">1. 导读</a>
+      <a href="#sec2">2. 这本书在解决什么问题</a>
+      <a href="#sec3">3. 关键词 / 核心概念</a>
+      <a href="#sec4">4. 全书结构拆解</a>
+      <a href="#sec5">5. 核心观点分析</a>
+      <a href="#sec6">6. 深度圆桌讨论</a>
+      <a href="#sec7">7. 认知拓展</a>
+      <a href="#sec8">8. 对我的启发与追问</a>
+      <a href="#sec9">9. 全书金句</a>
+      <a href="#sec10">10. Final Takeaways</a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="container">
+      <section class="hero">
+        <h1>人类简史</h1>
+        <div>尤瓦尔·赫拉利</div>
+        <p>从“智人为何崛起”到“人类是否正在终结自己”</p>
+        <div>
+          <span class="tag">大历史</span>
+          <span class="tag">文明批判</span>
+          <span class="tag">认知革命</span>
+          <span class="tag">农业革命</span>
+          <span class="tag">现代性反思</span>
+        </div>
+      </section>
+
+      <section id="sec1" class="section-card">
+        <div class="section-header">
+          <div class="section-num">01</div>
+          <div class="section-title">导读：先看懂这本书</div>
+        </div>
+        <div class="section-body">
+          <div class="callout-yellow">
+            这本书真正讨论的，不是“人类怎么一步步进步”，而是：一个原本并不特殊的动物，为什么能通过虚构、组织与技术，成为地球主导者，并可能进一步改造乃至终结“人类”本身。
+          </div>
+          <ul>
+            <li>全书的核心问题是：<strong>智人</strong>究竟凭什么统治世界，以及这种统治到底带来了什么代价。</li>
+            <li>全书的中心命题是：真正塑造历史的，不只是生物能力，更是人类共同相信的虚构故事，以及围绕这些故事建立的合作秩序。</li>
+            <li>最有价值的内容，不在于作者串讲史实，而在于他把认知、农业、帝国、金钱、宗教、科学和资本主义放进同一条解释链里。</li>
+            <li>它不是一本传统意义上的“世界通史”，不是按事件堆砌的编年史，也不是替文明进步写赞歌的乐观主义作品。</li>
+            <li>它更像一部跨学科的历史哲学提案：重新定义何为“真实”、何为“进步”、何为“幸福”、何为“人”。</li>
+          </ul>
+          <div class="callout">
+            如果只用一句最直白的话概括：这本书最厉害之处，是逼你承认——人类社会中最有力量的东西，往往不是客观存在，而是被集体相信的虚构。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec2" class="section-card">
+        <div class="section-header">
+          <div class="section-num">02</div>
+          <div class="section-title">这本书在解决什么问题</div>
+        </div>
+        <div class="section-body">
+          <h3>2.1 作者真正想解决什么？</h3>
+          <ul>
+            <li>作者想回答的根本困境是：为何一个并不强壮、也不特别古老的物种，最终压倒了其他人类物种与大部分生态系统。</li>
+            <li>这不是简单的“成功史”问题，而是“支配能力从何而来、代价由谁承担”的问题。</li>
+            <li>作者进一步追问：如果智人的成功建立在虚构、剥削与加速扩张上，这种成功是否真值得被叫作进步。</li>
+          </ul>
+
+          <h3>2.2 这个问题为什么值得一本书反复讨论？</h3>
+          <ul>
+            <li>因为这个问题没有停留在远古史，而是贯穿今天的国家、货币、公司、宗教、法律与科技治理。</li>
+            <li>我们今天仍然活在作者所说的共同想象之中，却往往把这些制度误以为天然、客观、不可替代。</li>
+            <li>只要我们还在问“为什么这么多人会为钱、国家、品牌、民族和意识形态付出生命”，这本书的问题就没有过时。</li>
+          </ul>
+
+          <h3>2.3 它表面在解决什么，更深处在解决什么？</h3>
+          <ul>
+            <li>表面上，它在解释人类历史的大转折：认知革命、农业革命、统一趋势、科学革命。</li>
+            <li>更深处，它在处理一个哲学问题：社会现实究竟是如何被创造出来，并获得强制力的。</li>
+            <li>再深一层，它在挑战“进步叙事”：文明扩张、生产增长、科技突破，并不自动等于幸福增长或伦理进步。</li>
+          </ul>
+
+          <h3>2.4 作者面对的现实症状是什么？</h3>
+          <ul>
+            <li>现代人高度依赖大规模制度，却很少意识到制度背后的虚构性与脆弱性。</li>
+            <li>我们崇拜增长、效率、资本和技术，却回避这些系统如何制造动物苦难、生态破坏与新的不平等。</li>
+            <li>我们相信“历史会越来越好”，却很少认真追问“对谁更好”“以什么为代价”“谁被排除在外”。</li>
+            <li>我们拥有前所未有的能力，却依然说不清“人类究竟想要什么”以及“幸福是否真的增加了”。</li>
+          </ul>
+
+          <h3>2.5 作者真正反对的旧框架是什么？</h3>
+          <ul>
+            <li>反对把历史理解为单线性的文明进步史，仿佛从采集到农业到工业就是自然升级。</li>
+            <li>反对把制度视为天然存在，例如把国家、市场、法律、人权只当作客观事实，而不追问其建构过程。</li>
+            <li>反对狭隘的人类中心主义，把非人动物和生态系统的代价都排除在历史评价之外。</li>
+            <li>反对只用民族国家或单一文明框架讲历史，而忽略跨学科与物种尺度的视野。</li>
+          </ul>
+
+          <h3>2.6 作者建立的新框架是什么？</h3>
+          <ul>
+            <li>作者提出的是一种<strong>大历史</strong>框架：把生物学、认知科学、人类学、政治经济学与历史叙事打通。</li>
+            <li>历史的关键不只是工具和制度，而是人类通过<strong>虚构</strong>建立的大规模合作能力。</li>
+            <li>农业革命不再被简单视为进步，而被重新审视为可能的陷阱、驯化与结构性代价。</li>
+            <li>现代科学也不再是纯中立力量，而是与帝国、资本、国家能力彼此缠绕的历史装置。</li>
+            <li>面向未来，作者把问题推到终点：如果科技让人类开始改造自身，那么“智人历史”可能只是序章。</li>
+          </ul>
+
+          <div class="callout-blue">
+            我的分析：赫拉利最强的地方，不是提供一个完全无可争议的解释模型，而是成功把“历史解释的尺度”抬高了。你读完后很难再只用朝代、战争、制度改革去理解人类，而会开始问：背后的认知结构、合作机制和虚构基础到底是什么。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec3" class="section-card">
+        <div class="section-header">
+          <div class="section-num">03</div>
+          <div class="section-title">关键词 / 核心概念</div>
+        </div>
+        <div class="section-body">
+          <div class="concept-box">
+            <div class="concept-title">认知革命</div>
+            <ul>
+              <li>在书中的含义：不是一般意义上的“更聪明”，而是智人突然拥有了讲述复杂故事、传播抽象信息并组织陌生人大规模合作的能力。</li>
+              <li>作者为何强调：因为赫拉利认为，智人真正碾压其他人类物种的关键，不是单个个体更强，而是群体协调能力实现质变。</li>
+              <li>抓住的更深问题：社会秩序不是先有制度再有人，而是先有人能共同相信某种叙事，制度才有了现实效力。</li>
+              <li>对现实的启发：理解现代舆论、民族主义、品牌、金融、政治传播，都要回到“人如何共同相信一个并不存在的对象”。</li>
+              <li>与其他概念关系：它是虚构秩序、货币、帝国和宗教的前提；没有认知革命，就没有后续所有大规模社会事实。</li>
+              <li>值得追问的问题：这种能力是解放性的，还是控制性的？它让我们形成文明，也让我们更容易被叙事操控。</li>
+              <li>可能被误用之处：容易被简化成“人类会讲故事所以厉害”，但作者真正说的是，故事之所以重要，在于它塑造合作，不只是表达情感。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title">虚构秩序</div>
+            <ul>
+              <li>在书中的含义：国家、法律、金钱、公司、人权等，并非像石头或河流那样客观存在，而是由主体间共同相信而获得效力的现实。</li>
+              <li>作者为何强调：这是全书解释社会复杂性的核心钥匙。没有虚构秩序，陌生人之间无法稳定合作，帝国和市场都无法运作。</li>
+              <li>抓住的更深问题：社会现实并不等于自然现实。我们每天遵守的很多东西，本质上是被反复教育、制度化和情感化的想象。</li>
+              <li>对现实的启发：面对货币、公司、学历、头衔、国界时，要意识到它们既“虚构”又“有效”，所以不能因为虚构就以为无关紧要。</li>
+              <li>与其他概念关系：它是统一趋势的基础，也是认知革命向帝国、宗教、资本主义过渡的桥梁。</li>
+              <li>值得追问的问题：如果社会依赖虚构而维系，那么我们如何区分必要的公共想象与危险的集体幻觉。</li>
+              <li>可能被误用之处：最常见误用是把“虚构”理解成“假的、可以随便否定”。作者其实强调的是，虚构秩序虽然不是自然事实，却能真实决定命运。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title">农业革命</div>
+            <ul>
+              <li>在书中的含义：不是单纯从野生采集到定居耕作的技术升级，而是一个把人类生活重构为高劳动、高人口、高依赖的结构性转折。</li>
+              <li>作者为何强调：赫拉利在这里发起最强烈的旧框架修正，把“农业=进步”的常识翻过来，称其为“史上最大骗局”。</li>
+              <li>抓住的更深问题：物种层面的成功和个体层面的幸福并不一致。农业提升了人口总量，却未必提升了大多数人的生活质量。</li>
+              <li>对现实的启发：今天看待增长、效率、城市化和技术升级，不能只看总量扩张，还要问劳动结构、脆弱性与幸福分布。</li>
+              <li>与其他概念关系：农业革命提供了剩余粮食、等级社会和官僚系统的物质基础，也推动了书写、国家与剥削结构。</li>
+              <li>值得追问的问题：如果农业真是骗局，为何人类几乎无路可退？问题不在于它是否有益，而在于它制造了路径依赖。</li>
+              <li>可能被误用之处：不能把作者的说法理解为“农业毫无价值”或“回到采集社会更好”，他的真正重点是揭示代价，而非提出原始主义方案。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title">统一趋势</div>
+            <ul>
+              <li>在书中的含义：虽然历史表面充满分裂，但更长时段看，人类一直在朝更大的连接网络前进，帝国、货币和普世宗教都是统一机制。</li>
+              <li>作者为何强调：它帮助读者跳出民族国家叙事，看到全球化并非近代偶发，而是历史深层动力的延续。</li>
+              <li>抓住的更深问题：人类如何在差异、冲突与征服中，反而一步步构造出更大范围的共同秩序。</li>
+              <li>对现实的启发：理解全球资本、国际法、互联网平台与世界市场，不能只看当下，而要把它们看作古老统一逻辑的新形态。</li>
+              <li>与其他概念关系：统一趋势依赖虚构秩序，而货币、帝国和宗教则是它的三大制度载体。</li>
+              <li>值得追问的问题：统一究竟是文明整合，还是霸权扩张的另一种说法？赫拉利对统一有一定肯定，但也可能低估其中的不对称权力。</li>
+              <li>可能被误用之处：容易被读成“全球统一是自然且必然的”，进而合理化帝国主义或平台垄断，这是需要警惕的。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title">金钱</div>
+            <ul>
+              <li>在书中的含义：金钱不是单纯交换媒介，而是人类历史上最普遍、最成功的互信系统之一。</li>
+              <li>作者为何强调：因为金钱比宗教和血缘更擅长连接陌生人，它把互不相识的人纳入统一的价值尺度。</li>
+              <li>抓住的更深问题：大规模社会协作离不开一种可通约、可转移、可抽象的信任媒介，而金钱正是这种高度抽象信任的制度形式。</li>
+              <li>对现实的启发：面对金融市场、平台支付、信用体系时，要看到其力量不在于纸张或数字本身，而在于人类对其稳定性的共同信念。</li>
+              <li>与其他概念关系：金钱是虚构秩序的一种高效形态，是统一趋势的重要推动器，也与资本主义和帝国扩张深度耦合。</li>
+              <li>值得追问的问题：金钱能连接陌生人，但也会把价值压扁为可交换量；它促进合作，也重塑欲望和社会评价标准。</li>
+              <li>可能被误用之处：不能把金钱理解成中性工具。赫拉利虽强调其通用性，但现实中金钱还嵌入权力、国家暴力与资本结构之中。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title">资本主义</div>
+            <ul>
+              <li>在书中的含义：资本主义不仅是一套经济制度，更是一种相信“未来会增长，因此应该把利润拿去再投资”的信念结构。</li>
+              <li>作者为何强调：因为现代世界的扩张逻辑，很大程度不是靠节俭，而是靠信用、投资和对未来增长的系统性信仰。</li>
+              <li>抓住的更深问题：现代社会为什么如此沉迷于增长，而把增长视为政治稳定、社会分配和制度合法性的前提。</li>
+              <li>对现实的启发：理解房地产泡沫、创业神话、风险投资、国家债务，都需要认识资本主义是一种以未来为抵押的叙事机制。</li>
+              <li>与其他概念关系：资本主义建立在金钱和信用之上，又与科学革命、帝国扩张形成互相增幅的联盟。</li>
+              <li>值得追问的问题：作者批判资本主义的暴力和剥削，但也承认其创造力；真正难题是我们能否保留创新而抑制掠夺。</li>
+              <li>可能被误用之处：不能把资本主义单纯理解成“贪婪”。它更深的是一种制度化的未来主义，一种把增长变成道德命令的文明装置。</li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <div class="concept-title">科学革命</div>
+            <ul>
+              <li>在书中的含义：科学革命的关键不只是发现新知识，而是承认无知，并据此建立系统研究、试验与持续修正的制度。</li>
+              <li>作者为何强调：他认为现代性最深刻的转变，不在于知识增加，而在于人类第一次把“不知道”当作出发点。</li>
+              <li>抓住的更深问题：权威从经典、神谕和传统，转向研究、实验、技术和制度化知识生产，这改变了世界的动力结构。</li>
+              <li>对现实的启发：今天的科技公司、军事研发、公共卫生体系，都延续这一逻辑：承认未知，投入资源，以知识换取力量。</li>
+              <li>与其他概念关系：科学革命与帝国、资本主义相互联姻，构成现代世界扩张的三位一体。</li>
+              <li>值得追问的问题：科学是解放知识，还是权力机器？赫拉利提醒我们，它常常并不是孤立发展，而是服务于征服、治理和利润。</li>
+              <li>可能被误用之处：不能把“承认无知”浪漫化。真正的问题是，谁来定义什么值得研究，谁拥有应用科技成果的权力。</li>
+            </ul>
+          </div>
+
+          <h3>3.1 概念之间的张力</h3>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">虚构秩序</span>
+              <ul>
+                <li>是社会合作的基础</li>
+                <li>能创造制度稳定与信任</li>
+                <li>也能被用来正当化压迫</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">客观现实</span>
+              <ul>
+                <li>如重力、疾病、生态约束</li>
+                <li>不会因信念而消失</li>
+                <li>忽视它会让虚构秩序崩盘</li>
+              </ul>
+            </div>
+          </div>
+          <ul>
+            <li>混淆后果：若把制度当作纯客观事实，就会失去批判能力；若把制度当作纯虚假幻想，又会低估其真实约束力。</li>
+          </ul>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">物种成功</span>
+              <ul>
+                <li>人口扩张</li>
+                <li>生态支配增强</li>
+                <li>合作规模放大</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">个体幸福</span>
+              <ul>
+                <li>劳动强度可能上升</li>
+                <li>焦虑与压迫并未减少</li>
+                <li>并不随文明同步增长</li>
+              </ul>
+            </div>
+          </div>
+          <ul>
+            <li>混淆后果：最容易把增长、效率和国家强大，误判成每个人都活得更好。</li>
+          </ul>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">统一趋势</span>
+              <ul>
+                <li>扩大协作半径</li>
+                <li>减少局部孤立</li>
+                <li>形成全球网络</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">多样性</span>
+              <ul>
+                <li>保留不同文化与生活方式</li>
+                <li>抵抗单一秩序霸权</li>
+                <li>维持制度比较与纠错空间</li>
+              </ul>
+            </div>
+          </div>
+          <ul>
+            <li>混淆后果：若把统一自动等于进步，可能为帝国化、平台垄断和文化消灭开脱。</li>
+          </ul>
+
+          <div class="tension-box">
+            <div class="t-side">
+              <span class="t-label">科学</span>
+              <ul>
+                <li>承认无知</li>
+                <li>提升解释与控制能力</li>
+                <li>推动技术突破</li>
+              </ul>
+            </div>
+            <div class="t-vs">VS</div>
+            <div class="t-side">
+              <span class="t-label">伦理</span>
+              <ul>
+                <li>要求回答“该不该”</li>
+                <li>限制技术滥用</li>
+                <li>维护人的定义边界</li>
+              </ul>
+            </div>
+          </div>
+          <ul>
+            <li>混淆后果：若把能做到等同于应做到，人类增强技术就可能滑向新的阶级裂缝与物种分化。</li>
+          </ul>
+
+          <div class="callout">
+            最值得长期保留的判断：赫拉利并不是在说“社会是假的”，而是在说“社会最强大的部分，恰恰来自被共同相信的非自然事实”。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec4" class="section-card">
+        <div class="section-header">
+          <div class="section-num">04</div>
+          <div class="section-title">全书结构拆解</div>
+        </div>
+        <div class="section-body">
+          <div class="card card-accent">
+            <h3>第一部分：认知革命</h3>
+            <ul>
+              <li>表面在讲什么：智人如何从众多人类物种中脱颖而出，并扩张到全球。</li>
+              <li>在全书中的功能：回答“人类为何能成为主角”，搭建全书总起点。</li>
+              <li>与后文衔接：只有先解释认知与合作，后面农业、帝国和资本主义才有逻辑基础。</li>
+              <li>论证推进：从生物学位置切入，再转向语言、虚构、群体合作和生态后果。</li>
+              <li>不能省略原因：如果没有这部分，全书会退化成文明制度史，失去其最强的解释力。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>第二部分：农业革命</h3>
+            <ul>
+              <li>表面在讲什么：从采集转向定居、耕种、驯化、记账和等级社会。</li>
+              <li>在全书中的功能：颠覆“农业=幸福提升”的常识，提出结构性困境。</li>
+              <li>与前后衔接：认知革命提供合作能力，农业革命提供剩余、人口和制度密度。</li>
+              <li>论证推进：从小麦驯化人类写起，延伸到定居、官僚、书写、阶级和压迫。</li>
+              <li>不能省略原因：农业革命是全书最重要的价值翻转点，也是赫拉利最具争议的判断来源。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>第三部分：人类的融合统一</h3>
+            <ul>
+              <li>表面在讲什么：帝国、金钱、宗教如何把分裂的人群纳入更大网络。</li>
+              <li>在全书中的功能：解释为什么历史虽然充满冲突，却呈现长期统一趋势。</li>
+              <li>与前后衔接：农业带来复杂社会，统一机制让复杂社会突破地方局限。</li>
+              <li>论证推进：先提出历史方向，再分析金钱、帝国与宗教三种统一机制。</li>
+              <li>不能省略原因：没有这部分，就无法理解现代全球化并非偶然，而是长期积累。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>第四部分：科学革命</h3>
+            <ul>
+              <li>表面在讲什么：科学、帝国、资本主义、工业、消费主义与生物技术的崛起。</li>
+              <li>在全书中的功能：解释现代世界为何爆炸性加速，并把问题引向未来。</li>
+              <li>与前后衔接：统一后的世界为科学扩张提供平台，科学再重塑政治经济与人的定义。</li>
+              <li>论证推进：从“承认无知”写到科学—帝国联盟，再写资本主义、工业化、快乐与人类升级。</li>
+              <li>不能省略原因：这一部分把全书从过去史拉向未来史，决定《人类简史》不只是“简史”，而是文明前景判断。</li>
+            </ul>
+          </div>
+
+          <h3>4.1 按章节逻辑拆解</h3>
+          <ul>
+            <li>第一章回答“人类原本并不特别”，目的是拆掉人类自我神话。</li>
+            <li>第二章提出语言与虚构，是全书解释力最强的理论中轴。</li>
+            <li>第三章通过采集者生活，提醒我们别把现代生活视为唯一常态。</li>
+            <li>第四章强调人类扩张伴随生态灭绝，提前埋下文明代价主题。</li>
+            <li>第五章把农业革命改写成陷阱，是全书最鲜明的反常识论断。</li>
+            <li>第六章解释定居、剩余与大型组织如何出现，推动社会复杂化。</li>
+            <li>第七章通过书写与官僚说明，文明不是只靠信念，还靠记账与处理信息。</li>
+            <li>第八章聚焦社会等级，说明想象秩序如何被自然化并正当化。</li>
+            <li>第九章至第十三章解释“统一”的方向，以金钱、帝国、宗教作为三大整合机制。</li>
+            <li>第十四章之后转向现代世界，强调科学不是知识积累，而是制度化承认无知。</li>
+            <li>第十五章与第十六章把科学和帝国、资本主义放在一起讲，揭示其共谋关系。</li>
+            <li>第十七章与第十八章说明工业革命改变能源、时间、家庭和社会结构。</li>
+            <li>第十九章追问幸福，打破“更强大=更快乐”的习惯性等式。</li>
+            <li>第二十章讨论人类升级与智人终结，把全书推到最危险也最前沿的问题。</li>
+          </ul>
+
+          <h3>4.2 全书结构图 / 思维导图</h3>
+          <div class="markmap" style="width:100%;height:520px;display:block;">
+            <script type="text/template">
+---
+markmap:
+  colorFreezeLevel: 2
+---
+# 人类简史
+
+## 一、认知革命
+
+### 第1章 人类：一种也没什么特别的动物
+- 功能：拆除人类中心主义
+- 结论：智人起点并不特殊
+
+### 第2章 知善恶树
+- 功能：提出语言与虚构能力
+- 结论：合作规模因共同想象暴增
+
+### 第3章 亚当和夏娃的一天
+- 功能：重估采集社会生活
+- 结论：现代并非唯一正常形态
+
+### 第4章 毁天灭地的人类洪水
+- 功能：揭示扩张伴随生态破坏
+- 结论：人类早期即是灭绝推动者
+
+## 二、农业革命
+
+### 第5章 史上最大骗局
+- 功能：颠覆农业进步神话
+- 结论：人口增多未必生活更好
+
+### 第6章 盖起金字塔
+- 功能：解释剩余与大型组织
+- 结论：农业支撑等级与国家雏形
+
+### 第7章 记忆过载
+- 功能：说明书写与官僚的必要性
+- 结论：复杂社会依赖外部记忆系统
+
+### 第8章 历史从无正义
+- 功能：分析等级制度的建构
+- 结论：社会秩序常靠想象性歧视维持
+
+## 三、人类的融合统一
+
+### 第9章 历史的方向
+- 功能：提出长期统一趋势
+- 结论：分裂表象下存在整合动力
+
+### 第10章 金钱的味道
+- 功能：解释金钱作为通用信任
+- 结论：货币是最成功的互信系统
+
+### 第11章 帝国的愿景
+- 功能：分析帝国如何整合多样性
+- 结论：帝国是暴力也是统一机制
+
+### 第12章 宗教的法则
+- 功能：讨论宗教提供共同规范
+- 结论：宗教让陌生人共享价值秩序
+
+### 第13章 成功的秘密
+- 功能：总结文化流动与统一逻辑
+- 结论：历史更像融合而非隔绝
+
+## 四、科学革命
+
+### 第14章 发现自己的无知
+- 功能：定义现代科学精神
+- 结论：承认无知开启爆发式增长
+
+### 第15章 科学与帝国的联姻
+- 功能：揭示知识与征服同盟
+- 结论：科学常借帝国资源扩张
+
+### 第16章 资本主义教条
+- 功能：分析信用与增长信仰
+- 结论：资本主义以未来预期驱动现实
+
+### 第17章 工业的巨轮
+- 功能：说明能源与生产革命
+- 结论：工业化重构社会和自然关系
+
+### 第18章 一场永远的革命
+- 功能：讨论现代流动与持续变革
+- 结论：稳定本身成为稀缺状态
+
+### 第19章 从此过着幸福快乐的日子
+- 功能：追问幸福是否同步增长
+- 结论：力量上升不等于主观幸福增加
+
+### 第20章 智人末日
+- 功能：把问题推向后人类未来
+- 结论：技术或将终结智人自身定义
+</script>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec5" class="section-card">
+        <div class="section-header">
+          <div class="section-num">05</div>
+          <div class="section-title">核心观点分析</div>
+        </div>
+        <div class="section-body">
+          <div class="card card-accent">
+            <h3>观点1：人类真正的优势，不是个体智能，而是能共同相信虚构</h3>
+            <ul>
+              <li>表面在说什么：智人靠语言和故事组织大规模合作，从而胜过其他物种。</li>
+              <li>更深层在回应什么：为什么“弱个体”能形成“强系统”，并最终压倒更强壮或更适应环境的竞争者。</li>
+              <li>作者为何反复强调：因为这是全书的总钥匙，后面国家、货币、宗教、公司都靠这把钥匙才能打开。</li>
+              <li>在反驳什么：反驳把人类优势理解为纯智力、纯工具、纯体能升级的简单进化叙事。</li>
+              <li>最有力量的地方：它能同时解释原始部落、现代企业、民族国家和金融体系的运行逻辑。</li>
+              <li>值得怀疑的地方：作者可能低估了暴力、物质资源和地理环境在合作成形中的作用，仿佛一切都靠叙事黏合。</li>
+              <li>为什么值得认真对待：因为它能直接改变我们对政治宣传、品牌神话、货币信用和制度合法性的理解方式。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点2：农业革命未必是进步，更像是以个体幸福换取物种扩张</h3>
+            <ul>
+              <li>表面在说什么：农业让人口增长，却让大多数人的劳动更重、饮食更单一、疾病更多。</li>
+              <li>更深层在回应什么：文明增长是否等于生活改善，还是只是系统规模扩张。</li>
+              <li>作者为何反复强调：因为现代人太习惯把生产力跃升等同于历史正义，作者要强行拆掉这种自动联想。</li>
+              <li>在反驳什么：反驳“定居—农业—国家—文明”这条链条天然更高级的教科书式叙述。</li>
+              <li>最有力量的地方：把“谁被驯化”这个问题反过来问，显示不是人驯化小麦，而是小麦驯化了人。</li>
+              <li>值得怀疑的地方：作者有时把农业代价说得过于统一，忽略不同地区、时期和社会结构之间的差异。</li>
+              <li>为什么值得认真对待：因为它提醒我们，今天面对AI、平台化、效率工具时，也可能在重复“更方便却更被绑定”的路径。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点3：历史长期方向不是分裂，而是统一</h3>
+            <ul>
+              <li>表面在说什么：尽管战争不断，历史总体上在推动更大范围的连接、交换和共享秩序。</li>
+              <li>更深层在回应什么：如何在冲突中看见整合逻辑，理解全球化的深层历史根基。</li>
+              <li>作者为何反复强调：这是他重绘世界史地图的关键一步，把帝国、金钱和宗教从单纯压迫工具重新理解为整合机制。</li>
+              <li>在反驳什么：反驳只按文明、民族、国家边界来理解历史，忽略跨区域共同体形成。</li>
+              <li>最有力量的地方：让我们看到即便是征服、贸易和宗教竞争，往往也在客观上扩大共同现实的范围。</li>
+              <li>值得怀疑的地方：统一并不等于平等，作者有时对统一的肯定，可能淡化了殖民暴力和文化抹平的严重性。</li>
+              <li>为什么值得认真对待：因为今天讨论全球治理、技术平台、国际金融和价值共识，都必须正视统一与霸权的双面性。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点4：科学革命最关键的起点，是承认无知</h3>
+            <ul>
+              <li>表面在说什么：现代科学并不是“知道更多”，而是先承认自己不知道。</li>
+              <li>更深层在回应什么：知识权威如何从经典与传统转向实验、研究和制度化求知。</li>
+              <li>作者为何反复强调：因为只有承认未知，社会才会持续投入探索，并把知识转化为权力。</li>
+              <li>在反驳什么：反驳把科学当作线性真理累积的静态图景，忽视它其实是一种制度化无知管理方式。</li>
+              <li>最有力量的地方：一句话就把现代世界的动力说透——承认不知道，所以不断研究；不断研究，所以不断扩张。</li>
+              <li>值得怀疑的地方：作者虽指出科学与帝国、资本结合，但对科学内部的自我纠错机制与公共性，也许讲得还不够充分。</li>
+              <li>为什么值得认真对待：这会修正我们对学习和研究的理解，不再把“答案”当中心，而把“提出新问题”当现代知识的起点。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点5：现代增长逻辑靠的是信用，而信用靠的是集体相信未来会更好</h3>
+            <ul>
+              <li>表面在说什么：资本主义并不只是贪婪，而是一种基于未来增长信念的制度安排。</li>
+              <li>更深层在回应什么：现代经济为什么能把尚未生产出来的财富提前调动到现在使用。</li>
+              <li>作者为何反复强调：因为资本主义解释了现代国家、殖民扩张、工业革命和消费社会之间的联动机制。</li>
+              <li>在反驳什么：反驳“财富只是储蓄积累”的旧想象，真正驱动现代的是信用、再投资和增长预期。</li>
+              <li>最有力量的地方：它把经济增长、帝国扩张和科学研发放进一条统一逻辑链。</li>
+              <li>值得怀疑的地方：作者对资本主义批判有力，但对其内部多样性、福利国家调节能力与制度修正空间着墨较少。</li>
+              <li>为什么值得认真对待：因为今天任何投资、创新、创业叙事，几乎都建立在“未来可持续增长”的信仰之上。</li>
+            </ul>
+          </div>
+
+          <div class="card card-accent">
+            <h3>观点6：人类越来越强大，并不自动更幸福，甚至可能越来越不知道自己要什么</h3>
+            <ul>
+              <li>表面在说什么：生产力、寿命、技术和制度能力提升，不等于主观幸福同步增加。</li>
+              <li>更深层在回应什么：文明评价到底该以什么为标准，力量、秩序、财富，还是感受与意义。</li>
+              <li>作者为何反复强调：因为全书如果只讲权力扩张，就会沦为另一部成功学式的大历史。</li>
+              <li>在反驳什么：反驳把现代性终点默认为“更快乐人生”的乐观主义想象。</li>
+              <li>最有力量的地方：把“幸福”重新拉回历史中心，迫使读者承认我们可能在巨大成就中持续失焦。</li>
+              <li>值得怀疑的地方：作者关于幸福的讨论有启发，但理论基础略显拼接，心理学、佛教与历史叙述之间并不总是严密。</li>
+              <li>为什么值得认真对待：因为它会迫使我们把“想要什么”放在“能做到什么”之前，这对个人生活和公共政策都很关键。</li>
+            </ul>
+          </div>
+
+          <div class="callout-yellow">
+            我的判断：全书最强的观点，不是“虚构很重要”，而是“人类文明的力量和脆弱性，来源于同一个机制”——共同想象既让我们合作，也让我们被自己造出的系统反过来支配。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec6" class="section-card">
+        <div class="section-header">
+          <div class="section-num">06</div>
+          <div class="section-title">深度圆桌讨论</div>
+        </div>
+        <div class="section-body">
+          <div class="callout-blue">
+            选择这两位作者，是因为他们都直击本书的核心议题。专家A选本尼迪克特·安德森，他能从“想象的共同体”角度补强赫拉利关于虚构秩序与大规模合作的洞见。专家B选詹姆斯·C·斯科特，他长期研究国家形成、农业定居与权力技术，能够质疑赫拉利过于整齐的大叙事与统一逻辑。
+          </div>
+
+          <div class="roundtable-round">
+            <div class="round-title">第一轮 · 中心主题：这本书到底在解决什么根本问题？</div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#c26a18;">作</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本书作者</div>
+                <ul>
+                  <li>我真正要解释的，不是“文明发生了什么”，而是“智人为什么能把世界纳入自己的秩序”。如果只讲战争、王朝和科技，就会漏掉最关键的一层：陌生人为什么愿意协同。</li>
+                  <li>答案不在体能，也不在单个个体的智力，而在于人类能共同相信某种根本不存在于自然界的东西。无论是部落守护神、帝国、货币还是公司，它们都不是石头那样的客观对象，但它们能决定行动。</li>
+                  <li>所以，这本书要切中的不是“人类越来越厉害”的故事，而是“现实如何被共同制造”的问题。只有这样，我们才能理解为什么现代制度既强大又脆弱，既能让几十亿人合作，也能把几十亿人一起拖入盲目扩张。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#2d6a8a;">A</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本尼迪克特·安德森（补强）</div>
+                <ul>
+                  <li>赫拉利指出共同想象能支撑大规模合作，这一点我高度认同。民族之所以成为现代最有力量的政治共同体，并不是因为成员彼此真实相识，而是因为他们共享了一种被媒体、学校和国家叙事不断生产的“同时性想象”。</li>
+                  <li>从这个角度看，本书讲的其实不只是远古认知革命，而是“共同体想象的技术史”。从神话、宗教、帝国法典，到印刷资本主义和现代国族教育，人类不断发明更有效的方式，让抽象共同体在日常经验中显得真实。</li>
+                  <li>这能补强赫拉利的一点是：虚构秩序不是悬浮存在，它总要依附于媒介、仪式和制度。人不是凭空相信国家，而是在地图、报纸、纪念碑、征兵制和学校课本里学会把国家当成现实。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#5a7a3a;">B</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">詹姆斯·C·斯科特（质疑）</div>
+                <ul>
+                  <li>我同意合作规模的扩大需要共享叙事，但我会质疑赫拉利把问题说得太干净，仿佛人类只要相信同一个故事，复杂社会就能自然长成。事实上，国家的形成同样依赖征税、计量、固定土地、强制定居与暴力读取社会的能力。</li>
+                  <li>农业革命也不能只是“人类被小麦驯化”这样富有表现力的讲法。更重要的是，为什么国家偏爱谷物？因为谷物可见、可计量、可征收、可储存，它们天然适合国家权力介入。于是国家形成并不只是认知问题，更是治理技术问题。</li>
+                  <li>因此，本书解决根本问题时最有启发，但也有盲点：它重视共同想象，却可能低估国家如何通过强制简化现实，把流动、多样、不易征税的人群压缩成“可治理对象”。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="round-insight">这轮让我们看清楚了：本书的根本问题不是“历史发生了什么”，而是“规模化合作如何可能”；同时也看到，虚构秩序必须与媒介技术和治理能力结合，才会真正落地。</div>
+          </div>
+
+          <div class="roundtable-round">
+            <div class="round-title">第二轮 · 关键概念：哪些概念最核心？它们之间有什么张力？</div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#c26a18;">作</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本书作者</div>
+                <ul>
+                  <li>本书最关键的概念是<strong>虚构秩序</strong>与<strong>认知革命</strong>。认知革命让智人第一次能说“并不存在”的事，而虚构秩序则是这些故事被普遍接受后形成的社会现实。</li>
+                  <li>这两个概念的张力在于：虚构秩序不是客观自然事实，却比许多自然事实更能左右人类行为。钱是一张纸或一串数字，但人愿意为它工作、战争、投资、节制、杀人和自杀。</li>
+                  <li>因此，我不是要说社会是假的，而是要说社会现实的很多关键部分建立在主体间信念上。理解这一点，我们才能一边看到制度的力量，一边保有拆解制度神圣化的能力。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#2d6a8a;">A</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本尼迪克特·安德森（补强）</div>
+                <ul>
+                  <li>我会把“虚构秩序”进一步具体化为“可被重复感知的共同时间与共同空间”。例如民族国家之所以成为想象共同体，不是因为每个人抽象地相信国家，而是他们在每日晨报中一起进入了同一个“今天”。</li>
+                  <li>这能帮助我们深化赫拉利的概念：虚构并不是空泛的想象，而是一种被制度、语言、印刷和传播技术稳定化的想象。共同体之所以持久，不只是因为故事动人，更因为它被不断复制、同步和常态化。</li>
+                  <li>所以概念张力还在于：虚构秩序既依赖想象，又依赖媒介基础设施。没有学校、档案、地图、货币制度和传播网络，故事很难从部落尺度跃迁到民族或帝国尺度。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#5a7a3a;">B</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">詹姆斯·C·斯科特（质疑）</div>
+                <ul>
+                  <li>我最担心的，是“虚构秩序”这个概念太强大，以至于解释一切时反而模糊了差异。国家、市场、宗教、村社规范当然都带有想象成分，但它们运作的机制并不相同，把它们统统装进同一个概念框里，容易失去具体性。</li>
+                  <li>例如“国家”不是只是大家共同相信的一套故事，它还需要测量土地、固定姓氏、人口普查、标准语、道路与档案。这些技术让社会变得可读，也让社会更容易被控制。只讲故事，不讲可读性与强制力，概念就会太轻。</li>
+                  <li>此外，“虚构”也可能误导读者，以为这些秩序可以轻易解除。事实上，一旦人被税制、产权、学校和法律深度编织其中，就算明知其建构性，也很难退出。这正是我想加上的限制条件。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="round-insight">这轮让我们看清楚了：虚构秩序是解释核心，但若不补上媒介、制度和治理技术，它就容易过于抽象；概念越强，越需要边界。</div>
+          </div>
+
+          <div class="roundtable-round">
+            <div class="round-title">第三轮 · 关键问题/边界：这本书最深刻的洞见在哪些条件下成立，在哪些条件下会失效或被误用？</div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#c26a18;">作</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本书作者</div>
+                <ul>
+                  <li>我最有力的洞见之一是：现代人类最大的危险，不是外部敌人，而是自身力量增长快于自我理解。我们越来越能改造生命、延长寿命、制造智能，却没有同步回答“我们究竟想要什么”。</li>
+                  <li>这个洞见成立的条件，是我们承认力量和意义不是一回事。科学能告诉我们怎么做，资本会推动我们尽快去做，但只有伦理和哲学能逼问“该不该”。如果这一层缺位，文明将被工具理性牵着走。</li>
+                  <li>它失效或被误用的地方在于：有人可能把这理解成反技术、反科学。我并不是要回到过去，而是要让人看到，科技越强，越需要自我审问；否则所谓“升级”很可能只是把不平等、控制和痛苦升级到了新层次。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#2d6a8a;">A</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">本尼迪克特·安德森（补强）</div>
+                <ul>
+                  <li>我愿意补充的是，这个洞见之所以重要，还因为现代共同体的想象能力正在被新媒介重塑。国家曾通过印刷资本主义形成，如今平台、算法和全球传播正在生产新的想象共同体，也在削弱旧共同体。</li>
+                  <li>这意味着赫拉利的警告不只适用于生物科技，也适用于信息秩序。一个社会如果无法识别自己是如何被叙事、图像、同步信息流塑造的，就会在新的技术条件下继续把建构出来的现实当成自然现实。</li>
+                  <li>因此，这个洞见成立的条件还包括：公众必须保留反思媒介和叙事装置的能力。否则，我们并不是在自由地创造未来，而是在被新的共同想象装置重塑而不自知。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="dialogue">
+              <div class="dialogue-avatar" style="background:#5a7a3a;">B</div>
+              <div class="dialogue-bubble">
+                <div class="dialogue-name">詹姆斯·C·斯科特（质疑）</div>
+                <ul>
+                  <li>我要指出的边界是：赫拉利的宏大洞见容易滑向总括性判断，仿佛整个人类都被同一种逻辑牵引。但现实常常不是这样。边地社会、逃离国家的人群、地方知识体系和小规模自治传统，并不总是被统一逻辑完全吸收。</li>
+                  <li>再说农业、国家和科学，也不能只看到其宏观动力。很多灾难正来自中央视角对地方复杂性的误判：把森林当木材库存、把农田当统计单元、把人民当可管理人口。技术失灵常常不是因为技术不够强，而是因为它自以为全知。</li>
+                  <li>所以本书最深刻的洞见在面对“大规模系统如何形成”时非常有力，但若拿它解释所有历史差异，就会忽略地方性抵抗、多样性和非国家生活方式的价值。最危险的误用，是把宏大趋势当作必然命运。</li>
+                </ul>
+              </div>
+            </div>
+            <div class="round-insight">这轮让我们看清楚了：本书最强的警告在于“能力增长与自我理解脱节”，但它必须放在媒介环境、治理尺度与地方多样性中检验，才不至于变成新的宿命论。</div>
+          </div>
+
+          <div class="card callout-yellow">
+            <h3>最终小结</h3>
+            <ul>
+              <li>①最强洞见：经过三轮讨论，这本书最强的洞见仍然是：<strong>人类文明并非主要建立在客观事实之上，而是建立在可被共享、复制和制度化的共同想象之上。</strong>这点之所以值得重视，是因为它不仅解释了古代的神话、帝国和货币，也解释了今天的国家、公司、市场、平台与算法秩序。它迫使我们承认，社会最有力量的部分并不天然存在，而是被不断讲述、训练、记录和执行出来的。</li>
+              <li>②核心内容分点：
+                <ul>
+                  <li>最需要抓住的概念是<strong>认知革命</strong>，因为它说明人类的优势不是单体强，而是能共享抽象故事。</li>
+                  <li>第二个必须理解的是<strong>虚构秩序</strong>，它让我们不再把国家、金钱、公司和人权当作无须解释的自然事实。</li>
+                  <li>第三个关键是农业革命的反转视角：要区分“物种扩张”与“个体幸福”，这会直接改变我们评价进步的标准。</li>
+                  <li>第四个重点是科学—资本—帝国的联动，它提示现代知识从来不是单独运转，而是深嵌在权力与增长机制里。</li>
+                </ul>
+              </li>
+              <li>③值得追问的问题分点：
+                <ul>
+                  <li>如果社会秩序必然依赖共同想象，我们如何建立既能维持合作、又不轻易走向操控与压迫的公共叙事？</li>
+                  <li>如果现代增长逻辑不断制造更强能力，我们该用什么标准来判断“该不该做”，而不是只问“能不能做”？</li>
+                  <li>如果宏大统一趋势确实存在，地方生活方式、少数文化和非国家秩序应如何被保护，而不是被视为历史残余？</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec7" class="section-card">
+        <div class="section-header">
+          <div class="section-num">07</div>
+          <div class="section-title">认知拓展</div>
+        </div>
+        <div class="section-body">
+          <ul>
+            <li>这本书涉及的议题与政治神学、制度经济学、媒介研究、生态史、技术哲学、动物伦理和未来研究都高度相关。</li>
+            <li>在更大的知识地图中，它位于<strong>大历史</strong>与历史哲学之间：既不是严密的专门史，也不是纯粹抽象的哲学，而是试图搭桥。</li>
+            <li>它与贾雷德·戴蒙德相连，后者更强调地理与环境约束；而赫拉利更强调认知、叙事与主体间秩序的作用。</li>
+            <li>它与本尼迪克特·安德森相连，连接意义在于：民族国家并非天然共同体，而是现代媒介与想象技术制造出的政治现实。</li>
+            <li>它与詹姆斯·C·斯科特相连，连接意义在于：赫拉利讲大规模合作，斯科特则提醒我们国家形成也伴随强制定居、简化与治理暴力。</li>
+            <li>它与福柯相连，连接意义在于：如果赫拉利说明了大叙事如何建立秩序，福柯则能补上微观权力如何塑造身体、知识与主体。</li>
+            <li>它与马克思相连，连接意义在于：资本主义并非只是市场交换，而是深刻重塑劳动、时间、欲望和社会关系的结构。</li>
+            <li>它与布鲁诺·拉图尔也有隐约联系，连接意义在于：现代秩序并非简单区分自然与社会，而是不断制造混合体并为其赋权。</li>
+            <li>现实议题上，它直接通向AI治理、基因编辑、气候危机、平台资本主义、动物工业化饲养和全球秩序重组。</li>
+          </ul>
+
+          <div class="grid-2">
+            <div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">本尼迪克特·安德森 · 《想象的共同体》</div>
+                  <div class="ref-desc">补强“共同想象如何制造政治共同体”，让读者理解虚构秩序并非抽象空话，而有具体媒介与制度支撑。</div>
+                </div>
+              </div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">詹姆斯·C·斯科特 · 《反对谷物》</div>
+                  <div class="ref-desc">直接对照赫拉利的农业革命叙事，从国家为何偏爱谷物、定居与可征税性切入，修正“农业转型”的权力维度。</div>
+                </div>
+              </div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">贾雷德·戴蒙德 · 《枪炮、病菌与钢铁》</div>
+                  <div class="ref-desc">与本书同样进行宏观解释，但更强调环境与地理，适合用来比较“结构约束”和“认知虚构”两种框架。</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">米歇尔·福柯 · 《规训与惩罚》</div>
+                  <div class="ref-desc">补上赫拉利较少展开的微观权力分析，理解现代制度如何进入身体、时间与日常行为。</div>
+                </div>
+              </div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">卡尔·波兰尼 · 《大转型》</div>
+                  <div class="ref-desc">帮助读者理解市场并非自然形成，而是制度建构，和赫拉利对金钱与资本主义的分析互相照明。</div>
+                </div>
+              </div>
+              <div class="ref-box">
+                <div class="ref-icon">📖</div>
+                <div class="ref-content">
+                  <div class="ref-title">彼得·辛格 · 《动物解放》</div>
+                  <div class="ref-desc">延伸本书对工业化养殖的伦理批判，把“文明代价”推进到动物感受与道德边界问题。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-blue">
+            我的延伸判断：如果说《人类简史》是一张总地图，那么它最适合作为“框架书”，而不是“定论书”。读完之后最好的用法，不是把它当终点，而是用它去筛选你接下来该读哪些更细的书。
+          </div>
+        </div>
+      </section>
+
+      <section id="sec8" class="section-card">
+        <div class="section-header">
+          <div class="section-num">08</div>
+          <div class="section-title">对我的启发与追问</div>
+        </div>
+        <div class="section-body">
+          <h3>8.1 这本书对我最有价值的启发是什么？</h3>
+          <ul>
+            <li>最有价值的启发，是把“制度”重新看成一种被持续制造的现实，而不是天然背景板。</li>
+            <li>它会修正我看待国家、金钱、公司、组织身份与职业头衔的方式：这些都不是无须解释的事实。</li>
+            <li>它迫使我把“增长”与“幸福”分开，把“系统成功”与“个体处境”分开，把“能做到”与“应做到”分开。</li>
+          </ul>
+
+          <h3>8.2 它可能修正哪些认知、判断或行动上的问题？</h3>
+          <ul>
+            <li>修正我对进步的自动乐观：以后看到效率提升、技术突破，不再直接等同于生活改善。</li>
+            <li>修正我对现实的“自然化”习惯：面对职场规则、金融秩序、教育门槛时，更愿意追问其建构逻辑。</li>
+            <li>修正我对合作的理解：协作不只是制度安排，更依赖共同叙事与情感认同。</li>
+            <li>修正我对历史的尺度：不再只看事件，而会看背后的认知结构、组织技术和价值装置。</li>
+          </ul>
+
+          <h3>8.3 它最可能在哪里让我产生“我懂了，但我其实还没做到”的错觉？</h3>
+          <ul>
+            <li>我可能嘴上知道“钱是信任系统”，但日常仍然完全按金钱价值排序自己的时间与关系。</li>
+            <li>我可能认同“进步不等于幸福”，却依旧在职业选择中只追求扩张、头衔和增长。</li>
+            <li>我可能理解“制度是建构出来的”，但面对公司、国家或平台时，依然把它们当成不可挑战的自然背景。</li>
+            <li>我可能被书中的宏大视角激发，却忽略真正的思考训练在于回到自己所处具体组织中，辨认其虚构机制与约束逻辑。</li>
+          </ul>
+
+          <h3>8.4 10 个高质量问题及追问</h3>
+          <div class="card">
+            <ol>
+              <li>如果共同虚构是合作基础，那么怎样的虚构是必要的公共秩序，怎样的虚构会滑向集体伤害？
+                <ul><li>追问：我们如何识别一个叙事是维系合作，还是正在制造替罪羊？</li></ul>
+              </li>
+              <li>农业革命真的是“骗局”吗，还是说它只是让不同层次的收益与代价高度不对称？
+                <ul><li>追问：哪些人、哪些物种、哪些阶层在农业之后真正获益？</li></ul>
+              </li>
+              <li>现代企业、国家和平台，是否已经成为比宗教更强的共同想象装置？
+                <ul><li>追问：我们今天最愿意为之牺牲的，究竟是信仰、国家还是职业身份？</li></ul>
+              </li>
+              <li>如果金钱是最通用的信任系统，它会不会同时也是最强的价值扁平化机制？
+                <ul><li>追问：有哪些重要价值一旦被货币化，就会发生本质变形？</li></ul>
+              </li>
+              <li>统一趋势真的是历史主轴，还是只是胜利者视角下对多样性的覆盖？
+                <ul><li>追问：有哪些被统一吞没的地方知识、生活方式和关系结构值得重新估值？</li></ul>
+              </li>
+              <li>科学革命的关键是承认无知，那么今天我们最危险的“伪知识确定性”来自哪里？
+                <ul><li>追问：是民族主义、平台算法、资本市场，还是技术乌托邦本身？</li></ul>
+              </li>
+              <li>如果人类越来越能改造自己，那么“人”的边界该由谁决定？
+                <ul><li>追问：是市场、国家、科学共同体，还是某种新的全球伦理协商机制？</li></ul>
+              </li>
+              <li>本书强调幸福未必随文明同步增长，那我们究竟应该用什么指标评估社会进步？
+                <ul><li>追问：自由、健康、稳定关系、生态韧性、主观幸福之间如何排序？</li></ul>
+              </li>
+              <li>大规模合作的前提是共享叙事，那么在高度碎片化媒介时代，还可能存在新的共同叙事吗？
+                <ul><li>追问：如果没有共同叙事，现代社会会走向什么样的治理危机？</li></ul>
+              </li>
+              <li>赫拉利的宏大叙事本身，会不会也是一种新的“虚构秩序”？
+                <ul><li>追问：我们应该如何在被其启发的同时，保持对其简化、夸张和盲点的警惕？</li></ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec9" class="section-card">
+        <div class="section-header">
+          <div class="section-num">09</div>
+          <div class="section-title">全书金句</div>
+        </div>
+        <div class="section-body">
+          <div class="quote"><p>历史正式启动于认知革命。</p><div class="source">说明：这是全书总开关，对应“认知革命”作为人类史真正起点的命题。</div></div>
+          <div class="quote"><p>智人征服世界的秘密，在于独特的语言。</p><div class="source">说明：对应语言不是表达工具，而是合作基础这一核心判断。</div></div>
+          <div class="quote"><p>真正让我们与其他动物不同的，是我们能谈论根本不存在的事物。</p><div class="source">说明：点出<strong>虚构</strong>的关键地位，是全书最核心句之一。</div></div>
+          <div class="quote"><p>大规模人类合作的根基，正是共同的虚构故事。</p><div class="source">说明：对应国家、宗教、公司、货币等主体间现实的形成机制。</div></div>
+          <div class="quote"><p>所谓的有限公司，就像神祇一样，都是法律拟制。</p><div class="source">说明：说明现代制度与古代神话并非截然不同，核心都在共同信念。</div></div>
+          <div class="quote"><p>农业革命是史上最大的骗局。</p><div class="source">说明：全书最著名论断，对应作者对“进步叙事”的根本颠覆。</div></div>
+          <div class="quote"><p>不是人类驯化了小麦，而是小麦驯化了人类。</p><div class="source">说明：用反转表达揭示结构依赖，是农业革命部分的思想高峰。</div></div>
+          <div class="quote"><p>奢侈品往往会变成必需品，并产生新的义务。</p><div class="source">说明：这句话极适合解释现代消费与效率工具的悖论。</div></div>
+          <div class="quote"><p>历史从无正义。</p><div class="source">说明：点出等级制度和想象秩序的稳定性，不以道德直觉为转移。</div></div>
+          <div class="quote"><p>由想象所建构的秩序，并不是谎言。</p><div class="source">说明：提醒读者“虚构”不等于“无效”，是理解全书的关键辨析。</div></div>
+          <div class="quote"><p>人类是唯一能相信共同神话并因此大量合作的动物。</p><div class="source">说明：对应智人统治世界的结构性解释。</div></div>
+          <div class="quote"><p>金钱是有史以来最普遍也最有效的互信系统。</p><div class="source">说明：说明货币的力量来自信任，不来自材质本身。</div></div>
+          <div class="quote"><p>帝国是人类文化多样性的最大熔炉。</p><div class="source">说明：对应作者对帝国的双面理解，既批判又不完全否定。</div></div>
+          <div class="quote"><p>现代科学的基础，是承认自己的无知。</p><div class="source">说明：这是理解现代性爆发式加速的总钥匙。</div></div>
+          <div class="quote"><p>信用让我们得以把未来的财富带到现在。</p><div class="source">说明：对应资本主义以未来预期驱动现实扩张的机制。</div></div>
+          <div class="quote"><p>资本主义最重要的教条，就是利润必须再投资于生产。</p><div class="source">说明：点出资本主义与传统积累逻辑的关键区别。</div></div>
+          <div class="quote"><p>工业革命的本质，是能量转换。</p><div class="source">说明：提醒读者别只看机器和工厂，而要看到能源结构变化。</div></div>
+          <div class="quote"><p>历史并不是朝着幸福前进。</p><div class="source">说明：是对进步主义最直接的否定，也开启全书的幸福问题。</div></div>
+          <div class="quote"><p>我们不知道自己究竟想要什么，而这可能是历史上最严重的问题。</p><div class="source">说明：把全书从历史解释推向存在论追问。</div></div>
+          <div class="quote"><p>智人可能是历史上最后一种真正的人类。</p><div class="source">说明：对应全书最后的未来问题：技术是否将终结“智人”本身。</div></div>
+        </div>
+      </section>
+
+      <section id="sec10" class="section-card">
+        <div class="section-header">
+          <div class="section-num">10</div>
+          <div class="section-title">Final Takeaways</div>
+        </div>
+        <div class="section-body">
+          <div class="take">
+            <ol>
+              <li>真正该留下的东西：这本书最该保留的，不是零散历史知识，而是一种看世界的方法——把社会事实重新看作由认知、叙事与制度共同制造出来的现实。</li>
+              <li>最关键的判断：第一，人类的力量主要来自共享虚构；第二，物种扩张不等于个体幸福；第三，现代科学与资本、帝国并非彼此独立；第四，能力增长若脱离自我理解，会成为危险。</li>
+              <li>最值得长期保留的概念：<strong>认知革命</strong>、<strong>虚构秩序</strong>、农业革命的“骗局”视角、统一趋势、金钱作为互信系统、科学革命中的“承认无知”。</li>
+              <li>最容易知道却做不到：明知制度是建构的，仍会把它们当自然；明知增长不等于幸福，仍会按增长逻辑生活；明知科技需要伦理约束，仍会把“能做到”误当“应该做”。</li>
+              <li>如果几年后只记得 5 件事，应该记住：一，人类最强的是共同想象；二，文明的成功与个人的幸福常常脱钩；三，货币、国家、公司都是真实有效的虚构；四，现代世界靠科学、资本与帝国共同加速；五，未来最大的风险是我们改造世界和改造自己，却始终没有想清楚自己想成为什么。</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const links = Array.from(document.querySelectorAll('.toc a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      function onScroll() {
+        let current = sections[0];
+        const offset = window.scrollY + 120;
+        for (const sec of sections) {
+          if (sec.offsetTop <= offset) current = sec;
+        }
+        links.forEach(link => {
+          const active = link.getAttribute('href') === '#' + current.id;
+          link.classList.toggle('active', active);
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
